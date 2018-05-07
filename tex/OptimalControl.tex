@@ -346,11 +346,11 @@ To determine the quantum speed limit, one can examine the relative motion of $\k
 	F(T) = \sin ^2 \left( \int_{0}^{T} Q_{\mathrm{opt}} (t) \mathrm{d} t \right) \; ,
 	\label{eq:FidelityDurationSin1}
 \end{equation}  
-if the states $\ket{\psi}$ and $\ket{\chi}$ are orthogonal. Interpreting the state as moving along a geodesic in the Hilbert space between the two orthogonal states, the direct velocity is given by $Q_{\mathrm{opt}} (t) = \dv{\theta (t)}{t}$, whereby
+if the states $\ket{\psi}$ and $\ket{\chi}$ are orthogonal. Interpreting the state as moving along a geodesic in the Hilbert space between the two orthogonal states, the direct velocity is given by $Q_{\mathrm{opt}} (t) =  -\dv{\theta (t)}{t}$, whereby
 \begin{equation}
-	F(T) = \sin ^2 \left( \int_{0}^{T} \dv{\theta (t)}{t} \mathrm{d} t \right) =  \sin ^2 \left( \eval{\theta(t)}_{0}^{T} \right) = \sin ^2 \left( frac{\pi}{2} \frac{T}{T_{\mathrm{QSL}}} \right) \; .
+	F(T) = \sin ^2 \left( \int_{0}^{T} - \dv{\theta (t)}{t} \mathrm{d} t \right) =  \sin ^2 \left( \eval{ - \theta(t)}_{0}^{T} \right) = \sin ^2 \left( \frac{\pi}{2} \frac{T}{T_{\mathrm{QSL}}} \right) \; .
 	\label{eq:FidelityDurationSin2}
 \end{equation}  
-The relation $\theta (T) = frac{\pi}{2} \frac{T}{T_{\mathrm{QSL}}}$ is only valid if the state is moving on a geodesic, whereas eq. \eqref{eq:FidelityDurationSin1} is more general. A similar behavior to eq. \eqref{eq:FidelityDurationSin2} was reported in \cite{Caneva2011}, where a number of systems were shown to behave according to the relation.
+The relation $\theta (T) = \frac{\pi}{2} \left( 1 -  \frac{T}{T_{\mathrm{QSL}}} \right)$ is only valid if the state is moving on a geodesic, whereas eq. \eqref{eq:FidelityDurationSin1} is more general. A similar behavior to eq. \eqref{eq:FidelityDurationSin2} was reported in \cite{Caneva2011}, where a number of systems were shown to behave according to the relation.
 
 For an example of optimal control see Appendix \ref{chap:LZexample}, which illustrates some of the consequences of the quantum speed limit.
