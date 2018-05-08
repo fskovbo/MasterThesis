@@ -3,6 +3,8 @@
 	\def \numb {5};
 	\def \vleg {1};
 	\def \NL {3};
+	
+	\node[minimum height=0.5 cm] (frame) at (1 ,0.5) {};
 
 	\foreach \i in  {1,...,\NL} {
 		\node[tensorl] (\i) at (\i*\hdist, 0) {};
@@ -26,9 +28,9 @@
 		\draw[-] (\i) -- (\iplusone);
 	};
 	
-	\node[matrix, label={\small $S$}] (S) at (\NL*\hdist+\hdist/1.5,0) {};
+	\node[matrix, label={$S$}] (S) at (\NL*\hdist+\hdist/1.5,0) {};
 	\draw[-] (\NL) -- (S);
 	\draw[-] (S) -- (5);
 	\node (indexL) at (1*\hdist, -\vleg -0.2) {$j_1$};
-	\node (indexR) at (6*\hdist-\hdist/1.5 , -\vleg -0.2) {$j_N$};			
+	\node (indexR) at (6*\hdist-\hdist/1.5 , -\vleg -0.2) {$j_L$};			
 \end{tikzpicture}

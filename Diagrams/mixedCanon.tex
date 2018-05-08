@@ -4,6 +4,8 @@
 	\def \vleg {1};
 	\def \NL {3};
 
+	\node[minimum height=0.5 cm] (frame) at (1 ,0.5) {};
+
 	\foreach \i in  {1,...,\numb} {
 		\node[tensor] (\i) at (\i*\hdist, 0) {};
 		\node (index\i) at (\i*\hdist, -\vleg) {};
@@ -24,5 +26,5 @@
 
 
 	\node (indexL) at (1*\hdist, -\vleg -0.2) {$j_1$};
-	\node (indexR) at (\numb*\hdist, -\vleg -0.2) {$j_N$};		
+	\node (indexR) at (\numb*\hdist, -\vleg -0.2) {$j_L$};		
 \end{tikzpicture}
