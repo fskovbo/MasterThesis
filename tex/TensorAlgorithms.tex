@@ -1,69 +1,71 @@
 \chapter{Tensor Network Algorithms}
-Although matrix product states enables analytical treatment of certain classes of quantum states \cite{Baxter1968,Affleck1987}, their real power becomes evident when performing numerical computations. These computations require algorithms, which are capable of exploiting the properties of the matrix product states. The Density-Matrix Renormalization Group (DMRG) was developed as the most powerful numerical method to study one-dimensional quantum lattice systems \cite{White1992,White1993}. Years later the connection between the DMRG method and matrix product states was made, as these two approaches share many features \cite{Ostlund1995, Dukelsky1998}. Formulating the DMRG method in the MPS language made several extensions to the algorithm possible, which would otherwise have been very difficult to express within the DMRG framework \cite{schollwock}. Among these extensions one finds the tDMRG algorithm, which borrows elements from DMRG in order to perform time-evolution of a matrix product state.\\
+Although matrix product states enables analytical treatment of certain classes of quantum states \cite{Baxter1968,Affleck1987}, their real power becomes evident when performing numerical computations. These computations require algorithms capable of exploiting the properties of the matrix product states. The Density-Matrix Renormalization Group (DMRG) was developed as the most powerful numerical method to study one-dimensional quantum lattice systems \cite{White1992,White1993}. Years later the connection between the DMRG method and matrix product states was made, as these two approaches share many features \cite{Ostlund1995, Dukelsky1998}. Formulating the DMRG method in the MPS language made several extensions to the algorithm possible, which would otherwise have been very difficult to express within the DMRG framework \cite{schollwock}. Among these extensions one finds the tDMRG algorithm, which borrows elements from DMRG in order to perform time-evolution of a matrix product state.\\
 This chapter covers variational ground state search through the DMRG method and time-evolution of matrix product states through the tDMRG algorithm.
 
 
 \section{Variational Ground State Search}
-For large systems exact diagonalization of the Hamiltonian is impossible, whereby one must resort to variational methods in order to find ground states. This involves finding the MPS, $\ket{\psi}$, which minimizes
+For large systems exact diagonalization of the Hamiltonian is impossible, whereby one must resort to variational methods in order to find ground states. A variational search involves finding the state, $\ket{\psi}$, which minimizes
 \begin{equation}
 	E = \frac{\bra{\psi} \hat{H} \ket{\psi}}{\braket{\psi | \psi}} \; .
+	\label{eq:variational}
 \end{equation}
-The most efficient way to do this, is to express the Hamiltonian as an MPO as described in eq. \eqref{eq:MPOrep}, whereby it easily can be applied to an MPS. While this may seem difficult at first, it can actually be done without any lengthy calculations. An example is given in Appendix \ref{chap:buildMPO}, where the Bose-Hubbard Hamiltonian is formulated as tensors.
+The Hamiltonian must be expressed as a matrix product operator to be applied to the state. An example is given in Appendix \ref{chap:buildMPO}, where the Bose-Hubbard Hamiltonian is formulated through tensors. Furthermore, in a variational search the state is repeatedly modified until the expectation value of the Hamiltonian is minimized. Therefore, the tensor network corresponding to eq. \ref{eq:variational} must be contracted efficiently in order for the search to be viable.
+
 
 \subsection{Efficient Application of a Hamiltonian to an MPS}
-In section \ref{sec:MPO} it was explained how to apply an MPO to an MPS, and it was shown how to efficiently evaluate local operators. However, since $\hat{H} \ket{\psi}$ must be evaluated many times during variational methods, one must find even more efficient way of applying the operator.\\
-Consider an MPS in a mixed-canonical form
+Section \ref{sec:MPO} detailed the most effective way of applying a matrix product operator to a state, however, even further reductions to the computational cost are needed, as the overlap with the Hamiltonian is evaluated many times during the ground state search. The DMRG variational search algorithm updates only a single tensor of the state at a time, whereby most of the tensor network describing the operator overlap remains constant. Hence, most of the network can be stored and used for multiple calculations, which is one of the key properties of the DMRG algorithm.\\ 
+Consider a matrix product state in a mixed-canonical form
 \begin{align}
-	\ket{\psi} &= \sum_{\boldsymbol{j}} A^{j_1} \ldots A^{j_{n-1}} \Psi^{j_n} B^{j_{n+1}} \ldots B^{j_{N}} \ket{\boldsymbol{j}} \nonumber \\
-	&= \sum_{\alpha_{n-1} , \alpha_{n}} \ket{\alpha_{n-1}}_A \Psi_{\alpha_{n-1} , \alpha_{n}}^{j_n}  \ket{\alpha_{n}}_B \; ,
+	\ket{\psi} &= \sum_{\boldsymbol{j}} A^{j_1} \ldots A^{j_{n-1}} \Psi^{j_n} B^{j_{n+1}} \ldots B^{j_{L}} \ket{\boldsymbol{j}} \nonumber \\
+	&= \sum_{\alpha_{n-1} , \alpha_{n}} \ket{\alpha_{n-1}}_A \Psi_{\alpha_{n-1} , \alpha_{n}}^{j_n}  \ket{\alpha_{n}}_L \; ,
 	\label{eq:MPSmixedsingle}
 \end{align}
-where $\Psi^{j_n}$ is the central site, and $\ket{\alpha_{n-1}}_A$ and $\ket{\alpha_{n}}_B$ are block states introduced in eq. \eqref{eq:mixedA} and \eqref{eq:mixedB} respectively.
-Huge reductions in computational cost of the variational search can be found by re-using as many calculations as possible. In the basis $\{ \ket{\alpha_{n-1} } \; , \; \ket{ j_n } \; , \; \ket{\alpha_{n} } \}$ the individual matrix elements of the Hamiltonian can be expressed as
+where $\Psi^{j_n}$ is the central site, and $\ket{\alpha_{n-1}}_A$ and $\ket{\alpha_{n}}_B$ are block states introduced in eq. \eqref{eq:mixedA} and \eqref{eq:mixedB} respectively. In the basis $\{ \ket{\alpha_{n-1} } \; , \; \ket{ j_n } \; , \; \ket{\alpha_{n} } \}$ the individual matrix elements of the Hamiltonian can be expressed as
 \begin{equation*}
-	\bra{\alpha_{n-1} j_n \alpha_{n}} \hat{H} \ket{\alpha_{n-1} ' j_n ' \alpha_{n} '} = \sum_{\boldsymbol{j} , \boldsymbol{j'}}  W^{j_1 , j_1 '} \ldots W^{j_N , j_N '}  \braket{\alpha_{n-1} j_n \alpha_{n} | \boldsymbol{j}} \braket{\boldsymbol{j'} | \alpha_{n-1} ' j_n ' \alpha_{n} '} \; . 
+	\bra{\alpha_{n-1} j_n \alpha_{n}} \hat{H} \ket{\alpha_{n-1} ' j_n ' \alpha_{n} '} = \sum_{\boldsymbol{j} , \boldsymbol{j'}}  W^{j_1 , j_1 '} \ldots W^{j_L , j_L '}  \braket{\alpha_{n-1} j_n \alpha_{n} | \boldsymbol{j}} \braket{\boldsymbol{j'} | \alpha_{n-1} ' j_n ' \alpha_{n} '} \; . 
 \end{equation*}
 Since the basis of local states $\{ \ket{\boldsymbol{j}} \}$ shares a state with the basis $\{ \ket{\alpha_{n-1} } \; , \; \ket{ j_n } \; , \; \ket{\alpha_{n} } \}$, the above expression can be re-written using $\sum_{\boldsymbol{j}} \braket{j_n | \boldsymbol{j}} = \sum_{\boldsymbol{j *}} \ket{ \boldsymbol{j *}}$, where "$\boldsymbol{*}$" means "excluding $j_n$". Thus,
 \begin{align}
 &	\bra{\alpha_{n-1} j_n \alpha_{n}} \hat{H} \ket{\alpha_{n-1} ' j_n ' \alpha_{n} '} = \nonumber \\
- &= \sum_{\boldsymbol{j *} , \boldsymbol{j' * }}  W^{j_1 , j_1 '} \ldots W^{j_n , j_n '} \ldots W^{j_N , j_N '} \nonumber \\
-	& \qquad \times \braket{\alpha_{n-1} | j_1 \ldots j_{n-1}} \braket{\alpha_{n} | j_{n+1} \ldots j_{N}} \braket{j_1 ' \ldots j_{n-1} ' | \alpha_{n-1} '} \braket{j_{n+1} ' \ldots j_{N} ' | \alpha_{n} '} \nonumber \\
-	&= \sum_{\boldsymbol{j *} , \boldsymbol{j' * }}  W^{j_1 , j_1 '} \ldots W^{j_n , j_n '} \ldots W^{j_N , j_N '} \nonumber \\
-	& \qquad \times \left( A^{j_1} \ldots A^{j_{n-1}} \right)_{1 , \alpha_{n-1}}^{*} \left( B^{j_{n+1}} \ldots B^{j_{N}} \right)_{ \alpha_{n} , 1}^{*} \left( A^{j_1 '} \ldots A^{j_{n-1} '} \right)_{1 , \alpha_{n-1} '} \left( B^{j_{n+1} '} \ldots B^{j_{N} '} \right)_{ \alpha_{n} ' , 1} \nonumber \\
+ &= \sum_{\boldsymbol{j *} , \boldsymbol{j' * }}  W^{j_1 , j_1 '} \ldots W^{j_n , j_n '} \ldots W^{j_L , j_L '} \nonumber \\
+	& \qquad \times \braket{\alpha_{n-1} | j_1 \ldots j_{n-1}} \braket{\alpha_{n} | j_{n+1} \ldots j_{L}} \braket{j_1 ' \ldots j_{n-1} ' | \alpha_{n-1} '} \braket{j_{n+1} ' \ldots j_{L} ' | \alpha_{n} '} \nonumber \\
+	&= \sum_{\boldsymbol{j *} , \boldsymbol{j' * }}  W^{j_1 , j_1 '} \ldots W^{j_n , j_n '} \ldots W^{j_L , j_L '} \nonumber \\
+	& \qquad \times \left( A^{j_1} \ldots A^{j_{n-1}} \right)_{1 , \alpha_{n-1}}^{*} \left( B^{j_{n+1}} \ldots B^{j_{L}} \right)_{ \alpha_{n} , 1}^{*} \left( A^{j_1 '} \ldots A^{j_{n-1} '} \right)_{1 , \alpha_{n-1} '} \left( B^{j_{n+1} '} \ldots B^{j_{L} '} \right)_{ \alpha_{n} ' , 1} \nonumber \\
 	&= \sum_{\alpha_n , \beta_n , \alpha_n '}
 	\left( \sum_{j_1 , j_1 '} A_{1 , \alpha_1}^{j_1 *} W_{1, \beta_1}^{j_1 , j_1 '} A_{1 , \alpha_1 '}^{j_1 '} \right)
 	\left( \sum_{j_2 , j_2 '} A_{\alpha_1 , \alpha_2}^{j_2 *} W_{\beta_1, \beta_2}^{j_2 , j_2 '} A_{\alpha_1 ' , \alpha_2 '}^{j_2 '} \right)
 	\ldots W_{\beta_{n_1}, \beta_n}^{j_n , j_n '} \nonumber \\
 	& \qquad \times \left( \sum_{j_{n+1} , j_{n+1} '} B_{\alpha_n , \alpha_{n+1}}^{j_{n+1} *} W_{\beta_n, \beta_{n+1}}^{j_{n+1} , j_{n+1} '} B_{\alpha_n ', \alpha_{n+1} '}^{j_{n+1} '} \right)
-	\left( \sum_{j_{N} , j_{N} '} B_{\alpha_{N-1} , 1}^{j_{N} *} W_{\beta_{N-1}, 1}^{j_{N} , j_{N} '} B_{\alpha_{N-1}' , 1 }^{j_{N} '} \right)  \; .
+	\left( \sum_{j_{L} , j_{L} '} B_{\alpha_{L-1} , 1}^{j_{L} *} W_{\beta_{L-1}, 1}^{j_{L} , j_{L} '} B_{\alpha_{L-1}' , 1 }^{j_{L} '} \right)  \; .
 \end{align}  
 While this expression may seem terrible complicated due to all the indices, it is actually rather easy to understand. First, the matrix element is written excluding the local basis state $\ket{j_n}$. Next, the Hamilton MPO is projected into the block states of A, $\ket{\alpha_{n-1}}_A$, and B, $\ket{\alpha_{n}}_B$. Finally, the matrices are grouped according to their expansion in the local basis. Working with the above expression appears cumbersome, but it is merely a decoupling of the system into three distinct parts, which can be seen in figure \ref{fig:singleElemHamil}.
 \begin{figure}[h!]
 	\centering
 	\input{Diagrams/singleElementHamiltonian.tex}
-	\caption{\textit{Representation of the matrix element $\bra{\alpha_{n-1} j_n \alpha_{n}} \hat{H} \ket{\alpha_{n-1} ' j_n ' \alpha_{n} '}$ as an tensor network. Expressing the matrix element in this form decouples the network in three parts: The matrices of the MPO, $W^{[n]}$, connecting the physical sites of the matrix element, and contracted parts L and R consisting of the rest of the MPO and the left- and right-normalised part of the MPS respectively.}}
+	\caption{\textit{Representation of the matrix element $\bra{\alpha_{n-1} j_n \alpha_{n}} \hat{H} \ket{\alpha_{n-1} ' j_n ' \alpha_{n} '}$ as an tensor network. The network can be factorize into three distinct parts: The left (L) and right (R) environments consisting of the contracted network to the left and right of the operator tensor, $W^[n]$, respectively.}}
 	\label{fig:singleElemHamil}
 \end{figure}
-Since both the left and right side of the network is connected, one can contract these parts into two separate tensors $L$ and $R$ called "environments":
+Since both the left and right side of the network is connected, one can contract these parts into two separate tensors $L$ and $R$ called \textit{environments}:
 \begin{align}
-	L_{\alpha_{n-1}, \beta_{n-1} , \alpha_{n-1} '} &= \sum_{ \substack{ \{ \alpha_i \beta_i \alpha_i ' \} \\ i < n-1}} \left( \sum_{j_1 , j_1 '} A_{1 , \alpha_1}^{j_1 *} W_{1, \beta_1}^{j_1 , j_1 '} A_{1 , \alpha_1 '}^{j_1 '} \right) \ldots \left( \sum_{j_{n-1} , j_{n-1} '} A_{\alpha_{n-2} , \alpha_{n-1}}^{j_{n-1} *} W_{\beta_{n-2}, \beta_{n-1}}^{j_{n-1} , j_{n-1} '} A_{\alpha_{n-2} ' , \alpha_{n-1} '}^{j_{n-1} '} \right) \label{eq:Ltensor} \\
-	R_{\alpha_{n} ,\beta_{n} , \alpha_{n} '} &= \sum_{ \substack{ \{ \alpha_i \beta_i \alpha_i ' \} \\ i > n}} \left( \sum_{j_{n+1} , j_{n+1} '} B_{\alpha_n , \alpha_{n+1}}^{j_{n+1} *} W_{\beta_n, \beta_{n+1}}^{j_{n+1} , j_{n+1} '} B_{\alpha_n ', \alpha_{n+1} '}^{j_{n+1} '} \right) \left( \sum_{j_{N} , j_{N} '} B_{\alpha_{N-1} , 1}^{j_{N} *} W_{\beta_{N-1}, 1}^{j_{N} , j_{N} '} B_{\alpha_{N-1}' , 1 }^{j_{N} '} \right) \label{eq:Rtensor}
+	L_{\alpha_{n}, \beta_{n} , \alpha_{n} '} &= \sum_{ \substack{ \{ \alpha_i \beta_i \alpha_i ' \} \\ i < n}} \left( \sum_{j_1 , j_1 '} A_{1 , \alpha_1}^{j_1 *} W_{1, \beta_1}^{j_1 , j_1 '} A_{1 , \alpha_1 '}^{j_1 '} \right) \ldots \left( \sum_{j_{n} , j_{n} '} A_{\alpha_{n-1} , \alpha_{n}}^{j_{n} *} W_{\beta_{n-1}, \beta_{n}}^{j_{n} , j_{n} '} A_{\alpha_{n-1} ' , \alpha_{n} '}^{j_{n} '} \right) \label{eq:Ltensor} \\
+	R_{\alpha_{n} ,\beta_{n} , \alpha_{n} '} &= \sum_{ \substack{ \{ \alpha_i \beta_i \alpha_i ' \} \\ i > n}} \left( \sum_{j_{n+1}  j_{n+1} '} B_{\alpha_n , \alpha_{n+1}}^{j_{n+1} *} W_{\beta_n, \beta_{n+1}}^{j_{n+1} , j_{n+1} '} B_{\alpha_n ', \alpha_{n+1} '}^{j_{n+1} '} \right) \ldots \nonumber \\
+	& \qquad \qquad \qquad \qquad \qquad \qquad \qquad \times \left( \sum_{j_{L} , j_{L} '} B_{\alpha_{L-1} , 1}^{j_{L} *} W_{\beta_{L-1}, 1}^{j_{L} , j_{L} '} B_{\alpha_{L-1}' , 1 }^{j_{L} '} \right) \label{eq:Rtensor}
 \end{align}
-From these contractions, the obvious tripartite structure of the Hamiltonian matrix element, as seen in figure \ref{fig:singleElemHamil}, can be written in a compact way
+From these contractions, the tripartite structure of the Hamiltonian matrix element, as seen in figure \ref{fig:singleElemHamil}, can be written in a compact way
 \begin{equation}
 	\bra{\alpha_{n-1} j_n \alpha_{n}} \hat{H} \ket{\alpha_{n-1} ' j_n ' \alpha_{n} '} = \sum_{\beta_{n-1} , \beta_{n}} L_{\alpha_{n-1}, \beta_{n-1} , \alpha_{n-1} '} \; W_{\beta_{n_1}, \beta_n}^{j_n , j_n '} \; R_{\alpha_{n} ,\beta_{n} , \alpha_{n} '} \; .
 \end{equation}
-Finally, applying this parametrization of the Hamiltonian to the MPS of eq. \eqref{eq:MPSmixedsingle} yields \cite{schollwock}
+Finally, applying the Hamiltonian in the $\{ \ket{\alpha_{n-1} } \; , \; \ket{ j_n } \; , \; \ket{\alpha_{n} } \}$ basis to the MPS of eq. \eqref{eq:MPSmixedsingle} yields \cite{schollwock}
 \begin{equation}
 	\hat{H} \ket{\psi} = \sum_{\beta_{n-1} , \beta_{n}} \sum_{\alpha_{n-1}' , j_n ', \alpha_{n}'} L_{\alpha_{n-1}, \beta_{n-1} , \alpha_{n-1} '} \; W_{\beta_{n_1}, \beta_n}^{j_n , j_n '} \; R_{\alpha_{n} ,\beta_{n} , \alpha_{n} '} \; \Psi_{\alpha_{n-1} ' , \alpha_{n} '}^{j_n '} \ket{\alpha_{n-1}}_A \ket{j_n} \ket{\alpha_{n}}_B \; .
 	\label{eq:HPsi}
 \end{equation}
-As mentioned earlier, evaluating $\hat{H} \ket{\psi}$ must be done many times during a variational search of the ground state, hence this operation must be executed as fast as possible. Examining eq. \eqref{eq:HPsi} one will notice, that while the boundaries of $L$ and $R$ will change depending on which site is being optimized, the bulk of the two tensors remain constant through a lot of the calculations. Instead of calculating $L$ and $R$ from eq. \eqref{eq:Ltensor} and \eqref{eq:Rtensor} for every evaluation of eq. \eqref{eq:HPsi}, one can iteratively build them, since they only change by one column of the network at a time. Thus, a large number of computations can be reused.\\
-Consider the construction of the tensor $L^{[i]}$. This can be built iteratively from the left by contracting the previous left-tensor $L^{[i-1]}$ with the i'th column of the network consisting of $A^{[i]}$, $W^{[i]}$ and $A^{[i] \dag}$
+Expressing $\hat{H}$ in the basis of the block states exposes the central site of the MPS such that it can be varied in a ground state search. Evaluating $\hat{H} \ket{\psi}$ must be done many times during a variational search of the ground state, hence this operation must be executed as fast as possible. Examining eq. \eqref{eq:HPsi} one will notice, that while the boundaries of $L$ and $R$ will change depending on which site is being optimized, the bulk of the two tensors remain constant through a lot of the calculations. Instead of calculating $L$ and $R$ from eq. \eqref{eq:Ltensor} and \eqref{eq:Rtensor} for every evaluation of eq. \eqref{eq:HPsi}, one can iteratively build them, since they only change by one column of the network at a time. Thus, a large number of computations can be reused.\\
+Consider the construction of the tensor $L^{[i]}$, which can be built iteratively from the left by contracting the previous left-tensor $L^{[i-1]}$ with the i'th column of the network consisting of $A^{[i]}$, $W^{[i]}$ and $A^{[i] \dag}$
 \begin{equation}
 	L_{\alpha_i , \beta_i , \alpha_i '}^{[i]} = \sum_{\substack{ j_i , j_i ' \\ \alpha_{i-1} , \beta_{i-1} , \alpha_{i-1} '}} W_{\beta_{i-1} , \beta_i}^{[i] j_i , j_i '} \left( A^{[i] j_i \dag} \right)_{\alpha_i , \alpha_{i-1}} L_{\alpha_{i-1} , \beta_{i-1} , \alpha_{i-1} '}^{[i-1]} A_{\alpha_{i-1} ' , \alpha_i '}^{[i] j_i '} \; .
 \end{equation}
-This iterative update of $L^{[i]}$ can be seen illustrated in figure \ref{fig:buildLTensor}. The square-bracket notation has been re-introduced to keep track of the tensors relation to the physical sites. In order to remain consistent with notation, the dummy scalars $L_{\alpha_0 , \beta_0 , \alpha_0 '}^{[0]}  = 1  = \alpha_0 , \beta_0 , \alpha_0 '$ has been introduced.\\
+The iterative update of $L^{[i]}$ can be seen illustrated in figure \ref{fig:buildLTensor}. The square-bracket notation has been re-introduced to keep track of the tensors relation to the physical sites. In order to remain consistent with notation, the dummy scalars $L_{\alpha_0 , \beta_0 , \alpha_0 '}^{[0]}  = 1  = \alpha_0 , \beta_0 , \alpha_0 '$ have been introduced.\\
 \begin{figure}[h!]
 	\centering
 	\input{Diagrams/buildLTensor.tex}
