@@ -293,7 +293,7 @@ Correlation functions can also be calculated efficiently using matrix product st
 \end{figure}
 Bringing the MPS into a mixed-canonical form with the central tensor at site $m$ results in the outer parts of the network being explicitly contracted as identities. However, the otherwise right-normalized tensors between the two operators can not be contracted as identities, as the right-most operator breaks the canonical form. Thus, one has to contract a network of length $k+1$, which is done most efficiently following the optimal bracketing described in eq. \eqref{eq:optBracketsMPO}. The complexity of the entire contraction is of order $O(k D^3 d)$.
 
-\subsection{Correlation length}
+\subsection{Correlation length} \label{sec:CorrelationLength}
 Although the MPS formalism excels at describing one dimensional systems, it struggles with describing long ranged correlations, due to how it is constructed.
 Consider a general MPS in no particular canonical form, as described in eq. \eqref{eq:generalMPS}. The \textit{transfer operator} is defined as
 \begin{equation}
@@ -324,7 +324,7 @@ where $\ket{k}$ and $\ket{l}$ are eigenstates of the transfer operator with eige
 	\frac{\bra{\psi} \hat{O}^{[i]} \hat{O}^{[j]} \ket{\psi}}{\braket{\psi | \psi}} = c_1 + \sum_{k = 2} c_k e^{-r/ \xi_k} \; , \label{eq:corrfunction}
 \end{equation}
 where $c_k = \bra{1} E_{O}^{[i]} \ket{k} \bra{k} E_{O}^{[j]} \ket{1}$. \cite{schollwock} \\
-According to eq. \eqref{eq:corrfunction}, correlation functions are given by a linear combination of exponential functions in the MPS description. As eq. \eqref{eq:corrfunction} was derived without any assumptions regarding neither the MPS nor the operators, the results can be considered general. Therefore, matrix product states struggle describing long range correlations, such as the superfluid single-particle correlations. While single-particle correlations decay exponentially for the Mott-Insulator, it decays following a power-law for superfluids
+According to eq. \eqref{eq:corrfunction}, correlation functions are given by a linear combination of exponential functions in the MPS description. Therefore, matrix product states struggle describing long range correlations, such as the superfluid single-particle correlations. While single-particle correlations decay exponentially for the Mott-Insulator, it decays following a power-law for superfluids
 \begin{equation}
 	\braket{\hat{a}_{i}^{\dag} \hat{a}_{j}} \sim |i - j|^{-K_b /2} \; ,
 	\label{eq:superfluidCorrelation}

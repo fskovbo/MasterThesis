@@ -59,9 +59,9 @@
     
     \draw[->, line width=1mm] (\numb*\hdist+2.65*\hdist,-1.5) -- (\numb*\hdist+3.55*\hdist,-1.5);
     
-    \node (at3) at (\offset*\hdist+\numb*\hdist+0.8*\hdist, 0) {$\alpha_{i}$};
-    \node (ab3) at (\offset*\hdist+\numb*\hdist+0.8*\hdist, -3) {$\alpha_{i} '$};
-    \node (b3) at (\offset*\hdist+\numb*\hdist+0.8*\hdist, -1.5) {$\beta_{i}$};
+    \node (at3) at (\offset*\hdist+\numb*\hdist+0.7*\hdist, 0) {$\alpha_{i}$};
+    \node (ab3) at (\offset*\hdist+\numb*\hdist+0.7*\hdist, -3) {$\alpha_{i} '$};
+    \node (b3) at (\offset*\hdist+\numb*\hdist+0.7*\hdist, -1.5) {$\beta_{i}$};
     \draw[-] (tt8) -- (at3);
     \draw[-] (tb8) -- (ab3);
     \draw[-] (o8) -- (b3);
@@ -70,16 +70,16 @@
     \node (L2) at (\offset*\hdist+\hdist,-4) {$L^{[i]}$};
 
     
-    \node (eq) at (\offset*\hdist+\numb*\hdist+1.35*\hdist,-1.5) {$\equiv$};
+    \node (eq) at (\offset*\hdist+\numb*\hdist+1.15*\hdist,-1.5) {$\equiv$};
     
 
-    \node (dummy1) at (\offset*\hdist+\numb*\hdist+2.8*\hdist,0) {$\alpha_{i}$};
- 	\node (dummy2) at (\offset*\hdist+\numb*\hdist+2.8*\hdist,-3) {$\alpha_{i} '$};
- 	\node (dummy3) at (\offset*\hdist+\numb*\hdist+2.8*\hdist,-1.5) {$\beta_{i}$};
-	\node[tensor] (mat) at (\offset*\hdist+\numb*\hdist+2*\hdist , -1.5) {};    
+    \node (dummy1) at (\offset*\hdist+\numb*\hdist+2.5*\hdist,0) {$\alpha_{i}$};
+ 	\node (dummy2) at (\offset*\hdist+\numb*\hdist+2.5*\hdist,-3) {$\alpha_{i} '$};
+ 	\node (dummy3) at (\offset*\hdist+\numb*\hdist+2.5*\hdist,-1.5) {$\beta_{i}$};
+	\node[tensor] (mat) at (\offset*\hdist+\numb*\hdist+2*\hdist -0.3 , -1.5) {};    
     
-    \draw[-] (dummy1.west) .. controls (\offset*\hdist+\numb*\hdist+2*\hdist, 0) .. (mat.north);
-    \draw[-] (dummy2.west) .. controls (\offset*\hdist+\numb*\hdist+2*\hdist, -3) .. (mat.south);
+    \draw[-] (dummy1.west) .. controls (\offset*\hdist+\numb*\hdist+2*\hdist-0.3, 0) .. (mat.north);
+    \draw[-] (dummy2.west) .. controls (\offset*\hdist+\numb*\hdist+2*\hdist-0.3, -3) .. (mat.south);
 	\draw[-] (mat) -- (dummy3);   
 	
 	
