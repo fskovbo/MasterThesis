@@ -7,8 +7,8 @@ According to the Penrose-Onsager criterion, a system is in the superfluid phase 
 \end{equation} 
 where $f_c$ is the condensate fraction, and $N_p$ is the total number of particles \cite{PenroseOnsager}. The condensate fraction can be used to determine which phase dominates the system, as
 \begin{align}
-	\lim_{N_p} \to \infty} f_{c}^{\mathrm{SF}} &\to 1 \label{eq:SF_lim} \\
-	\lim_{N_p} \to \infty} f_{c}^{\mathrm{MI}} &\to 0 \; , \label{eq:MI_lim}
+	\lim_{N_p \to \infty} f_{c}^{\mathrm{SF}} &\to 1 \label{eq:SF_lim} \\
+	\lim_{N_p \to \infty} f_{c}^{\mathrm{MI}} &\to 0 \; , \label{eq:MI_lim}
 \end{align}
 when the filling-fraction, $n = N_p/L$, is held constant.\\
 To calculate the condensate fraction, the ground state of the system was found using a version of the DMRG algorithm implemented in the ITensor library \cite{ITensor}. Using the computed ground state, $\ket{\psi}$, the entries of the density matrix were calculated
