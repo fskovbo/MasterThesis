@@ -5,7 +5,7 @@ Consider the Bose-Hubbard Hamiltonian , which consists of both nearest-neighbour
 	\hat{H} = - J \sum_{\langle i,j \rangle} \hat{a}_{i}^{\dag} \hat{a}_{j} + \frac{U}{2} \sum_{i} \hat{n}_i \left( \hat{n}_i -1 \right) \; .
 	\label{eq:BHhamil}
 \end{equation}
-The Hamiltonian can be expressed as a sum of strings of operators - most of these being identities just like in equation \ref{eq:localOperator}. Moving through such a string from the right, one will at some point encounter one of 3 non-trivial operators. This can be summarized as 4 different possible states of the string of operators on a given bond:
+The Hamiltonian can be expressed as a sum of strings of operators - most of these being identities just like in eq. \ref{eq:localOperator}. Moving through such a string from the right, one will at some point encounter one of 3 non-trivial operators, which can be described by 4 different possible states of the string of operators on a given bond:
 \begin{enumerate}
 	\item
 	Only identities to the right of the bond.
@@ -16,17 +16,17 @@ The Hamiltonian can be expressed as a sum of strings of operators - most of thes
 	\item
 	A completed tunneling \textit{or} the interaction term, $\frac{U}{2} \hat{n} \left( \hat{n} -1 \right)$, somewhere to the right.
 \end{enumerate}
-When moving through the string of operators from the right, only certain transitions between these state are possible. For instance $\boldsymbol{1 \rightarrow 1}$, where one starts in state 1, and the next operator is an identity. Likewise, $\boldsymbol{1 \rightarrow 2,3,4}$ are all possible, since these transitions represent the next operator being non-trivial. Next, $\boldsymbol{2 \rightarrow 4}$ completes the hopping $-J \hat{a}^{\dag} \hat{a}$ - a similar transition exists for the other hopping term $\boldsymbol{3 \rightarrow 4}$. Finally, the transition $\boldsymbol{4 \rightarrow 4}$ is needed to continue iterating through the operator chain after having passed the non-trivial operators. This can be encoded in the operator-valued matrix
+When moving through the string of operators from the right, only certain transitions between these state are possible. For instance $\boldsymbol{1 \rightarrow 1}$, where one starts in state 1, and the next operator is an identity. Likewise, $\boldsymbol{1 \rightarrow 2,3,4}$ are all possible, since these transitions represent the next operator being non-trivial. Next, $\boldsymbol{2 \rightarrow 4}$ completes the hopping, $-J \hat{a}^{\dag} \hat{a}$. A similar transition exists for the other hopping term $\boldsymbol{3 \rightarrow 4}$. Finally, the transition $\boldsymbol{4 \rightarrow 4}$ is needed to continue iterating through the operator chain after having passed the non-trivial operators. The possible state transfers can be encoded in the operator-valued matrix \cite{schollwock}
 \begin{equation}
  W^{[i]} \: = \: \begin{pmatrix}
 \hat{I} & 0 & 0 & 0  \\
 \hat{a}^{\dag} & 0 & 0 & 0  \\
 \hat{a} & 0 & 0 & 0 \\
 \frac{U}{2} \hat{n} \left( \hat{n} -1 \right) & -J \hat{a} & -J \hat{a}^{\dag} &  \hat{I}
-\end{pmatrix} \; ,
+\end{pmatrix} \; .
 \label{eq:MPOmatrix}
 \end{equation}
-which contains all the allowed transitions between the five state \cite{schollwock}. When one starts moving through the operator chain from the right side, one obviously begins in state 1 and ends in state 4. This can be encoded in the two vectors
+When one starts moving through the operator chain from the right side, one obviously begins in state 1 and ends in state 4. This can be encoded in two boundary vectors
 \begin{equation*}
  \vec{v}_{left} = (0 , 0 , 0  , 1) \quad , \quad \vec{v}_{right} = (1  , 0 ,0 , 0)^T \; .
 \end{equation*}
