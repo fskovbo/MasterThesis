@@ -120,8 +120,7 @@ Finally, combining the derivatives of eq. \eqref{eq:regularizationGrad} and \eqr
 	\label{eq:costGradient}
 \end{align}
 Here $\mathrm{h.o.}$ denotes all higher order terms ($k > 0$).\\ 
-Through the analytically derived gradient, the cost can be iteratively updated using gradient-based optimization methods until a desired threshold is reached. This forms the framework of the Gradient-Ascent Pulse Engineering (GRAPE) algorithm \cite{Khaneja2005}, which is summarised below:
-
+Through the analytically derived gradient, the cost can be iteratively updated using gradient-based optimization methods until a desired threshold is reached. This forms the framework of the Gradient-Ascent Pulse Engineering (GRAPE) algorithm \cite{Khaneja2005}.
 \begin{algorithm}
 \begin{algorithmic}
 \caption{GRAPE Algorithm}
@@ -134,22 +133,16 @@ Through the analytically derived gradient, the cost can be iteratively updated u
 \EndWhile
 \end{algorithmic}
 \end{algorithm}
-The computations are performed under the boundary conditions
+The cost is minimized under the initial and terminal condition
 \begin{align}
 	\boldsymbol{u}(0) &= \text{fixed value} \label{eq:firstBound} \\
 	\boldsymbol{u}(T) &= \text{fixed value} \\
 	\ket{\psi (0)} &= \ket{\psi_0} \\
 	\ket{\chi (T)} &= i \ket{\psi_{\mathrm{target}}} \braket{\psi_{\mathrm{target}} | \psi (T)} \; .  \label{eq:lastBound}
 \end{align}
-Figure \ref{fig:ControlUpdate} illustrates an update step of the controls such that the cost function is reduced.
-\begin{figure}[!h]
-	\centering
-	\includegraphics[width=0.7\columnwidth]{Figures/ControlUpdate.pdf} 
-	\caption{ \textit{Visualisation of update step $i \to i+1$ of the control $\boldsymbol{u}^{(i)}$ resulting in a decreased cost function.}}
-	\label{fig:ControlUpdate} 
-\end{figure} 
 Although the starting guess of the control, $\boldsymbol{u}^{(1)}$, can be completely random, both faster convergence and lower convergence value is achieved by choosing a good starting seed. Clearly, there is no guarantee that the algorithm will converge to the global optimum, as it is based on a gradient ascent procedure \cite{Khaneja2005}. Nevertheless, the algorithm can be made to search a large portion of the parameter space by executing it multiple time for various seeds.  
 
+In practice, the GRAPE algorithm requires a lot of computer memory, as the gradient of the cost requires the inner product of the states $\ket{\psi}$ and $\ket{\chi}$ at all times, $t_k$. The two states cannot be time-evolved simultaneously, as $\ket{\chi}$ is derived from the final state. To efficiently evaluate the gradient, the state $\ket{\psi}$ must be stored at each time-step, while entries of the gradient \eqref{eq:costGradient} are calculated at each step of the back-propagation of $\ket{\chi}$. Thus, a total of $N$ states must be kept in each iteration of the GRAPE algorithm. For complex many-body systems this may become an issue, as tensor-network descriptions of states (described in chapter \ref{chap:MPS}) require a lot of storage. A possible workaround is proposed in \cite{Mennemann2015}, which involves calculating the final state, $\ket{\psi (T)}$, without storing the state at every step. Subsequently, the two states $\ket{\psi (T)}$ and $\ket{\chi (T)}$ are both propagated backwards simultaneously, and the elements of the gradient \eqref{eq:costGradient} are calculated at each step. This eliminates the need for storing a large amount of information, as a maximum of two states will be kept in the memory at a time. However, this memory-preserving version of the GRAPE algorithm requires an additional time-evolution of $\ket{\psi}$ in each iteration resulting in an increased runtime.
 
 \section{Gradient-Optimization Using Parametrization - GROUP} \label{sec:GROUP}
 The convergence rate of optimal control sequences has been shown to be greatly improved by employing gradient-based methods, such as GRAPE, for updating the control \cite{Jager2014}.
@@ -174,7 +167,7 @@ In JJREF a comparison between different optimization algorithms for optimal cont
 \subsection{Alteration of constraints through GROUP}
 Consider the non-parametrized optimization problem discretized in time which is subjected to the boundaries of eq. \eqref{eq:firstBound}-\eqref{eq:lastBound}. Optimal control problems are often subjected to constraints to avoid the control containing infeasible values
 \begin{equation}
-	 u_{min} \leq u(t_j) \leq u_{max} \; .
+	 u_{min} (t_j) \leq u(t_j) \leq u_{max} (t_j) \; .
 \end{equation}
 In the case of the Bose-Hubbard model, a lower bound of the control is needed, as the model is not well defined for lattice depths well below the tight-binding limit.\\
 In order to enforce the constraints during a gradient-based optimization, the derivative of the constraints are needed as well. As the problem may be subjected to multiple sets of constraints, a Jacobian matrix of the constraint derivatives must be calculated
@@ -189,34 +182,49 @@ Employing the GROUP algorithm causes a parametrization of the control, eq. \eqre
 Thus, the Jacobian of the constraints has $N \times M$ entries, where $N$ is the number of time steps, and $M$ is the dimension of the chopped basis. The matrix elements Jacobian \ref{eq:ConstJacobian} are easy to evaluate during the optimization, as they remain constant for the entire duration.
 
 
-\section{Interior Point Method} \label{sec:IntPoint}
-Through the gradient of the cost functional, the control functions can be iteratively updated yielding an improved cost. The update of the control functions can be done using various hill-climbing methods.
-Interior point methods are modified versions of Newtons method for bound, constrained problems. The methods approach the solution from within the feasible region and provides efficient performance while having better theoretical properties than the standard simplex method \cite{wright}.\\
-For simplicity a linear version of the method will be derived, however, the formalism can easily be extended to non-linear problems \cite{wright}.
+\section{Interior Point Methods} \label{sec:IntPoint}
 
-\subsection{Karush–Kuhn–Tucker conditions}
-Consider the general minimization problem
+The GRAPE method formulates the control problem as the minimization of the cost function \eqref{grapeCost} while providing the derivative of the cost with respect to the control functions \eqref{eq:costGradient}. Thus, the optimal control can be found using well established methods from mathematical optimization theory. Generally, control problems are very hard to solve, as they are highly non-linear, have many control parameters (even when parametrized), and are often subjected to a series of constraints. An example of the latter can be seen when considering optimizations within the Bose-Hubbard model, as the model is valid only within the tight-binding limit. Thus, the control problem will be subject to the non-linear constraint
+\begin{equation}
+	 V_{0}^{\mathrm{min}} \leq c (u(t)) \leq V_{0}^{\mathrm{max}} \; ,
+\end{equation}
+where $c (u)$ is some constraint function dependent on the parameterization of the problem.\\
+Interior point methods are currently considered some of the most powerful algorithms for large-scale non-linear programming. The methods update the control parameters using the derivatives of the cost function via Newtons method, from which they differ in many ways in order to accommodate the constraints. Interior point methods approach the solution from within the feasible region as opposed to other methods like Nelder-Mead, hence the name \textit{interior}. In addition, they provide efficient performance while having better theoretical properties than the standard simplex method \cite{wright}.\\
+In this section the simplest version of non-linear interior point method is derived, however, many variants of the method exists with respect to update strategies, line searches, handling non-convexity and more.
+
+Consider the general minimization problem of some objective $f(x)$
+\begin{subequations}	
  \begin{align}
-	\min_{x \in \mathbb{R}^n} \;  & \; c^T x \label{eq:LinOptProb} \\
-	\text{subject to} \;  & \; A x = b  \nonumber \\ 
-							& \; x \geq 0 \nonumber \; ,
+	\min_{x , s} 		\quad & f(x) 			\\
+	\text{subject to} 	\quad & g(x) = 0  		\\ 
+						   	  & h(x)- s = 0 	\\
+						      & s \geq 0 \; ,
 \end{align}
-can be derived from any linear problem through slack variables, which transform inequality constraints into equality constraints at the cost of introducing extra variables \cite{ipopt}.
-The Karush–Kuhn–Tucker (KKT) conditions are first-order conditions for a solution of a nonlinear problem to be an optimum. Unlike Lagrange multipliers, the KKT conditions accommodates inequality constraints.
-\begin{theorem}
-	Suppose that $x^*$ is a local solution of the objective function $f  :  \mathbb{R}^n \to \mathbb{R}$ with respect to a collection of constraints $\{ c_i(x)  \}_{i=1}^{m}$, where $c_i :  \mathbb{R}^n \to \mathbb{R}$. Let $\mathcal{L}$ be the Lagrangian of the problem. If the subset of the equality constraints $\{ c_i(x) \in \mathcal{E}\}$ has the property that $\{ \nabla c_i(x^*)\}$ is linear independent, then a vector of Lagrange multipliers, $\lambda^*$, exists for which the following holds:
-	\begin{subequations}	
-	\begin{align}
-		\nabla_x \mathcal{L}(x^*,\lambda^*) &= 0 \; ,  \\
-		c_i(x^*) &= 0 \; , \qquad \forall i \\
-		\lambda_{i}^* &\geq 0 \; , \qquad \forall i \in \mathcal{I} \\
-		\lambda_{i}^* c_i(x^*) &= 0 \; , \qquad \forall i \in \mathcal{E} \cup \mathcal{I}
-	\end{align}
-	\end{subequations}	
-	where $\mathcal{E}$ and $\mathcal{I}$ denote the equality and inequality subspaces respectively \cite{wright}.  
-\end{theorem}
-If $x^*$ satisfies the conditions, its objective value must be at an optimum point.
+\label{eq:GeneralOptProblem}
+\end{subequations}
+where $g(x)$ and $h(x)$ are a set of equality and inequality constraints. The inequality constraint have been transformed into equalities through a vector of slack variables $s$. Although the slack variables introduce an extra set of optimization parameters, the transformed problem is generally much easier to solve.\\
+The Lagrangian for the general constrained optimization problem \ref{eq:GeneralOptProblem} is defined as
+\begin{equation}
+	\mathcal{L}(x,\lambda,\nu) = f(x) - \lambda^T g(x) - \nu^T (h(x) -s) \; ,
+\end{equation}
+where $\lambda$ and $\nu$ are the Lagrange multipliers of the equality and inequality constraints respectively. Thus, one must find a point $(x^*,\lambda^*,\nu^*)$ minimizing the objective function while satisfying the constraints.
 
+\subsection{Karush–Kuhn–Tucker Conditions}
+The Karush–Kuhn–Tucker (KKT) conditions are a set of first-order necessary conditions for a point $(x^*,\lambda^*,\nu^*)$ being an optimum. They only consider properties of the gradient of the objective and constraint function, hence the \textit{first-order} label. The KKT conditions are very important in optimization theory, as many algorithms (including interior point methods) can be interpreted as solving a set of equations directly derived from the conditions.    
+
+\begin{theorem}
+	Let the active constraints be all the equality constraints along with the set of inequality constraints fulfilling $h(x) = 0$ for some feasible $x$. Suppose that $x^*$ is a local solution of \eqref{eq:GeneralOptProblem} and the gradients of the active constraints are linearly independent at $x^*$. Then Lagrange multiplier vectors $\lambda$ and $\nu$ exists, such that the following conditions are satisfied at $(x^*,\lambda^*,\nu^*)$ \cite{wright}
+\begin{subequations}	
+\begin{align}
+\nabla_x \mathcal{L}(x^*,\lambda^*,\nu^*) &= 0 \; ,  \\
+g(x^*) &= 0 \; ,  \\
+h(x^*) &\geq 0 \; ,  \\
+\nu^*  &\geq 0 \; , \\
+\nu_{i}^* h_i (x^*) &= 0 \; , \quad \mathrm{for} \; i = 1 , \ldots , m
+\end{align}
+\end{subequations}	  
+\end{theorem}
+%TODO: write about conditions: Stationary, primal feasibility, dual feasibility, complementary slackness 
 
 \subsection{Barrier Problems}
 In interior point methods the boundaries of the variables are enforced through a barrier function, which keeps the objective function continuously differentiable.
