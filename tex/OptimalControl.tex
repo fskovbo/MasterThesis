@@ -190,139 +190,154 @@ The GRAPE method formulates the control problem as the minimization of the cost 
 \end{equation}
 where $c (u)$ is some constraint function dependent on the parameterization of the problem.\\
 Interior point methods are currently considered some of the most powerful algorithms for large-scale non-linear programming. The methods update the control parameters using the derivatives of the cost function via Newtons method, from which they differ in many ways in order to accommodate the constraints. Interior point methods approach the solution from within the feasible region as opposed to other methods like Nelder-Mead, hence the name \textit{interior}. In addition, they provide efficient performance while having better theoretical properties than the standard simplex method \cite{wright}.\\
-In this section the simplest version of non-linear interior point method is derived, however, many variants of the method exists with respect to update strategies, line searches, handling non-convexity and more.
 
+In this section the simplest version of non-linear interior point method is derived, however, many variants of the method exists with respect to update strategies, line searches, handling non-convexity and more.\\
 Consider the general minimization problem of some objective $f(x)$
 \begin{subequations}	
  \begin{align}
-	\min_{x , s} 		\quad & f(x) 			\\
+	\min_{x } 			\quad & f(x) 			\\
 	\text{subject to} 	\quad & g(x) = 0  		\\ 
-						   	  & h(x)- s = 0 	\\
-						      & s \geq 0 \; ,
+						   	  & h(x) \geq 0 	\; ,
 \end{align}
 \label{eq:GeneralOptProblem}
 \end{subequations}
-where $g(x)$ and $h(x)$ are a set of equality and inequality constraints. The inequality constraint have been transformed into equalities through a vector of slack variables $s$. Although the slack variables introduce an extra set of optimization parameters, the transformed problem is generally much easier to solve.\\
-The Lagrangian for the general constrained optimization problem \ref{eq:GeneralOptProblem} is defined as
+where $g(x)$ and $h(x)$ are a set of equality and inequality constraints. The Lagrangian for the general constrained optimization problem \eqref{eq:GeneralOptProblem} is defined as
 \begin{equation}
-	\mathcal{L}(x,\lambda,\nu) = f(x) - \lambda^T g(x) - \nu^T (h(x) -s) \; ,
+	\mathcal{L}(x,\lambda,\zeta) = f(x) - \lambda^T g(x) - \zeta^T h(x)  \; ,
 \end{equation}
-where $\lambda$ and $\nu$ are the Lagrange multipliers of the equality and inequality constraints respectively. Thus, one must find a point $(x^*,\lambda^*,\nu^*)$ minimizing the objective function while satisfying the constraints.
+where $\lambda$ and $\zeta$ are vectors of Lagrange multipliers of the equality and inequality constraints respectively. Thus, one must find a point $(x^*,\lambda^*,\zeta^*)$ minimizing the objective function while satisfying the constraints.
+
+\subsection{Duality}
+Duality theory describes how an alternative \textit{dual} problem can be derived from the original \textit{primal} problem and how the two problems are related. Thus, the dual problem can be regarded as a different perspective of the original problem. Much information regarding the original problem can be inferred from the solution of its dual, hence many non-linear optimization algorithms solve primal-dual problems.\\
+The dual function is defined as
+\begin{equation}
+	q (\lambda , \zeta) = \inf_{x} \mathcal{L} (x,\lambda,\zeta) \; ,
+\end{equation}
+where the infimum is required to exist and be finite. Note how the Lagrange multipliers of the primal problem are the optimization parameters of its dual. The dual function always satisfies the condition of \textit{weak duality}
+\begin{equation}
+	f(x^*) \geq q (\lambda^* , \zeta^*) \; ,
+	\label{eq:WeakDuality}
+\end{equation} 
+whereby it provides a lower bound on the solution of \eqref{eq:GeneralOptProblem}. In order for the direction of the inequality constraint to remain the same, it is necessary that all the inequality Lagrange multipliers fulfill $\zeta_i \geq 0$. This requirement can be considered a constraint of the dual, since the Lagrange multipliers are the variables of the dual function. Thus, the dual problem is defined as
+\begin{subequations}	
+ \begin{align}
+	\max_{\lambda , \zeta} 	\quad 	& q(\lambda , \zeta) 				\\
+	\text{subject to} 		\quad 	& \zeta \geq 0  			\; .
+\end{align}
+\label{eq:GeneralDualProblem}
+\end{subequations}
+A very nice property of the dual problem is that it is always convex regardless of $f(x)$. Thus, the dual problem is often easier to solve than the primal. Furthermore, the solutions of the dual problem are the optimal Lagrange multipliers of the original problem, which would otherwise be very hard to find.
+Another useful feature in duality theory is the \textit{duality gap}, which is given by the difference between the primal and dual function, $f(x) - q(\lambda , \zeta )$. Considering the condition of weak duality \eqref{eq:WeakDuality}, the duality gap implies that
+\begin{equation}
+	f(x) - f(x^*) \leq f(x) - g(\lambda , \zeta) \; ,
+	\label{eq:DualityGapIneq}
+\end{equation}
+whereby $x$ is primal optimal and $\lambda , \zeta$ are dual optimal, if the duality gap is zero. Thus, eq. \eqref{eq:DualityGapIneq} can be used as a stopping criteria for optimization algorithms, as the duality gap will tend towards zero for $x \to x^*$.
+
 
 \subsection{Karush–Kuhn–Tucker Conditions}
-The Karush–Kuhn–Tucker (KKT) conditions are a set of first-order necessary conditions for a point $(x^*,\lambda^*,\nu^*)$ being an optimum. They only consider properties of the gradient of the objective and constraint function, hence the \textit{first-order} label. The KKT conditions are very important in optimization theory, as many algorithms (including interior point methods) can be interpreted as solving a set of equations directly derived from the conditions.    
+The Karush–Kuhn–Tucker (KKT) conditions are a set of first-order necessary conditions for a point $(x^*,\lambda^*,\zeta^*)$ being an optimum. They only consider properties of the gradient of the objective and constraint function, hence the \textit{first-order} label. The KKT conditions are very important in optimization theory, as many algorithms (including interior point methods) can be interpreted as solving a set of equations directly derived from the conditions.    
 
 \begin{theorem}
-	Let the active constraints be all the equality constraints along with the set of inequality constraints fulfilling $h(x) = 0$ for some feasible $x$. Suppose that $x^*$ is a local solution of \eqref{eq:GeneralOptProblem} and the gradients of the active constraints are linearly independent at $x^*$. Then Lagrange multiplier vectors $\lambda$ and $\nu$ exists, such that the following conditions are satisfied at $(x^*,\lambda^*,\nu^*)$ \cite{wright}
+	Let the active constraints be all the equality constraints along with the set of inequality constraints fulfilling $h(x) = 0$ for some feasible $x$. Suppose that $x^*$ is a local solution of \eqref{eq:GeneralOptProblem} and the gradients of the active constraints are linearly independent at $x^*$. Then Lagrange multiplier vectors $\lambda$ and $\zeta$ exists, such that the following conditions are satisfied at $(x^*,\lambda^*,\zeta^*)$ \cite{wright}
 \begin{subequations}	
 \begin{align}
-\nabla_x \mathcal{L}(x^*,\lambda^*,\nu^*) &= 0 \; ,  \\
-g(x^*) &= 0 \; ,  \\
-h(x^*) &\geq 0 \; ,  \\
-\nu^*  &\geq 0 \; , \\
-\nu_{i}^* h_i (x^*) &= 0 \; , \quad \mathrm{for} \; i = 1 , \ldots , m
+\nabla_x \mathcal{L}(x^*,\lambda^*,\zeta^*) &= 0 \; ,  	\\
+g(x^*) &= 0 \; ,  \label{eq:KKTprimal1}					\\
+h(x^*) &\geq 0 \; ,  \label{eq:KKTprimal2}				\\
+\zeta^*  &\geq 0 \; , \label{eq:KKTdual}					\\ 
+\zeta_{i}^* h_i (x^*) &= 0 \; , \quad \mathrm{for} \; i = 1 , \ldots , m \label{eq:KKTslack}
 \end{align}
+\label{eq:KKTconditions}
 \end{subequations}	  
 \end{theorem}
-%TODO: write about conditions: Stationary, primal feasibility, dual feasibility, complementary slackness 
+The first condition is called the \textit{stationary condition} and simply states that the point $(x^*,\lambda^*,\zeta^*)$ must be stationary point, which is a general requirement for a point to be considered an optimum. Next, the conditions \eqref{eq:KKTprimal1} and \eqref{eq:KKTprimal2} are the \textit{primal feasibility}, which coincide with the constraints originally stated in the problem \eqref{eq:GeneralOptProblem}. The following condition \eqref{eq:KKTdual} is the \textit{duality feasibility}, which is a constraint of the dual problem \eqref{eq:GeneralDualProblem} discussed earlier.
+The last condition is the \textit{complementary slackness}, which arises from the requirement $\zeta^{*T} h(x^*) = 0$. The two previous conditions state that $\zeta_{i}^{*} h_i(x^*) \geq 0$, whereby the condition \eqref{eq:KKTslack} is needed for each inequality constraint.\\
+If the point $(x^*,\lambda^*,\zeta^*)$ satisfies all the KKT conditions, then the point is the solution to the primal-dual problem.
 
-\subsection{Barrier Problems}
-In interior point methods the boundaries of the variables are enforced through a barrier function, which keeps the objective function continuously differentiable.
-A general, linear optimization problem can be associated with a barrier function
-\begin{equation}
-	B(x , \mu) = c^T x - \mu \sum_{i=1}^{n} \ln x_i \; ,
-\end{equation} 
-where $\mu > 0$ is the barrier parameter. For $\mu \to 0$ one recovers the original problem \eqref{eq:LinOptProb}.
-The optimization Lagrangian of the barrier problem is
-\begin{equation}
-	\mathcal{L}(x, \lambda, s) = c^T x - \mu \sum_{i=1}^{n} \ln x_i - \lambda^T (A x -b) \; ,
-\end{equation}
-where $\lambda \in \mathbb{R}^m$ is the Lagrange multiplier for the $A x = b$ constraint. Now, let $X = \mathrm{Diag}(x_1 , \ldots , x_n)$, $e = (1,1, \ldots , 1)^T$, $s = \mu X^{-1} e$, and $S = \mathrm{Diag}(s_1 , \ldots , s_n)$. Thereby the KKT conditions of the barrier problem can be stated as 
-\begin{subequations}
-\begin{align}
-	A^T \lambda + s &= c \\
-	A x &= b \\
-	X S e &= \mu e \; .
+
+\subsection{Basic Primal-Dual Interior Point Algorithm}
+Interior point methods solve a set of equations derived directly from the KKT conditions using Newtons method. However, Newtons method is in general not compatible with inequality constraints, hence the original problem \eqref{eq:GeneralOptProblem} must be reformulated. Instead, the interior point methods solve barrier problems of the form 
+\begin{subequations}	
+ \begin{align}
+	\min_{x,s} 			\quad & f(x) - \mu \sum_{i = 1}^{m} \log s_i \\
+	\text{subject to} 	\quad & g(x) = 0  		\\ 
+						   	  & h(x) - s  = 0 	\; ,
 \end{align}
+\label{eq:BarrierProblem}
 \end{subequations}
-By adding the barrier term the KKT conditions has been "relaxed", as they are no longer zero \cite{ipnote}. Again, for $\mu \to 0$ the original conditions are recovered. 
+where $\mu$ is the positive barrier parameter, and $s$ is a vector of slack variables, which transforms the inequality constraint into an equality at the cost of adding additional optimization variables. In order to ensure the direction of the inequality constraint, it is a requirement that $s \geq 0$. While this is an inequality constraint itself, it is enforced via the logarithmic barrier term, which diverges as any component of $s$ approaches zero. Furthermore, the barrier term does not add much complexity to the problem, as it convex and twice differentiable.\\
+The step direction towards the KKT-point can be found through Newtons method, however, often one can only take a small step before violating the constraints, hence the pure Newton direction is dubbed the \textit{affine scaling direction}. The barrier approach consists of finding solutions of the barrier problem \eqref{eq:BarrierProblem} for a sequence of barrier parameters $\{ \mu_k \}$ converging to zero. Several strategies exist for updating the barrier parameters, however, their common goal is to bias the step direction of the algorithm, such that the longest possible steps can be taken. The solutions of the barrier subproblems can be denoted $(x(\mu),s(\mu), \lambda(\mu),\zeta(\mu))$, and the trajectory of these points is known as the \textit{primal-dual central path}, which converges to $(x^*,s^*, \lambda^*,\zeta^*)$ as $\mu \to 0$.\\
 
-
-\subsection{Primal-Dual Interior Point Method}
-Primal-dual methods optimize an additional, \textit{dual}, problem while optimizing the main, \textit{primal}, problem.
-Consider the initial linear problem \eqref{eq:LinOptProb}, whose dual is given by 
-\begin{align*}
-	\max_{\lambda \in \mathbb{R}^n} \;  & \; b^T \lambda \\
-	\text{subject to} \;  & \; A^T \lambda + s = c  \\
-							& \; s \geq 0 \; .
-\end{align*}
-The two problems are closely related. If either the primal or the dual problem has a solution, then so does the other, and the objective values are equal. If either problem is unbounded, then the other problem is infeasible. If a solution exists, then the optimal solution to the dual problem are the Lagrange multipliers to the primal problem and vice versa \cite{wright}.
-Hence, for primal-dual algorithms triplet of variables, $(x , \lambda , s)$, is considered when computing the optimum of a function. Note, the dual of the dual problem is the original problem.\\
-
-The primal-dual interior point method optimizes a subproblem for a given $\mu$ by taking taking constrained Newton steps towards the optimum \cite{wright}. The optimal solution of the main problem is found by solving these subproblems iteratively for ever decreasing $\mu$ using the previous solution as starting point \cite{ipopt}.\\
-The solutions for the primal-dual subproblems are characterized by the KKT conditions, which can be written into a single mapping
-\begin{align}
-    F(x , \lambda, s) &= \begin{pmatrix}
-           A^T \lambda + s - c \\
-           A x - b \\
-           X S e
-         \end{pmatrix} = 0
-\end{align}
-with the Jacobian
-\begin{align}
-    J(x , \lambda, s) = \begin{pmatrix}
-           0 & A^T & I	\\
-           A & 0 & 0 	\\
-           S & 0 & X
-         \end{pmatrix}
-\end{align}
-The Newton direction, $(x_B , \lambda_B , s_B)$, can be written as the solution to the system of equations
-\begin{align}
-J \begin{pmatrix}
-           x_B \\
-           \lambda_B \\
-           s_B
-         \end{pmatrix} = -F \label{eq:StepDir}
-\end{align}
-The step direction equation \eqref{eq:StepDir} does not take the barrier term into account. However, the constraints can easily be added to the problem, as the barrier term merely alters the KKT conditions, $F$. Thereby, the constrained Newton step for the primal-dual problem reads
-\begin{align}
-	\begin{pmatrix}
-    	 0 & A^T & I    \\
-         A & 0 & 0 		\\
-         S & 0 & X
-    \end{pmatrix} 
-    \begin{pmatrix}
-    	x_b 		    \\
-        \lambda_B		\\
-        s_B
-    \end{pmatrix} =
-    - \begin{pmatrix}
-    	  A^T \lambda + s - c 	\\
-          A x - b 				\\
-          X S e - \mu e
-    \end{pmatrix} \; . \label{eq:newtondirection}
-\end{align}
-The functions are optimized by taking a step of length $\alpha$ in the direction specified by eq. \eqref{eq:newtondirection}, such that the updated function values read
+The KKT conditions of the barrier problem \eqref{eq:BarrierProblem} can be expressed in a single mapping 
 \begin{equation}
-	(x_{k+1} , \lambda_{k+1} , s _{k+1}) = (x_{k} , \lambda_{k} , s _{k}) + \alpha  (x_B , \lambda_B , s_B) \; , \label{eq:newtonstep}
+	F \equiv 
+	\begin{bmatrix}
+  \nabla_x f(x) - A_{g}^{T}(x) \lambda  - A_{h}^{T}(x) \zeta \\
+  S \zeta - \mu e \\
+  g(x)		\\
+  h(x) - s 
+  \end{bmatrix}
+  = 0 \; ,
+  \label{eq:BarrierKKTmap}
 \end{equation}
-where $\alpha$ can be found using a line-search or other more sophisticated methods.
-The procedure above can be summarized in the following algorithm \cite{ipnote}:\\
+where $A_g (x)$ and $A_h (x)$ are the Jacobian matrices of the constraint functions $g(x)$ and $h(x)$. Additionally, $S$ and $Z$ are defined as diagonal matrices with entries given by the vectors $s$ and $\zeta$, while $e = (1 ,1 , \ldots , 1 )^T$. Note how the introduction of the slack variables and the barrier term has modified the original KKT conditions \eqref{eq:KKTconditions}. Transforming the constraints has removed the need for the duality feasibility \eqref{eq:KKTdual}, while barrier term "relaxes" the complementary slackness \eqref{eq:KKTslack}, whose original form is recovered as $\mu \to 0$.\\
+Applying Newtons method to the set of non-linear equations \eqref{eq:BarrierKKTmap} yields
+\begin{equation}
+  \begin{bmatrix}
+  \nabla_{xx} \mathcal{L} 	& 0 	& -A_{g}^{T}(x)	& -A_{h}^{T}(x)	\\
+  0 						& Z 	& 0 			& S 			\\
+  A_{g}(x) 					& 0 	& 0 			& 0				\\
+  A_{h}(x) 					& -I	& 0				& 0				 
+  \end{bmatrix}  
+  \begin{bmatrix}
+  p_x \\ p_s \\ p_{\lambda} \\ p_{\zeta} 
+  \end{bmatrix}
+  = - F
+  \label{eq:ConNewtonMethod}
+\end{equation}
+where $p = ( p_x , p_s , p_{\lambda} , p_{\zeta} )$ is the constrained Newton step direction, and $\mathcal{L}$ denotes the Lagrangian of the barrier problem \eqref{eq:BarrierProblem}
+\begin{equation}
+	\mathcal{L}(x,s,\lambda,\zeta) = f(x) - \lambda^T g(x) - \zeta^T ( h(x) - s)  \; .
+\end{equation}
+After computing the step, the parameters are iterated according to 
+\begin{equation}
+\begin{bmatrix}
+  x^{k+1} \\ s^{k+1} \\ \lambda^{k+1} \\ \zeta^{k+1} 
+\end{bmatrix} 
+=
+\begin{bmatrix}
+  x^{k} \\ s^{k} \\ \lambda^{k} \\ \zeta^{k} 
+\end{bmatrix} 
++ \alpha \circ p \; ,
+\label{eq:ConNewtonStep}
+\end{equation}
+where $\alpha$ is a vector of step-sizes for each of the parameters. The step-size is commonly determined via a line-search, although alternative methods exists.\\
+Interior point methods are capable of finding optimal solutions of non-linear constrained point using the methods described above, which can be summarized in the following algorithm:
 \begin{algorithm}
 \begin{algorithmic}
-\caption{Primal-Dual Interior Point Method}
-\State Choose $\sigma \in (0,1)$ and $\mu_0 > 0$.
-\State Choose initial point $(x_0 , \lambda_0 , s_0)$ within feasible region.
-\For{$k = 1 , \ldots$}
-	\State $\mu_k \gets \sigma \mu_{k-1}$
-	\State Calculate the Newton direction using eq. \eqref{eq:newtondirection}.
-	\State Compute step-size $\alpha$.
-	\State Update parameters according to eq. \eqref{eq:newtonstep}
-\EndFor
+\caption{Basic Primal-Dual Interior Point Algorithm}
+\State Choose $\mu_0 > 0$.
+\State Choose initial point $(x_0 , s_0 ,  \lambda_0 , \zeta_0)$.
+\While{stopping criteria not met}
+	\State Solve eq. \eqref{eq:ConNewtonMethod} to obtain search direction $p$
+	\State Compute step-size vector $\alpha$
+	\State Update parameters according to eq. \eqref{eq:ConNewtonStep}	
+	\State Set new barrier parameter $\mu$
+\EndWhile
 \end{algorithmic}
 \end{algorithm}
 
-The implementation of the interior point algorithm used in this thesis is from the IPOPT library \cite{Wachter2006}, which also approximates the Hessian of the optimization Lagrangian through previous derivatives using the L-BFGS algorithm \cite{Liu1989}. By including information about the second derivative, the algorithm is able to converge in much fewer iterations. 
+\subsection{Implementation with GRAPE}
+The interior point method is used here for minimizing the cost function \eqref{eq:grapeCost}, which is a function of a set of control parameters $u_n = \left( u_n (t_1) , \ldots , u_n (t_N)  \right)$. Examining the set of equations solved by the interior point method \eqref{eq:ConNewtonMethod} reveals that in order to compute the search direction, $p$, one needs the gradient of the objective function, $\nabla f(x)$, the Jacobian matrices of the constraints, $A_g (x)$ and $A_h (x)$, and finally the Hessian of both the objective and constraints contained in $\nabla_{xx} \mathcal{L}$.
+The GRAPE method provides the gradient of the cost function through eq. \eqref{eq:costGradient}. 
+Meanwhile, the constraints are dependent on the specific problem. In this case, the problem is crossing the phase transition between the superfluid and Mott-Insulator of the Bose-Hubbard model. As discussed in REF, the control is parametrized as the interaction matrix element, $U$, which is directly dependent of the lattice depth as illustrated in figure \ref{fig:UJparameters}. Thus, the control problem is constrained by 
+\begin{equation}
+	U_{\mathrm{min}} \leq U(t_j) \; , \quad \mathrm{for} \; j = 1 , \ldots , N \; ,
+	\label{eq:BoseHubbardConstraint}
+\end{equation} 
+for some $U_{\mathrm{min}}$ chosen such that the lattice depth is not below the tight binding limit, whereby the Bose-Hubbard model remains valid throughout the optimization. In the GRAPE parametrization the constraint function \eqref{eq:BoseHubbardConstraint} is the control itself, whereby the constraint Jacobian is simply the identity matrix. 
+Furthermore, the second derivatives of the constraints completely vanish. Nevertheless, the Hessian of the cost function is still required in order to solve the equations \eqref{eq:ConNewtonMethod}. Although the second derivative of the cost function \eqref{eq:grapeCost} is analytically derivable, the numerical cost of computing the gradient is already very high, whereby it is impractical to calculate the entire Hessian. Instead, Quasi-Newton methods can be used, where the Hessian can be approximated through various formulas. The implementation of the interior point algorithm used in this thesis is from the IPOPT library \cite{Wachter2006}, which approximates the Hessian through the L-BFGS algorithm, which builds the matrix using the gradients of previous iterations \cite{Liu1989}. The combination of interior point methods and the GRAPE algorithm works really well in practice, as interior point methods attempt to solve the problem using as few steps as possible, which is ideal, as the GRAPE gradient is very costly to compute.
 
 
 \section{Quantum Speed Limit}
