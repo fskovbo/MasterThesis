@@ -338,15 +338,15 @@ Interior point methods are capable of finding optimal solutions of non-linear co
 \begin{algorithm}
 \begin{algorithmic}
 \caption{Basic Primal-Dual Interior Point Algorithm}
-\State REWRITE according to book
-
-\State Choose $\mu_0 > 0$.
+\State Choose initial $\mu_0 > 0$.
 \State Choose initial point $(x_0 , s_0 ,  \lambda_0 , \zeta_0)$.
-\While{stopping criteria not met}
-	\State Solve eq. \eqref{eq:ConNewtonMethod} to obtain search direction $p$
-	\State Compute step-size vector $\alpha$
-	\State Update parameters according to eq. \eqref{eq:ConNewtonStep}	
-	\State Set new barrier parameter $\mu$
+\While{overall stopping criteria not met}
+	\While{subproblem stopping criteria not met}
+		\State Solve eq. \eqref{eq:ConNewtonMethod} to obtain search direction $p$.
+		\State Compute step-size vector $\alpha$.
+		\State Update $(x_k , s_k ,  \lambda_k , \zeta_k)$ according to eq. \eqref{eq:ConNewtonStep}.
+	\EndWhile
+	\State Update barrier parameter $\mu_k$.
 \EndWhile
 \end{algorithmic}
 \end{algorithm}
@@ -387,10 +387,10 @@ Parameterizing the control alters the gradient of the cost function \eqref{eq:co
 where only a single control has been chosen for cleaner notation. The gradient in \textsc{GROUP} is more complicated than in \textsc{GRAPE}, however, the cost of computing the gradient is still dominated by the evaluation of the original derivative ${\partial J }/{\partial u(t_j)}$. Therefore, the increased computational cost of evaluating the gradient can be considered negligible.\\
 In addition, the chopped basis parameterization changes the derivatives of the constraints as well. Thus, the new constraint Jacobian can be derived using the chain rule as well
 \begin{align}
-	(A_h (c))_{i,n}  &= \sum_{j = 1}^{N} \frac{\partial h(u (t_i)) }{\partial u(t_j)} \frac{\partial u(t_j)}{\partial c_n} \nonumber \\
+	(A_h (c))_{i,n}  &= \sum_{j = 1}^{N} \frac{\partial h_i (u ) }{\partial u(t_j)} \frac{\partial u(t_j)}{\partial c_n} \nonumber \\
 	&= \sum_{j = 1}^{N} (A_h (u))_{i,j} S(t_j) f_n (t_j) \; , \label{eq:GROUPconstJacobian} 
 \end{align}
-where $h(u)$ are the constraint functions, and $(A_h (u))_{i,j} = {\partial h(u (t_i)) } / {\partial u(t_j)}$ are recognized as the elements of the GRAPE parametrized constraint Jacobian. As discussed in section \ref{sec:IpoptGRAPE}, the constraint Jacobian is simply the identity matrix for the control problem treated here, whereby 
+where $h(u)$ are the constraint functions, and $(A_h (u))_{i,j} = {\partial h_i (u ) } / {\partial u(t_j)}$ are recognized as the elements of the GRAPE parametrized constraint Jacobian. As discussed in section \ref{sec:IpoptGRAPE}, the constraint Jacobian is simply the identity matrix for the control problem treated here, whereby 
 \begin{equation}
 	(A_h (c))_{i,n} = \sum_{j = 1}^{N} \delta_{i,j} S(t_j) f_n (t_j) = S(t_i) f_n (t_i) \; .
 \end{equation} 
