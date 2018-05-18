@@ -279,7 +279,7 @@ Following the procedure above will leave the MPS in position for application of 
 Although the tDMRG algorithm is a very powerful algorithm, an even higher efficiency can be achieved when tailoring the algorithm to the system, which in this care is the Bose-Hubbard model. Thus, the Hamiltonian contains both nearest-neighbour and on-site terms. Furthermore, the Hamiltonian is time dependent, since the lattice depth is varied. The following algorithm is a modification of the tDMRG algorithm, which is tailored for conducting optimal control using the Bose-Hubbard Hamiltonian.
 
 
-\subsection{Modified Time Evolution Algorithm for Optimal Control}
+\subsection{Modified Time Evolution Algorithm for Bose-Hubbard Model}
 \label{sec:modTMDRG}
 The optimization of the control causes the Hamiltonian to be altered multiple times. Hence, the propagator for the time-evolution must be re-calculate often, which can have a large numerical cost depending on the form of the Hamiltonian. A general operator $\hat{W}$ can be exponentiated through the series expansion
 \begin{equation}
