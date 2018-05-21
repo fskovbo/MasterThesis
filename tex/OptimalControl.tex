@@ -161,7 +161,7 @@ In the problem treated here, the system is described by the Bose-Hubbard model \
 \end{equation}
 where the tunneling Hamiltonian, $\hat{H}_J$, is regarded as an uncontrollable drift. The time-evolution algorithm used here employs a Suzuki-Trotter expansion of the propagator while considering the control at both start and end of the step. Thereby, the expanded propagator derived in section \ref{sec:modTMDRG} reads
 \begin{equation}
-	\hat{\mathcal{U}}_{j}^{\mathrm{ST}} = \exp \left( -i U(t_j) \hat{H}_U \Delta t /2 \right) \exp \left( -i \hat{H}_J \Delta t \right) \exp \left( -i  U(t_{j-1}) \hat{H}_U  \Delta t /2 \right)  \equiv \hat{\mathcal{U}}_{j}^{U} \hat{\mathcal{U}}_{j}^{J} \hat{\mathcal{U}}_{j-1}^{U} \; .
+	\hat{\mathcal{U}}_{j}^{\mathrm{ST}} = e^{ -i U(t_j) \hat{H}_U \Delta t /2 } \: e^{ -i \hat{H}_J \Delta t } \: e^{  -i  U(t_{j-1}) \hat{H}_U  \Delta t /2 }  \equiv \hat{\mathcal{U}}_{j}^{U} \hat{\mathcal{U}}_{j}^{J} \hat{\mathcal{U}}_{j-1}^{U} \; .
 \end{equation}
 Since the control at times $t_j$ and $t_{j-1}$ contribute to $\hat{\mathcal{U}}_{j}^{\mathrm{ST}}$, the elements of the cost gradient are
 \begin{equation}
