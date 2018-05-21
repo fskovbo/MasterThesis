@@ -205,14 +205,14 @@ A comparison between a numerically calculated gradient and the analytically deri
 
 \section{Interior Point Methods} \label{sec:IntPoint}
 
-The GRAPE method formulates the control problem as the minimization of the cost function \eqref{eq:grapeCost} while providing the derivative of the cost with respect to the control functions \eqref{eq:costGradient}. Thus, the optimal control can be found using well established methods from mathematical optimization theory. Generally, control problems are very hard to solve, as they are highly non-linear, have many control parameters (even when parametrized), and are often subjected to a series of constraints. An example of the latter can be seen when considering optimizations within the Bose-Hubbard model, as the model is valid only within the tight-binding limit. Thus, the control problem will be subject to the non-linear constraint
+The GRAPE method formulates the control problem as the minimization of the cost function \eqref{eq:grapeCost} while providing the derivative of the cost with respect to the control functions \eqref{eq:costGradient}. Thus, the optimal control can be found using well established methods from mathematical optimization theory \cite{deFouquieres2011}. Generally, control problems are very hard to solve, as they are highly non-linear, have many control parameters (even when parametrized), and are often subjected to a series of constraints. An example of the latter can be seen when considering optimizations within the Bose-Hubbard model, as the model is valid only within the tight-binding limit \cite{manybodyBloch}. Thus, the control problem will be subject to the non-linear constraint
 \begin{equation}
 	 V_{0}^{\mathrm{min}} \leq c (u(t)) \leq V_{0}^{\mathrm{max}} \; ,
 \end{equation}
 where $c (u)$ is some constraint function dependent on the parameterization of the problem.\\
-Interior point methods are currently considered some of the most powerful algorithms for large-scale non-linear programming. The methods update the control parameters using the derivatives of the cost function via Newtons method, from which they differ in many ways in order to accommodate the constraints. Interior point methods approach the solution from within the feasible region as opposed to other methods like Nelder-Mead, hence the name \textit{interior}. In addition, they provide efficient performance while having better theoretical properties than the standard simplex method \cite{wright}.\\
+Interior point methods are currently considered some of the most powerful algorithms for large-scale non-linear programming \cite{wright}. The methods update the control parameters using the derivatives of the cost function via Newtons method, however, they differ from the standard Newton approach in many ways to accommodate constraints \cite{Karmarkar1984,Wachter2006}. Interior point methods approach the solution from within the feasible region as opposed to other methods like Nelder-Mead, hence the name \textit{interior}. In addition, they provide efficient performance while having better theoretical properties than the standard simplex method \cite{wright}.\\
 
-In this section the simplest version of non-linear interior point method is derived, however, many variants of the method exists with respect to update strategies, line searches, handling non-convexity and more.\\
+In this section the simplest version of non-linear interior point method is derived, however, many variants of the method exists with respect to update strategies \cite{Byrd1997,Fiacco1990}, line searches \cite{Waltz2006,Wachter2005,Fletcher2002}, handling non-convexity \cite{Vanderbei1999} and more.\\
 Consider the general minimization problem of some objective $f(x)$
 \begin{subequations}	
  \begin{align}
@@ -229,7 +229,7 @@ where $g(x)$ and $h(x)$ are a set of equality and inequality constraints. The La
 where $\lambda$ and $\zeta$ are vectors of Lagrange multipliers of the equality and inequality constraints respectively. Thus, one must find a point $(x^*,\lambda^*,\zeta^*)$ minimizing the objective function while satisfying the constraints.
 
 \subsection{Duality}
-Duality theory describes how an alternative \textit{dual} problem can be derived from the original \textit{primal} problem and how the two problems are related. Thus, the dual problem can be regarded as a different perspective of the original problem. Much information regarding the original problem can be inferred from the solution of its dual, hence many non-linear optimization algorithms solve primal-dual problems.\\
+Duality theory describes how an alternative \textit{dual} problem can be derived from the original \textit{primal} problem and how the two problems are related. Thus, the dual problem can be regarded as a different perspective of the original problem. Much information regarding the original problem can be inferred from the solution of its dual, hence many non-linear optimization algorithms solve primal-dual problems \cite{wright}.\\
 The dual function is defined as
 \begin{equation}
 	q (\lambda , \zeta) = \inf_{x} \mathcal{L} (x,\lambda,\zeta) \; ,
@@ -239,7 +239,7 @@ where the infimum is required to exist and be finite. Note how the Lagrange mult
 	f(x^*) \geq q (\lambda^* , \zeta^*) \; ,
 	\label{eq:WeakDuality}
 \end{equation} 
-whereby it provides a lower bound on the solution of \eqref{eq:GeneralOptProblem}. In order for the direction of the inequality constraint to remain the same, it is necessary that all the inequality Lagrange multipliers fulfill $\zeta_i \geq 0$. This requirement can be considered a constraint of the dual, since the Lagrange multipliers are the variables of the dual function. Thus, the dual problem is defined as
+whereby it provides a lower bound on the solution of \eqref{eq:GeneralOptProblem}. In order for the direction of the inequality constraint to remain the same, it is necessary that all the inequality Lagrange multipliers fulfill $\zeta_i \geq 0$. This requirement can be considered a constraint of the dual, since the Lagrange multipliers are the variables of the dual function \cite{wright}. Thus, the dual problem is defined as
 \begin{subequations}	
  \begin{align}
 	\max_{\lambda , \zeta} 	\quad 	& q(\lambda , \zeta) 				\\
@@ -247,20 +247,20 @@ whereby it provides a lower bound on the solution of \eqref{eq:GeneralOptProblem
 \end{align}
 \label{eq:GeneralDualProblem}
 \end{subequations}
-A very nice property of the dual problem is that it is always convex regardless of $f(x)$. Thus, the dual problem is often easier to solve than the primal. Furthermore, the solutions of the dual problem are the optimal Lagrange multipliers of the original problem, which would otherwise be very hard to find.
+A very nice property of the dual problem is that it is always convex regardless of $f(x)$ \cite{Rockafellar1974}. Thus, the dual problem is often easier to solve than the primal. Furthermore, the solutions of the dual problem are the optimal Lagrange multipliers of the original problem, which would otherwise be very hard to find.
 Another useful feature in duality theory is the \textit{duality gap}, which is given by the difference between the primal and dual function, $f(x) - q(\lambda , \zeta )$. Considering the condition of weak duality \eqref{eq:WeakDuality}, the duality gap implies that
 \begin{equation}
 	f(x) - f(x^*) \leq f(x) - g(\lambda , \zeta) \; ,
 	\label{eq:DualityGapIneq}
 \end{equation}
-whereby $x$ is primal optimal and $\lambda , \zeta$ are dual optimal, if the duality gap is zero. Thus, eq. \eqref{eq:DualityGapIneq} can be used as a stopping criteria for optimization algorithms, as the duality gap will tend towards zero for $x \to x^*$.
+whereby $x$ is primal optimal and $\lambda , \zeta$ are dual optimal, if the duality gap is zero. Thus, eq. \eqref{eq:DualityGapIneq} can be used as a stopping criteria for optimization algorithms, as the duality gap will tend towards zero for $x \to x^*$ \cite{wright}.
 
 
 \subsection{Karush–Kuhn–Tucker Conditions}
-The Karush–Kuhn–Tucker (KKT) conditions are a set of first-order necessary conditions for a point $(x^*,\lambda^*,\zeta^*)$ being an optimum. They only consider properties of the gradient of the objective and constraint function, hence the \textit{first-order} label. The KKT conditions are very important in optimization theory, as many algorithms (including interior point methods) can be interpreted as solving a set of equations directly derived from the conditions.    
+The Karush–Kuhn–Tucker (KKT) conditions are a set of first-order necessary conditions for a point $(x^*,\lambda^*,\zeta^*)$ being an optimum \cite{Kuhn2014}. They only consider properties of the gradient of the objective and constraint function, hence the \textit{first-order} label. The KKT conditions are very important in optimization theory, as many algorithms (including interior point methods) can be interpreted as solving a set of equations directly derived from the conditions \cite{wright}.    
 
 \begin{theorem}
-	Let the active constraints be all the equality constraints along with the set of inequality constraints fulfilling $h(x) = 0$ for some feasible $x$. Suppose that $x^*$ is a local solution of \eqref{eq:GeneralOptProblem} and the gradients of the active constraints are linearly independent at $x^*$. Then Lagrange multiplier vectors $\lambda$ and $\zeta$ exists, such that the following conditions are satisfied at $(x^*,\lambda^*,\zeta^*)$ \cite{wright}
+	Let the active constraints be all the equality constraints along with the set of inequality constraints fulfilling $h(x) = 0$ for some feasible $x$. Suppose that $x^*$ is a local solution of \eqref{eq:GeneralOptProblem} and the gradients of the active constraints are linearly independent at $x^*$. Then Lagrange multiplier vectors $\lambda$ and $\zeta$ exists, such that the following conditions are satisfied at $(x^*,\lambda^*,\zeta^*)$
 \begin{subequations}	
 \begin{align}
 \nabla_x \mathcal{L}(x^*,\lambda^*,\zeta^*) &= 0 \; ,  	\\
@@ -287,8 +287,8 @@ Interior point methods solve a set of equations derived directly from the KKT co
 \end{align}
 \label{eq:BarrierProblem}
 \end{subequations}
-where $\mu$ is the positive barrier parameter, and $s$ is a vector of slack variables, which transforms the inequality constraint into an equality at the cost of adding additional optimization variables. In order to ensure the direction of the inequality constraint, it is a requirement that $s \geq 0$. While this is an inequality constraint itself, it is enforced via the logarithmic barrier term, which diverges as any component of $s$ approaches zero. Furthermore, the barrier term does not add much complexity to the problem, as it convex and twice differentiable.\\
-The step direction towards the KKT-point can be found through Newtons method, however, often one can only take a small step before violating the constraints, hence the pure Newton direction is dubbed the \textit{affine scaling direction}. The barrier approach consists of finding solutions of the barrier problem \eqref{eq:BarrierProblem} for a sequence of barrier parameters $\{ \mu_k \}$ converging to zero. Several strategies exist for updating the barrier parameters, however, their common goal is to bias the step direction of the algorithm, such that the longest possible steps can be taken. The solutions of the barrier subproblems can be denoted $(x(\mu),s(\mu), \lambda(\mu),\zeta(\mu))$, and the trajectory of these points is known as the \textit{primal-dual central path}, which converges to $(x^*,s^*, \lambda^*,\zeta^*)$ as $\mu \to 0$.\\
+where $\mu$ is the positive barrier parameter, and $s$ is a vector of slack variables, which transforms the inequality constraint into an equality at the cost of adding additional optimization variables. In order to ensure the direction of the inequality constraint, it is a requirement that $s \geq 0$. While this is an inequality constraint itself, it is enforced via the logarithmic barrier term, which diverges as any component of $s$ approaches zero. Furthermore, the barrier term does not add much complexity to the problem, as it convex and twice differentiable \cite{Wachter2006}.\\
+The step direction towards the KKT-point can be found through Newtons method, however, often one can only take a small step before violating the constraints, hence the pure Newton direction is dubbed the \textit{affine scaling direction} \cite{wright}. The barrier approach consists of finding solutions of the barrier problem \eqref{eq:BarrierProblem} for a sequence of barrier parameters $\{ \mu_k \}$ converging to zero. Several strategies exist for updating the barrier parameters \cite{Byrd1997,Fiacco1990}, however, their common goal is to bias the step direction of the algorithm, such that the longest possible steps can be taken. The solutions of the barrier subproblems can be denoted $(x(\mu),s(\mu), \lambda(\mu),\zeta(\mu))$, and the trajectory of these points is known as the \textit{primal-dual central path}, which converges to $(x^*,s^*, \lambda^*,\zeta^*)$ as $\mu \to 0$ \cite{wright}.\\
 
 The KKT conditions of the barrier problem \eqref{eq:BarrierProblem} can be expressed in a single mapping 
 \begin{equation}
@@ -302,7 +302,7 @@ The KKT conditions of the barrier problem \eqref{eq:BarrierProblem} can be expre
   = 0 \; ,
   \label{eq:BarrierKKTmap}
 \end{equation}
-where $A_g (x)$ and $A_h (x)$ are the Jacobian matrices of the constraint functions $g(x)$ and $h(x)$. Additionally, $S$ and $Z$ are defined as diagonal matrices with entries given by the vectors $s$ and $\zeta$, while $e = (1 ,1 , \ldots , 1 )^T$. Note how the introduction of the slack variables and the barrier term has modified the original KKT conditions \eqref{eq:KKTconditions}. Transforming the constraints has removed the need for the duality feasibility \eqref{eq:KKTdual}, while barrier term "relaxes" the complementary slackness \eqref{eq:KKTslack}, whose original form is recovered as $\mu \to 0$.\\
+where $A_g (x)$ and $A_h (x)$ are the Jacobian matrices of the constraint functions $g(x)$ and $h(x)$. Additionally, $S$ and $Z$ are defined as diagonal matrices with entries given by the vectors $s$ and $\zeta$, while $e = (1 ,1 , \ldots , 1 )^T$. Note how the introduction of the slack variables and the barrier term has modified the original KKT conditions \eqref{eq:KKTconditions}. Transforming the constraints has removed the need for the duality feasibility \eqref{eq:KKTdual}, while barrier term "relaxes" the complementary slackness \eqref{eq:KKTslack}, whose original form is recovered as $\mu \to 0$ \cite{wright}.\\
 Applying Newtons method to the set of non-linear equations \eqref{eq:BarrierKKTmap} yields
 \begin{equation}
   \begin{bmatrix}
@@ -333,8 +333,8 @@ After computing the step, the parameters are iterated according to
 + \alpha \circ p \; ,
 \label{eq:ConNewtonStep}
 \end{equation}
-where $\alpha$ is a vector of step-sizes for each of the parameters. The step-size is commonly determined via a line-search, although alternative methods exists.\\
-Interior point methods are capable of finding optimal solutions of non-linear constrained point using the methods described above, which can be summarized in the following algorithm:
+where $\alpha$ is a vector of step-sizes for each of the parameters. The step-size is commonly determined via a line-search \cite{Wachter2005,Fletcher2002}, although alternative methods exists \cite{Coleman1996}.\\
+Interior point methods are capable of finding optimal solutions of non-linear constrained point using the methods described above, which can be summarized in the following algorithm \cite{wright}:
 \begin{algorithm}
 \begin{algorithmic}
 \caption{Basic Primal-Dual Interior Point Algorithm}
@@ -354,37 +354,37 @@ Interior point methods are capable of finding optimal solutions of non-linear co
 \subsection{Implementation with GRAPE} \label{sec:IpoptGRAPE}
 The interior point method is used here for minimizing the cost function \eqref{eq:grapeCost}, which is a function of a set of control parameters $u_n = \left( u_n (t_1) , \ldots , u_n (t_N)  \right)$. Examining the set of equations solved by the interior point method \eqref{eq:ConNewtonMethod} reveals that in order to compute the search direction, $p$, one needs the gradient of the objective function, $\nabla f(x)$, the Jacobian matrices of the constraints, $A_g (x)$ and $A_h (x)$, and finally the Hessian of both the objective and constraints contained in $\nabla_{xx} \mathcal{L}$.
 The GRAPE method provides the gradient of the cost function through eq. \eqref{eq:costGradient}. 
-Meanwhile, the constraints are dependent on the specific problem. In this case, the problem is crossing the phase transition between the superfluid and Mott-Insulator of the Bose-Hubbard model. As discussed in REF, the control is parametrized as the interaction matrix element, $U$, which is directly dependent of the lattice depth as illustrated in figure \ref{fig:UJparameters}. Thus, the control problem is constrained by 
+Meanwhile, the constraints are dependent on the specific problem. In this case, the problem is crossing the phase transition between the superfluid and Mott-Insulator of the Bose-Hubbard model. As discussed in section \ref{sec:modTMDRG}, the control is parametrized as the interaction matrix element, $U$, which is directly dependent of the lattice depth as illustrated in figure \ref{fig:UJparameters}. Thus, the control problem is constrained by 
 \begin{equation}
 	U_{\mathrm{min}} \leq U(t_j) \; , \quad \mathrm{for} \; j = 1 , \ldots , N \; ,
 	\label{eq:BoseHubbardConstraint}
 \end{equation} 
-for some $U_{\mathrm{min}}$ chosen such that the lattice depth is not below the tight binding limit, whereby the Bose-Hubbard model remains valid throughout the optimization. In the GRAPE parametrization the constraint function \eqref{eq:BoseHubbardConstraint} is the control itself, whereby the constraint Jacobian is simply the identity matrix. 
-Furthermore, the second derivatives of the constraints completely vanish. Nevertheless, the Hessian of the cost function is still required in order to solve the equations \eqref{eq:ConNewtonMethod}. Although the second derivative of the cost function \eqref{eq:grapeCost} is analytically derivable, the numerical cost of computing the gradient is already very high, whereby it is impractical to calculate the entire Hessian. Instead, Quasi-Newton methods can be used, where the Hessian can be approximated through various formulas. The implementation of the interior point algorithm used in this thesis is from the IPOPT library \cite{Wachter2006}, which approximates the Hessian through the L-BFGS algorithm, which builds the matrix using the gradients of previous iterations \cite{Liu1989}. The combination of interior point methods and the GRAPE algorithm works really well in practice, as interior point methods attempt to solve the problem using as few steps as possible, which is ideal, as the GRAPE gradient is very costly to compute.
+for some $U_{\mathrm{min}}$ chosen such that the lattice depth is not below the tight binding limit, whereby the Bose-Hubbard model remains valid throughout the optimization \cite{manybodyBloch}. In the GRAPE parametrization the constraint function \eqref{eq:BoseHubbardConstraint} is the control itself, whereby the constraint Jacobian is simply the identity matrix. 
+Furthermore, the second derivatives of the constraints completely vanish. Nevertheless, the Hessian of the cost function is still required in order to solve the equations \eqref{eq:ConNewtonMethod}. Although the second derivative of the cost function \eqref{eq:grapeCost} is analytically derivable, the numerical cost of computing the gradient is already very high, whereby it is impractical to calculate the entire Hessian. Instead, Quasi-Newton methods can be used, where the Hessian can be approximated through various formulas \cite{wright}. The implementation of the interior point algorithm used in this thesis is from the IPOPT library \cite{Wachter2006}, which approximates the Hessian through the L-BFGS algorithm, which builds the matrix using the gradients of previous iterations \cite{Liu1989}. The combination of interior point methods and the GRAPE algorithm works really well in practice, as interior point methods attempt to solve the problem using as few steps as possible \cite{wright}, which is ideal, as the GRAPE gradient is very costly to compute.
 
 
 
 \section{Control Parametrization via Chopped Basis} \label{sec:GROUP}
-The convergence rate of gradient-based optimal control methods such as GRAPE have been shown to be much better than gradient-free methods for multiple problems \cite{Jager2014, JJ}
+The convergence rate of gradient-based optimal control methods such as GRAPE have been shown to be much better than gradient-free methods for multiple problems \cite{Jager2014, sorensen2018}
 One of the main disadvantages of GRAPE is the dimension for the optimization. As the duration of the control pulse is discretized into $N$ time-steps, the control value at each time slice, $u_n (t_j)$, is considered an optimization parameter. For long durations or small time-steps the resulting dimension of the optimization ($N$) will be very large. Thus, this type of control parametrization can be considered having too many degrees of freedom for the optimization.\\
 Employing a proper parametrization of the control can drastically reduce the optimization dimension \cite{Winckel2008}.
 A common choice is employing a chopped basis, which parametrizes the control as
 \begin{equation}
 	u(t) = u_0 (t) + S(t) \sum_{n=1}^{M} c_n f_n (t) \; , \label{eq:controlParametrization}
 \end{equation}   
-where $f_n$ are the basis functions, and $c_n$ are the optimization coefficients. In addition, $u_0 (t)$ is the initial control function, and $S (t)$ is a shape function enforcing the boundary conditions of the control, whereby $S(0) = S(T) = 0$ CITE JJ ARTIKEL. The shape function used throughout this thesis consists of two steep sigmoids oriented such that $S$ is unit for most time steps. The basis functions, $f_n$, must be chosen based on physical insight of the system. For the control problem discussed in this thesis, employing a basis of sine functions has proven itself useful, as the sine functions are excellent at describing the smoothly varying control pulses desired CITE JJ. Thus, the basis functions read $f_n = \sin \left( \omega_n t / T \right)$, where $\omega_n = n \pi$ can be considered the Fourier components of the description.
+where $f_n$ are the basis functions, and $c_n$ are the optimization coefficients. In addition, $u_0 (t)$ is the initial control function, and $S (t)$ is a shape function enforcing the boundary conditions of the control, whereby $S(0) = S(T) = 0$ \cite{sorensen2018}. The shape function used throughout this thesis consists of two steep sigmoids oriented such that $S$ is unit for most time steps. The basis functions, $f_n$, must be chosen based on physical insight of the system \cite{Ruths2012}. For the control problem discussed in this thesis, employing a basis of sine functions has proven itself useful, as the sine functions are excellent at describing the smoothly varying control pulses desired \cite{sorensen2018,Jiang2009}. Thus, the basis functions read $f_n = \sin \left( \omega_n t / T \right)$, where $\omega_n = n \pi$ can be considered the Fourier components of the description.
 An extension of this type of chopped basis was done in \cite{Doria2011,Caneva2011crab}, introducing random shifts to the frequencies resulting in the Chopped RAndom Basis or \textsc{CRAB}. In recent years the \textsc{CRAB} parametrization has been used together with the Nelder-Mead hill climbing algorithm to solve various control problems \cite{Doria2011,Caneva2011,FrankBloch,Lloyd2014}.\\
 The great advantage of employing a reduced basis representation is the drastic reduction in the optimization space. However, artificial minima may be introduced, if the chosen basis is incapable of spanning the part of the optimization space containing the optimal solutions \cite{Rach2015}. Hence, the chopped basis dimension, $M$, must be chosen with consideration.
 
 
 \subsection{Gradient-Optimization Using Parametrization - GROUP}
-The Gradient-Optimization Using Parametrization or \textsc{GROUP} algorithm introduced in JJ CITE combines the chopped basis representation with the \textsc{GRAPE} algorithm. In JJREF a comparison between different optimization algorithms for optimal control demonstrated that \textsc{GROUP} outperformed both \textsc{GRAPE} and Nelder-Mead with \textsc{CRAB} in term of fidelity reached and number of function evaluations required for convergence. \\
+The Gradient-Optimization Using Parametrization or \textsc{GROUP} algorithm introduced in \cite{sorensen2018} combines the chopped basis representation with the \textsc{GRAPE} algorithm. A comparison between different optimization algorithms for optimal control demonstrated that \textsc{GROUP} outperformed both \textsc{GRAPE} and Nelder-Mead with \textsc{CRAB} in term of fidelity reached and number of function evaluations required for convergence. \\
 Parameterizing the control alters the gradient of the cost function \eqref{eq:costGradient}. The new gradient can be derived using the chain rule
 \begin{align}
 	\frac{\partial J (c)}{\partial c_n} &= \sum_{j = 1}^{N} \frac{\partial J (u)}{\partial u(t_j)} \frac{\partial u(t_j)}{\partial c_n} \nonumber \\
 	&= \sum_{j = 1}^{N} \frac{\partial J }{\partial u(t_j)} S(t_j) f_n(t_j) \; , \label{eq:GROUPgradient} 
 \end{align}
-where only a single control has been chosen for cleaner notation. The gradient in \textsc{GROUP} is more complicated than in \textsc{GRAPE}, however, the cost of computing the gradient is still dominated by the evaluation of the original derivative ${\partial J }/{\partial u(t_j)}$. Therefore, the increased computational cost of evaluating the gradient can be considered negligible.\\
+where only a single control has been chosen for cleaner notation. The gradient in \textsc{GROUP} is more complicated than in \textsc{GRAPE}, however, the cost of computing the gradient is still dominated by the evaluation of the original derivative ${\partial J }/{\partial u(t_j)}$. Therefore, the increased computational cost of evaluating the gradient can be considered negligible \cite{sorensen2018}.\\
 In addition, the chopped basis parameterization changes the derivatives of the constraints as well. Thus, the new constraint Jacobian can be derived using the chain rule as well
 \begin{align}
 	(A_h (c))_{i,n}  &= \sum_{j = 1}^{N} \frac{\partial h_i (u ) }{\partial u(t_j)} \frac{\partial u(t_j)}{\partial c_n} \nonumber \\
