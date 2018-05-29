@@ -328,7 +328,7 @@ Eq. \ref{eq:MIstate} is a simple product of local Fock states with precisely one
 While the Mott-Insulator phase has complete localization, the phases on the individual sites have obtained maximum uncertainty. Therefore, no phase coherence between different sites is present \cite{greiner}.
 
 
-\subsection{Quantum Phase Transition}
+\subsection{Mean-Field Approximation of Phase Diagram}
 Consider once again the full Bose-Hubbard Hamiltonian \eqref{BHhamil}. The superfluid and the Mott-Insulator account for the two limits of the ratio $J/U$. However, in order to understand the full phase diagram of the Bose-Hubbard model, one has to derive the critical fraction $(J/U)_{crit}$ for which the phase transition occurs. There are several ways of doing this - one of them is looking at a mean-field solution of the Bose-Hubbard model. For simplicity the zero temperature case is treated here. Even without a change of temperature the phase transition still happens, hence it is referred to as a \textit{quantum phase transition}, since the phase transition can happen without change of external parameters \cite{Sachdev2007QPT}.\\
 Applying the mean field approximation to the annihilation operator yields
 \begin{equation}
@@ -419,4 +419,14 @@ A better understanding of the results can be obtained by examining figure \ref{f
 	\caption{\textit{Phase diagram of Bose-Hubbard model for T = 0. Grey areas mark the Mott-Insulator phase for different number of particles per site, while white regions mark the superfluid phase. \cite{greiner}}}
 \end{figure}
 The $\mu_{\pm}$ curves encloses the region where the system is in the Mott-Insulating phase. $(1/\bar{U})_{crit} = (J/U)_{crit}$ can be read off the graph from the point where the two curves $\mu_{\pm}$ meet. No fluctuations take place in the Mott Insulator, whereby the particle number per site is well defined. As the chemical potential increases each site can accommodate more particles as long as the increase in chemical potential compensates the increased energy due to interactions between the particles.\\
-The mean-field solution of the Bose-Hubbard model is only an approximation, which proves quite inaccurate for one dimension. This is obvious when comparing the critical ratio for the mean-field approach, $\left( U/J \right)_{crit}^{MF,1D} = 11.66$, with numerical results computed using the DMRG method, $\left( U/J \right)_{crit}^{DMRG,1D} = 3.37$, \cite{Kuhner2000}. Nevertheless, the mean-field gives a good intuitive feeling of the physics taking place and how one can describe them without resorting to diagonalizing the Hamiltonian.\\
+The mean-field solution of the Bose-Hubbard model is only an approximation, which proves quite inaccurate for one dimension. This is obvious when comparing the critical ratio for the mean-field approach, $\left( U/J \right)_{crit}^{MF,1D} = 11.66$, with numerical results computed using the DMRG method, $\left( U/J \right)_{crit}^{DMRG,1D} = 3.37$, \cite{Kuhner2000}. Nevertheless, the mean-field gives a good intuitive feeling of the physics taking place and how one can describe them without resorting to diagonalizing the Hamiltonian.
+
+
+\subsection{Crossing the Phase Transition}
+
+phase transition makes problem very non-trivial\\
+correlations near/at critical point \\
+dynamically crossing critical point (breakdown of adiabadicity, Kibble-Zurek, amplification of quantum fluctuations, spreading of correlations and entanglement) \\
+
+
+The emergence of the quantum phenomena described above greatly complicates the process of engineering a lattice ramp sequence, which bring the system from a superfluid to a Mott-Insulating ground state. While classical approaches fail to capture the rich dynamics of the phase transition, simulations of the system can be performed through tensor network methods, which provide a low-entanglement effective theory \cite{Gillman2018}. Although the low-entanglement approximation inevitably fails for long durations, the finite spreading velocity of entanglement within the system enables the use of tensor-network methods for simulating dynamics for short durations \cite{Eisert2015}. 
