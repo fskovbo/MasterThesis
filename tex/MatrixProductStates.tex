@@ -1,11 +1,11 @@
 \chapter{Matrix Product States} \label{chap:MPS}
-Numerical analysis of quantum many-body systems using exact diagonalisation is highly limited by system size. Due to the large number of possible configurations in a many-body system and entanglement coupling various degrees of freedom, the Hilbert space grows too large for exact methods to search.
+Numerical analysis of quantum many-body systems using exact diagonalization is highly limited by system size. Due to the large number of possible configurations in a many-body system and entanglement coupling various degrees of freedom, the Hilbert space grows too large for exact methods to search.
 Consider the Bose-Hubbard model described in eq. \eqref{BHhamil}. The dimension of the corresponding Hilbert space is
 \begin{equation}
 	D_{\mathcal{H}} = \frac{(L+N_p -1)!}{N_p ! (L-1)!} \; ,
 \end{equation}
-where $L$ is the number of sites, and $N_p$ is the number of particles. For unit occupancy, $N_p / L = 1$, the Hilbert space grows exponentially with the system size \cite{Dong}. Therefore, descriptions using exact diagonalisation are only possible for small systems.
-Matrix product states parameterize the quantum states through a product of tensors, which can be depicted as a network. Decomposing the state as an explicitly contracted network of tensors enables efficient application of operators. Furthermore, the scaling of entanglement within a matrix product state is very different to the original state, as MPS follow an area law, whereby only a tiny corner of the Hilbert space has to be considered when searching for ground states \cite{Cramer}.\\
+where $L$ is the number of sites, and $N_p$ is the number of particles. For unit occupancy, $N_p / L = 1$, the Hilbert space grows exponentially with the system size \cite{Dong}. Therefore, descriptions using exact diagonalization are only possible for small systems.
+Matrix product states parameterize the quantum states through a product of tensors, which can be depicted as a network. Decomposing the state as an explicitly contracted network of tensors enables efficient application of operators. Furthermore, the construction of matrix product states puts an upper bound on the entanglement entropy within the system, whereby states can be represented efficiently without considering unnecessary degrees of freedom \cite{Cramer}.\\
 This chapter will cover the basics of matrix product states including their construction and freedom of gauges called canonical forms \cite{schollwock}. Furthermore, the generalization of MPS to operators called matrix product operators are introduced along with their applications. Algorithms involving matrix products states such as the DMRG method \cite{White1992,White1993} are introduced in the following chapter.
 
 
@@ -25,25 +25,22 @@ From the Schmidt decomposition one can determine the entanglement entropy of the
 \begin{equation}
 	S = - \sum_{\alpha} \Lambda_{\alpha}^2 \log \Lambda_{\alpha}^2 \; .
 \end{equation}
-Quite often, one is not concerned with the actual entanglement entropy of the system, but rather how it scales when the region in question grows in size. It is natural to assume that the entanglement entropy scales with  the \textit{volume} of the system, since this is the case for thermal systems. However, ground states of quantum many-body systems often follow an \textit{area law}, meaning that the scaling of the entropy is linear in the boundary area of the region. This is especially the case for systems with a gapped and local Hamiltonian \cite{Cramer}.\\
-In a one dimensional lattice the boundary of a bipartition is constant in size independently of where the cut is made. Hence, the entropy will be bounded by a constant independent of the size of both the system and the subsystem, if the system follows an area law. This can be understood intuitively, as only degrees of freedom within the correlation length, $\xi$, of the boundary will be entangled, no matter where in the system the boundary is present \cite{Hastings2007}.\\
-This observation is the key to the success of numerical computations for one-dimensional systems, as one has to consider only a small region of the Hilbert space when performing a variational search for the ground state. A highly efficient way of describing one dimensional systems is through Matrix Product States (MPS), which follow an area law by default, as they are constructed through a series of Schmidt decompositions.
+Quite often, one is not concerned with the actual entanglement entropy of the system, but rather how it scales when the region in question grows in size. It is natural to assume that the entanglement entropy scales with  the \textit{volume} of the system, since this is the case for thermal systems. However, ground states of one-dimensional quantum many-body systems often follow an \textit{area law}, meaning that the scaling of the entropy is linear in the boundary area of the region. This is especially the case for systems with a gapped and local Hamiltonian \cite{Cramer}.\\
+In a one dimensional lattice the boundary size of a bipartition is constant  independently of where the cut is made. Hence, the entanglement entropy will be bounded above, if the system follows an area law. This can be understood intuitively, as only degrees of freedom within the correlation length, $\xi$, of the boundary will be entangled, no matter where in the system the boundary is present \cite{Hastings2007}. This observation is the key to the success of numerical computations for one-dimensional systems, as the limited degree of entanglement enables the truncation of unused eigenstates without loss of accuracy in the representation of the state. Thus, many different states can be efficiently described by tensor networks despite existing in an exponentially large Hilbert space.
 
 
 \section{Construction of an MPS} \label{sec:construct_MPS}
-Matrix products states are parametrisations of one dimensional quantum states through a product of tensors. This parametrisation is especially intuitive for lattice systems, as each lattice site can be represented by a single tensor. These tensors have two different kinds of indices; \textit{physical indices}, $j$, which corresponds to the local, physical states at a given site, and \textit{bond indices}, $\alpha$, which serves to connect neighbouring sites. Tensors can be merged by contracting the bond connecting them, which is done by summing over their common index. Equations involving matrix product states tend to grow quite long, whereby they often are described through diagrams. In the diagrammatic representation the physical indices are marked by vertical legs, while bond indices are marked by horisontal legs. When two tensors are connected by a leg, it means that the corresponding bond is contracted. Further details and examples regarding tensor diagrams can be found in Appendix \ref{chap:diagrams}.\\
+Matrix products states are parameterizations of one dimensional quantum states through a product of tensors. This parameterization is especially intuitive for lattice systems, as each lattice site can be represented by a single tensor. These tensors have two different kinds of indices; \textit{physical indices}, $j$, which corresponds to the local, physical states at a given site, and \textit{bond indices}, $\alpha$, which serves to connect neighbouring sites.
+The dimension of the physical index is equal to that of the underlying Fock space, while the dimension of virtual bond index is related to the entanglement entropy between the two connected sites.
+Tensors can be merged by contracting the bond connecting them, which is done by summing over their common index. Equations involving matrix product states tend to grow quite long, whereby they often are described through diagrams. In the diagrammatic representation the physical indices are marked by vertical legs, while bond indices are marked by horisontal legs. When two tensors are connected by a leg, it means that the corresponding bond is contracted. Further details and examples regarding tensor diagrams can be found in Appendix \ref{chap:diagrams}.
 
 Consider a chain of $L$ sites with each site having a $d$-dimensional local Hilbert space $\{ \ket{j_n} \}$, where $n = 1, \ldots, L$. An arbitrary quantum state of this system reads
 \begin{equation}
 	\ket{\psi} = \sum_{j_1, \ldots, j_L} c_{j_1 \ldots j_L} \ket{j_1, \ldots, j_L} \; .
 	\label{eq:arbstate}
 \end{equation}
-This description of a general state can be parametrised to the MPS form by applying successive Schmidt decomposition. However, in practice this is done through Singular Value Decompositions (SVD), as these are faster to perform numerically. The two approaches are equivalent, as the singular value decomposition is essentially a restatement of the Schmidt decomposition CITE.
-Through an SVD, an arbitrary matrix, $A$, of dimensions $(M \times N)$ can be decomposed into three matrices
-\begin{equation}
-	A = U S V^{\dag} \; .
-\end{equation}
-These matrices have the following properties \cite{schollwock}:
+This description of a general state can be parametrized to the MPS form by applying successive Schmidt decomposition. However, in practice this is done through Singular Value Decompositions (SVD), as these are faster to perform numerically. The two approaches are equivalent, as the singular value decomposition is essentially a restatement of the Schmidt decomposition \cite{Pathak2013}.
+Through an SVD, an arbitrary matrix, $A$, of dimensions $(M \times N)$ can be decomposed into three matrices, $A = U S V^{\dag}$, with the following properties \cite{schollwock}:
 \begin{itemize}
 \item
 $U$ is of dimension $(M \times \min(M,N))$ and has orthonormal columns, meaning $U^{\dag}U = I$. If $M \leq N$, then it is also unitary $U U^{\dag} = I$.
@@ -88,8 +85,10 @@ The construction of an MPS is illustrated in figure \ref{fig:MPSbuild}. Thereby,
 	\ket{\psi} = \sum_{j_1, \ldots, j_L} A^{j_1} A^{j_2} \ldots A^{j_{L-1}} A^{j_{L}} \ket{j_1, \ldots, j_L} \; .
 	\label{eq:MPS_LC} 
 \end{equation}
-\\
-Due to the dimensions of the components of an SVD, the dimensions of the matrices $A^{j_n}$ follow a pyramid-like structure $(1 \times d ),(d \times d^2) , \ldots , (d^{L/2 -1} \times d^{L/2}) , (d^{L/2} \times d^{L/2 -1 }), \ldots , (d \times 1)$, where $L$ is taken as even for simplicity. Hence, the matrix dimensions increase exponentially making exact computations practically impossible. However, certain simplifications can be made, which greatly reduces computational time without sacrificing much precision. First, one only needs to keep the non-zero, singular values of the matrices $S$, thus reducing the dimensional factor from $d$ to $r_n$, where $r_n \leq d$ is the Schmidt rank of the n'th decomposition. Secondly, as discussed earlier, only a few terms is needed to accurately describe entanglement across bonds. Therefore, the matrices $S$, $U$ and $V$ can be truncated keeping only the $D$ largest singular values, as these contribute the most to the state. Thus, the dimension of the matrices will cap at $D$: $(1 \times d ),(d \times d^2) , \ldots , (d^{n} \times D) , (D \times D), \ldots , ( D \times d^{n}) \ldots  (d \times 1)$, avoiding the otherwise exponential dimensional growth \cite{EntropyScaling}. The amount of singular values needed to be kept in order to produce an accurate approximation of the state is highly dependent of the system. Thus, one often need to perform the same calculation for various values of $D$, in order to gauge how much the matrices can be truncated.
+Following the construction sequence, the dimensions of the matrices $A^{j_n}$ follow a pyramid-like structure $(1 \times d ),(d \times d^2) , \ldots , (d^{L/2 -1} \times d^{L/2}) , (d^{L/2} \times d^{L/2 -1 }), \ldots , (d \times 1)$, where $L$ is taken as even for simplicity. 
+However, the state can be represented much more efficiently by truncating the dimensions of the matrices (bonds), due to the area law scaling of entanglement entropy \cite{EntropyScaling}. A bond dimension $\chi$ infers an entanglement entropy bounded by $S(\rho_A) = \mathcal{O}(\log \chi)$ \cite{Gillman2018}, whereby one often can discard the contribution of many eigenstates without loss of accuracy.
+
+In practice this is done by keeping only the $D$ largest singular values of the SVD matrix $S$, as these contribute the most to the state. Alternatively  one can discard all eigenstates contributing with eigenvalues less than some threshold $\epsilon_t$.
 
 
 \section{Canonical Forms}
@@ -98,7 +97,7 @@ The MPS described in equation \ref{eq:MPS_LC} is not unique, as writing
 \begin{equation}
 	\tilde{A}^{j_n} = X_{n-1} A^{j_n} X_{n}^{-1}
 \end{equation}
-describes the same state using different matrices. This gauge freedom allows expressing the MPS in whichever way is most convenient, which can greatly reduce the effort of applying operators and calculating overlaps. By choosing a gauge, the MPS is brought into a \textit{canonical form} \cite{Vidal2007}.
+describes the same state using different matrices. This gauge freedom allows expressing the MPS in whichever way is most convenient, which can greatly reduce the effort of applying operators and calculating overlaps. By choosing a gauge, the MPS is brought into a \textit{canonical form} \cite{Vidal2007}. The following examples detail bringing MPSs into canonical forms through construction, however, the same can be achieved for an already built MPS through successive SVDs and regrouping of the resulting matrices. 
 
 \subsection{Left-canonical matrix product state}
 The process of constructing an matrix product state detailed in Section \ref{sec:construct_MPS} brings the MPS in a \textit{left-canonical} form. This implies that all the matrices are left-normalized, such that
@@ -181,44 +180,6 @@ In order for eq. \eqref{eq:MixedFormA} to be considered a Schmidt decomposition,
 Another useful version of the mixed-canonical form is depicted in figure \ref{fig:MixedCanonical2}, where the matrix $S$ of eq. \eqref{eq:mixedCanon} has been multiplied unto the matrix to either the left or right of it. The result is a central cite, which is neither left- nor right-normalized, but instead contains the normalization of the entire state. Overlaps can expectation values can be computed very efficiently using the mixed-canonical form, as most of the tensor network can be explicitly contracted due to the normalization. 
  
 
-\subsection{Bringing a matrix product state into canonical form}
-The previous examples of canonical forms were realised during the construction of the matrix product states. However, any arbitrary MPS can be be brought into a canonical form through a series of SVD's, again exploiting the left-/right-normalization of the resulting matrices.\\
-Consider a general MPS
-\begin{equation}
-	\ket{\psi} = \sum_{j_1 , \ldots , j_L} \sum_{\alpha_1 , \ldots } M_{1 , \alpha_1}^{j_1} M_{\alpha_1 , \alpha_2}^{j_2} M_{\alpha_2 , \alpha_3}^{j_3} \ldots \ket{j_1 , \ldots , j_L} \; , 
-	\label{eq:generalMPS}
-\end{equation}
-which has to be brought into a left-canonical form. By grouping the physical and left (row) index of $M_{1 , \alpha_1}^{j_1}$, one can reshape the tensor into a single matrix, $M_{(j_1 , 1) , \alpha_1}$. Applying an SVD yields $M = A S V^{\dag}$, where $A^{\dag} A = I$, such that $A$ is left-normalized as desired. Thus, the left-normalisation of the first tensor of the MPS reads
-\begin{align}
-\ket{\psi} = & \; \sum_{j_1 , \ldots , j_L} \sum_{\alpha_1 , \ldots } M_{(j_1 , 1) , \alpha_1} M_{\alpha_1 , \alpha_2}^{j_2} M_{\alpha_2 , \alpha_3}^{j_3} \ldots \ket{j_1 , \ldots , j_L} \nonumber \\
-= & \; \sum_{j_1 , \ldots , j_L} \sum_{\alpha_1 , \ldots } \sum_{s_1} A_{(j_1 , 1) , s_1} S_{s_1 , s_1} V_{s_1 , \alpha_1}^{\dag} M_{\alpha_1 , \alpha_2}^{j_2} M_{\alpha_2 , \alpha_3}^{j_3} \ldots \ket{j_1 , \ldots , j_L} \nonumber \\
-= & \; \sum_{j_1 , \ldots , j_L} \sum_{\alpha_1 , \ldots } \sum_{s_1} A_{1 , s_1}^{j_1} \left( S_{s_1 , s_1} V_{s_1 , \alpha_1}^{\dag} M_{\alpha_1 , \alpha_2}^{j_2} \right) M_{\alpha_2 , \alpha_3}^{j_3} \ldots \ket{j_1 , \ldots , j_L} \nonumber \\
-= & \; \sum_{j_1 , \ldots , j_L} \sum_{\alpha_2 , \ldots } \sum_{s_1} A_{1 , s_1}^{j_1} \tilde{M}_{s_1 , \alpha_2}^{j_2} M_{\alpha_2 , \alpha_3}^{j_3} \ldots \ket{j_1 , \ldots , j_L} \; ,
-\end{align}
-where $\tilde{M}_{s_1 , \alpha_2}^{j_2} = \sum_{\alpha_1} S_{s_1 , s_1} V_{s_1 , \alpha_1}^{\dag} M_{\alpha_1 , \alpha_2}^{j_2}$. This procedure can be iterated through the entire chain, leaving the MPS in the left-canonical form \cite{schollwock}.\\
-Likewise, an MPS can be brought into a right-canonical form by grouping the physical index with the right (column) index of $M$ yielding the SVD $M = U S B$, where $B B^{\dag} = I$. Thus, iterating through the chain from the right will produce a right-canonical MPS.
-
-\section{Overlaps and Efficient Contractions}
-Similarly to matrix multiplication, the number of computations need for contracting a string of tensors can be greatly reduced when performing the contractions in the right order. Consider the general case of two general states $\ket{\psi}$ and $\ket{\phi}$ described by the matrices $M$ and $\tilde{M}$. The overlap between these states reads
-\begin{equation}
-	\braket{\phi | \psi} = \sum_{j_1 , \ldots , j_L} \tilde{M}^{j_L \dag} \ldots \tilde{M}^{j_1 \dag} M^{j_1} \ldots M^{j_L} \; , 
-	\label{eq:overlap}
-\end{equation}
-which is represented diagrammatically in figure \ref{fig:effCont}.
-\begin{figure}[h!]
-	\centering
-	\input{Diagrams/effectiveContraction.tex}
-	\caption{\textit{Efficient contraction of the overlap between two general states $\ket{\psi}$ and $\ket{\phi}$. By contracting the bonds in the specified order the number of multiplications is greatly reduced.}}
-	\label{fig:effCont}
-\end{figure}
-The evaluation of the overlap can be drastically sped up by considering the optimal order of contractions, which corresponds to an optimal bracketing of eq. \eqref{eq:overlap}:
-\begin{equation}
-	\braket{\phi | \psi} = \sum_{j_L} \tilde{M}^{j_L \dag} \left( \ldots \left( \sum_{j_2} \tilde{M}^{j_2 \dag} \left( \sum_{j_1} \tilde{M}^{j_1 \dag} M^{j_1} \right) M^{j_2} \right) \ldots \right) M^{j_L} \; .
-	\label{eq:optBrackets}
-\end{equation}  
-Within the innermost bracket a matrix is formed by multiplying a column and a row vector followed by the summation over the first physical index, $j_1$. In the remaining set of brackets three matrices are multiplied and the corresponding physical index is summed over. However, after the first contraction the complexity of the operation does not increase. Consider the worst case scenario of all the matrices being of dimension $(D \times D)$ with a local Hilbert space of dimension $d$. The total operational cost of the optimal contraction is $\mathrm{O}(L D^3 d)$ compared to otherwise exponential complexity of a random order of contractions \cite{schollwock}. The order of contractions described in eq. \eqref{eq:optBrackets} is illustrated in figure \ref{fig:effCont}.\\
-When calculating a norm, $\braket{\psi | \psi}$, the canonical form of the MPS greatly reduces to computational time, as having an either left- or right-canonical MPS implies a norm of 1 without any contractions needed.
-
 \section{Matrix Product Operators} \label{sec:MPO}
 A Matrix Product Operator (MPO) is an operator expressed in the formalism of an MPS. Thereby, operators can be incorporated as part of the tensor networks, where they are evaluated by the contraction of bonds.\\
 Consider a single coefficient of an MPS of the state general $\ket{\psi}$
@@ -254,7 +215,7 @@ The result is a new MPS, $\ket{\phi}$, which is described by the matrices $N^{j_
 	\caption{\textit{Application of an MPO, $\hat{O}$, to an MPS, $\ket{\psi}$. Matching physical indices are contracted resulting in a new MPS, $\ket{\phi}$, with increased matrix dimensions.}}
 	\label{fig:MPOcont}
 \end{figure}
-If the dimension of the MPS is $D$, and the dimension of the MPO is $D_W$, the total computational cost of the operation is $\mathrm{O}(L d^2 D_W ^2 D^2)$.\cite{schollwock, McCulloch2007}
+If the dimension of the MPS is $D$, and the dimension of the MPO is $D_W$, the total computational cost of the operation is $\mathcal{O}(L d^2 D_W ^2 D^2)$.\cite{schollwock, McCulloch2007}
 
 \section{Correlation Functions and Measurement of Local Properties}
 \label{sec:correlationFunctions}
@@ -267,7 +228,7 @@ Applying a local operator to a state implies applying the identity operator to a
 \begin{equation}
 	\bra{\psi} \hat{O}^{[n]} \ket{\psi} = \sum_{j_n , j_n '} O^{j_n , j_n '} \Tr \left( M^{j_n \dag} M^{j_n '} \right) 
 \end{equation}
-with the computational cost $\mathrm{O}(D^2 d^2)$ \cite{schollwock}.
+with the computational cost $\mathcal{O}(D^2 d^2)$ \cite{schollwock}.
 \begin{figure}[h!]
 \centering % <-- add this
 \begin{subfigure}[b]{0.35\textwidth}
@@ -291,11 +252,11 @@ Correlation functions can also be calculated efficiently using matrix product st
 	\caption{\textit{Tensor network for the correlation function $\bra{\psi} \hat{O}^{[n]} \hat{Q}^{[n+4]} \ket{\psi}$. The outer parts of the network are implicitly contracted to identities following the mixed-canonical form of the MPS.}}
 	\label{fig:CorrelationFunction}
 \end{figure}
-Bringing the MPS into a mixed-canonical form with the central tensor at site $m$ results in the outer parts of the network being explicitly contracted as identities. However, the otherwise right-normalized tensors between the two operators can not be contracted as identities, as the right-most operator breaks the canonical form. Thus, one has to contract a network of length $k+1$, which is done most efficiently following the optimal bracketing described in eq. \eqref{eq:optBracketsMPO}. The complexity of the entire contraction is of order $O(k D^3 d)$.
+Bringing the MPS into a mixed-canonical form with the central tensor at site $m$ results in the outer parts of the network being explicitly contracted as identities. However, the otherwise right-normalized tensors between the two operators can not be contracted as identities, as the right-most operator breaks the canonical form. Thus, one has to contract a network of length $k+1$, which is done most efficiently following the optimal bracketing described in Appendix \ref{chap:diagrams}. The complexity of the entire contraction is of order $\mathcal{O}(k D^3 d)$.
 
 \subsection{Correlation length} \label{sec:CorrelationLength}
 Although the MPS formalism excels at describing one dimensional systems, it struggles with describing long ranged correlations, due to how it is constructed.
-Consider a general MPS in no particular canonical form, as described in eq. \eqref{eq:generalMPS}. The \textit{transfer operator} is defined as
+Consider a general MPS in no particular canonical form. The \textit{transfer operator} is defined as
 \begin{equation}
 	\hat{E}^{[n]} = \sum_{\alpha_{n-1}, \alpha_{n-1}'} \sum_{\alpha_{n}, \alpha_{n}'} E_{(\alpha_{n-1} \alpha_{n-1}'),(\alpha_{n}  \alpha_{n}')}^{[n]} \left( \ket{\alpha_{n-1}}\bra{\alpha_{n-1}'} \right) \left( \ket{\alpha_{n}}\bra{\alpha_{n}'} \right) \; ,
 \end{equation}   
@@ -324,20 +285,19 @@ where $\ket{k}$ and $\ket{l}$ are eigenstates of the transfer operator with eige
 	\frac{\bra{\psi} \hat{O}^{[i]} \hat{O}^{[j]} \ket{\psi}}{\braket{\psi | \psi}} = c_1 + \sum_{k = 2} c_k e^{-r/ \xi_k} \; , \label{eq:corrfunction}
 \end{equation}
 where $c_k = \bra{1} E_{O}^{[i]} \ket{k} \bra{k} E_{O}^{[j]} \ket{1}$. \cite{schollwock} \\
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Figures/DensityMatrices.pdf}
+    \caption{\textit{\textbf{(a-c)} Density matrices of a 50 site system for $U/J = 0, \; 0.5, \; 12$. \textbf{(d)} entries of the 15th row of the density matrices plotted as a function of distance from the diagonal, $r$. }}
+    \label{fig:DensityMatrices}
+\end{figure}
 According to eq. \eqref{eq:corrfunction}, correlation functions are given by a linear combination of exponential functions in the MPS description. Therefore, matrix product states struggle describing long range correlations, such as the superfluid single-particle correlations. While single-particle correlations decay exponentially for the Mott-Insulator, it decays following a power-law for superfluids
 \begin{equation}
 	\braket{\hat{a}_{i}^{\dag} \hat{a}_{j}} \sim |i - j|^{-K_b /2} \; ,
 	\label{eq:superfluidCorrelation}
 \end{equation}
 where $K_b$ is the Tomonaga-Luttinger parameter \cite{characPhases}. For short distances eq. \eqref{eq:corrfunction} is able to accurately approximate a power-law, however, only the slowest exponential decay will survive as distances grow larger. Hence, the correlation turns into a pure exponential decay with $\xi = -1/ \ln \lambda$, where $\lambda$ is the largest eigenvalue of $\hat{E}$ contributing to the correlation.\\
-To demonstrate the correlation properties of matrix product states, consider figure \ref{fig:DensityMatrices}.
-\begin{figure}[h!]
-    \centering
-    \includegraphics[width=0.8\textwidth]{Figures/DensityMatrices.pdf}
-    \caption{\textit{\textbf{(a-c)} Density matrices of a 50 site system for $U/J = 0, \; 0.5, \; 12$. \textbf{d} entries of the 15th row of the density matrices plotted as a function of distance from the diagonal, $r$. }}
-    \label{fig:DensityMatrices}
-\end{figure}
-The figure depict the density matrix with entries $\rho_{i,j} = \bra{\psi} \hat{a}_{i}^{\dag} \hat{a}_{j} \ket{\psi}$ for the ground state of a Bose-Hubbard system with $L = 50$ sites and unit occupancy. The ground state was found at various fractions of $U/J$ using the DMRG algorithm detailed in Section \ref{sec:DMRG}.
-Figures \ref{fig:DensityMatrices}.a and \ref{fig:DensityMatrices}.c show the density matrix plotted for the superfluid and the Mott-Insulator limit respectively. In the superfluid limit, long-range correlations are present, which is seen by large off-diagonal elements. However, since all correlations decay exponentially in the MPS description, the algorithm has difficulty approximating the very long range correlations of the system. This is visualized in figure \ref{fig:DensityMatrices}.d, where the correlation function is plotted against distance from the diagonal. The superfluid graph has a hump on it, which is an artifact of the MPS description and DMRG algorithm. Due to the very long correlation length, the graph should be almost flat except for the rapid drop in the end, which is due to the closed boundary conditions.\\
-In the Mott-Insulator limit no interaction takes place between sites, and the correlation length is zero. Hence, the correlation matrix contains only diagonal elements of equal magnitude. Figure \ref{fig:DensityMatrices}.c shows some off-diagonal elements of non-zero magnitude, since the system is not a pure Mott-Insulator at $U/J = 12$. Nevertheless, the correlations are well described by only a single exponential function, as seen by the figure.\\
-Finally, figure \ref{fig:DensityMatrices}.ii illustrates the density matrix for a system with $U/J = 0.5$, which is primarily a superfluid. The particles are not completely de-localized, which is noticeable from the well defined diagonal. Plotting the correlation function reveals the best approximation being a power-law, confirming the system is indeed a superfluid. 
+To demonstrate the correlation properties of matrix product states, consider figure \ref{fig:DensityMatrices} depicting the density matrix with entries $\rho_{i,j} = \bra{\psi} \hat{a}_{i}^{\dag} \hat{a}_{j} \ket{\psi}$ for the ground state of a Bose-Hubbard system with $L = 50$ sites and unit occupancy. The ground state was found at various fractions of $U/J$ using the DMRG algorithm detailed in Section \ref{sec:DMRG}.
+Figures \ref{fig:DensityMatrices}(a) and \ref{fig:DensityMatrices}(c) show the density matrix plotted for the superfluid and the Mott-Insulator limit respectively. In the superfluid limit, long-range correlations are present, which is seen by large off-diagonal elements. However, since all correlations decay exponentially in the MPS description, the algorithm has difficulty approximating the very long range correlations of the system. This is visualized in figure \ref{fig:DensityMatrices}(d), where the correlation function is plotted against distance from the diagonal. The superfluid graph has a hump on it, which is an artifact of the MPS description and DMRG algorithm. Due to the very long correlation length, the graph should be almost flat except for the rapid drop in the end, which is due to the closed boundary conditions.\\
+In the Mott-Insulator limit no interaction takes place between sites, and the correlation length is zero. Hence, the correlation matrix contains only diagonal elements of equal magnitude. Figure \ref{fig:DensityMatrices}(c) shows some off-diagonal elements of non-zero magnitude, since the system is not a pure Mott-Insulator at $U/J = 12$. Nevertheless, the correlations are well described by only a single exponential function, as seen by the figure.\\
+Finally, figure \ref{fig:DensityMatrices}(b) illustrates the density matrix for a system with $U/J = 0.5$, which is primarily a superfluid. The particles are not completely de-localized, which is noticeable from the well defined diagonal. Plotting the correlation function reveals the best approximation being a power-law, confirming the system is indeed a superfluid. 

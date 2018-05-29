@@ -45,3 +45,23 @@ Matrices (tensors without any physical index) are depicted as a diamond. These o
 \label{fig:MPStensors}
 \end{figure}
 	
+\section*{Contraction of Tensor Networks}
+Similarly to matrix multiplication, the number of computations need for contracting a string of tensors can be greatly reduced when performing the contractions in the right order. Consider the general case of two general states $\ket{\psi}$ and $\ket{\phi}$ described by the matrices $M$ and $\tilde{M}$. The overlap between these states reads
+\begin{equation}
+	\braket{\phi | \psi} = \sum_{j_1 , \ldots , j_L} \tilde{M}^{j_L \dag} \ldots \tilde{M}^{j_1 \dag} M^{j_1} \ldots M^{j_L} \; , 
+	\label{eq:overlap}
+\end{equation}
+which is represented diagrammatically in figure \ref{fig:effCont}.
+\begin{figure}[h!]
+	\centering
+	\input{Diagrams/effectiveContraction.tex}
+	\caption{\textit{Efficient contraction of the overlap between two general states $\ket{\psi}$ and $\ket{\phi}$. By contracting the bonds in the specified order the number of multiplications is greatly reduced.}}
+	\label{fig:effCont}
+\end{figure}
+The evaluation of the overlap can be drastically sped up by considering the optimal order of contractions, which corresponds to an optimal bracketing of eq. \eqref{eq:overlap}:
+\begin{equation}
+	\braket{\phi | \psi} = \sum_{j_L} \tilde{M}^{j_L \dag} \left( \ldots \left( \sum_{j_2} \tilde{M}^{j_2 \dag} \left( \sum_{j_1} \tilde{M}^{j_1 \dag} M^{j_1} \right) M^{j_2} \right) \ldots \right) M^{j_L} \; .
+	\label{eq:optBrackets}
+\end{equation}  
+Within the innermost bracket a matrix is formed by multiplying a column and a row vector followed by the summation over the first physical index, $j_1$. In the remaining set of brackets three matrices are multiplied and the corresponding physical index is summed over. However, after the first contraction the complexity of the operation does not increase. Consider the worst case scenario of all the matrices being of dimension $(D \times D)$ with a local Hilbert space of dimension $d$. The total operational cost of the optimal contraction is $\mathrm{O}(L D^3 d)$ compared to otherwise exponential complexity of a random order of contractions \cite{schollwock}. The order of contractions described in eq. \eqref{eq:optBrackets} is illustrated in figure \ref{fig:effCont}.\\
+When calculating a norm, $\braket{\psi | \psi}$, the canonical form of the MPS greatly reduces to computational time, as having an either left- or right-canonical MPS implies a norm of 1 without any contractions needed.
