@@ -10,16 +10,16 @@ where $\hat{H}_0$ is an uncontrollable drift, $\hat{H}_n$ are the controllable f
 The control problem presented in this thesis is steering the system from an initial state in the superfluid phase to a target-state in the Mott-Insulator phase. This is achieved by varying the lattice depth, which therefore can be considered the control parameter. The optimal control problem can be stated as follows:\\
 Suppose the system is initially described by the state $\ket{\psi_0} = \ket{\psi (0)}$, and the potential is varied in the time interval $[ 0 , T]$. The goal is finding the set of control parameters, $\boldsymbol{u}(t)$, which brings the initial state as close as possible to the target-state, $\ket{\psi_{\mathrm{target}}}$. This is expressed in terms of a cost function
 \begin{equation}
-	J_T = \frac{1}{2} \left( 1-|\braket{\psi_{\mathrm{target}} | \psi (T)}|^2 \right) \; ,
+	\mathcal{J}_T = \frac{1}{2} \left( 1-|\braket{\psi_{\mathrm{target}} | \psi (T)}|^2 \right) \; ,
 	\label{eq:infidelityCost}
 \end{equation}
 which is given as half the infidelity between the target and the state at $t=T$. The cost function becomes zero, when the terminal state matches the target state up to an arbitrary phase. Hence, the optimal control problem can be formulated as a minimization problem of eq. \eqref{eq:infidelityCost} , whereby one can employ methods from mathematical optimization theory \cite{Jager2014}.\\
 Large variations in the control parameter is often hard to achieve experimentally. Therefore, an extra term is added to the cost function, which penalizes strong variations in the control. The new cost function reads
 \begin{equation}
-	J = J_T + J_R = J_T + \frac{\gamma}{2} \sum_{n=1}^{m} \int_{0}^{T} \left( \pdv{u_n}{t} \right)^2 \mathrm{d}t \; ,
+	\mathcal{J} = \mathcal{J}_T + \mathcal{J}_R = \mathcal{J}_T + \frac{\gamma}{2} \sum_{n=1}^{m} \int_{0}^{T} \left( \pdv{u_n}{t} \right)^2 \mathrm{d}t \; ,
 	\label{eq:grapeCost}
 \end{equation}
-where $\gamma$ weighs the relative importance between matching states and smoothness of the control \cite{Jager2014}. As the state transfer is considered the highest priority, $\gamma \ll 1$ such that $J_T$ dominates the cost function of eq. \eqref{eq:grapeCost}.
+where $\gamma$ weighs the relative importance between matching states and smoothness of the control \cite{Jager2014}. As the state transfer is considered the highest priority, $\gamma \ll 1$ such that $\mathcal{J}_T$ dominates the cost function of eq. \eqref{eq:grapeCost}.
 
 
 \section{The Gradient-Ascent Pulse Engineering Method - GRAPE} \label{sec:GRAPE}
@@ -37,22 +37,22 @@ The time-evolution of the system during the time step $j$ is given by the propag
 \end{equation} 
 Thereby, the cost function \eqref{eq:grapeCost} becomes
 \begin{equation}
-	J = \frac{1}{2} \left( 1 - |\braket{\psi_{\mathrm{target}} | \prod_{j = 1}^{N} \hat{\mathcal{U}}_j | \psi (0)}|^2 \right) + \frac{\gamma}{2} \sum_{n = 1}^{m} \sum_{j = 1}^{N-1} \left( \frac{\Delta u_n (t_j)}{\Delta t} \right)^2 \Delta t \; ,
+	\mathcal{J} = \frac{1}{2} \left( 1 - |\braket{\psi_{\mathrm{target}} | \prod_{j = 1}^{N} \hat{\mathcal{U}}_j | \psi (0)}|^2 \right) + \frac{\gamma}{2} \sum_{n = 1}^{m} \sum_{j = 1}^{N-1} \left( \frac{\Delta u_n (t_j)}{\Delta t} \right)^2 \Delta t \; ,
 	\label{eq:discreteCost}
 \end{equation}
-where $\Delta u_n (t_j) =  u_n (t_{j+1}) - u_n (t_j)$. The full gradient of the cost, $\nabla J(\boldsymbol{u})$, is a vector of partial derivatives $\frac{\partial J(\boldsymbol{u})}{\partial u_n (t_j)}$, which can be derived analytically.\\
+where $\Delta u_n (t_j) =  u_n (t_{j+1}) - u_n (t_j)$. The full gradient of the cost, $\nabla \mathcal{J}(\boldsymbol{u})$, is a vector of partial derivatives ${\partial \mathcal{J}(\boldsymbol{u})}/{\partial u_n (t_j)}$, which can be derived analytically.\\
 First, consider the derivative of the regularization
 \begin{align}
-	\frac{\partial J_R}{\partial u_n (t_j)} &= \frac{\gamma}{2} \left( 2 \frac{u_n (t_j) - u_n (t_{j-1})}{\Delta t^2} - 2 \frac{u_n (t_{j+1}) - u_n (t_j)}{\Delta t^2} \right) \Delta t \nonumber \\
+	\frac{\partial \mathcal{J}_R}{\partial u_n (t_j)} &= \frac{\gamma}{2} \left( 2 \frac{u_n (t_j) - u_n (t_{j-1})}{\Delta t^2} - 2 \frac{u_n (t_{j+1}) - u_n (t_j)}{\Delta t^2} \right) \Delta t \nonumber \\
 	&= \frac{\gamma}{\Delta t} \left( 2 u_n (t_j) - u_n (t_{j+1}) - u_n (t_{j-1}) \right) \; . \label{eq:regularizationGrad}
 \end{align}
 The part of the gradient related to the regularization depends only on the control, whereby it can be calculated without considering the state of the system.\\ 
-Next, consider the derivative of $J_T$. Defining the transfer probability amplitude $\tau \equiv \braket{\psi_{\mathrm{target}} | \psi (T)}$, the derivative of the final infidelity with respect to the control can be written as 
+Next, consider the derivative of $\mathcal{J}_T$. Defining the transfer probability amplitude $\tau \equiv \braket{\psi_{\mathrm{target}} | \psi (T)}$, the derivative of the final infidelity with respect to the control can be written as 
 \begin{equation}
-	\frac{\partial J_T}{\partial u_n (t_j)} = - \frac{1}{2} \frac{\partial}{\partial u_n (t_j)}  \tau^* \tau   = - \Re \left( \tau^* \frac{\partial \tau}{\partial u_n (t_j)} \right) \; .
+	\frac{\partial \mathcal{J}_T}{\partial u_n (t_j)} = - \frac{1}{2} \frac{\partial}{\partial u_n (t_j)}  \tau^* \tau   = - \Re \left( \tau^* \frac{\partial \tau}{\partial u_n (t_j)} \right) \; .
 	\label{eq:dJTdu}
 \end{equation}
-From eq. \eqref{eq:dJTdu} it is evident that the derivative of the infidelity depends only on the derivative of the transfer probability amplitude, $\frac{\partial \tau}{\partial u_n (t_j)}$. This derivative can be rewritten as
+From eq. \eqref{eq:dJTdu} it is evident that the derivative of the infidelity depends only on the derivative of the transfer probability amplitude, ${\partial \tau}/{\partial u_n (t_j)}$. This derivative can be rewritten as
 \begin{align}
 	\frac{\partial \tau}{\partial u_n (t_j)} &= \frac{\partial }{\partial u_n (t_j)} \Braket{\psi_{\mathrm{target}} | \prod_{j = 1}^{N} \hat{\mathcal{U}}_j | \psi (0)} \nonumber \\
 	&= \Braket{\psi_{\mathrm{target}} | \hat{\mathcal{U}}_N \ldots \hat{\mathcal{U}}_{j+1} \frac{\partial \hat{\mathcal{U}}_{j}}{\partial u_n (t_j)} \hat{\mathcal{U}}_{j-1} \ldots \hat{\mathcal{U}}_{1} | \psi (0)}
@@ -67,7 +67,7 @@ Multiplying eq. \eqref{eq:dcdu} with $\tau^*$ yields
 \end{align}
 where $\ket{\chi (T)} \equiv i \ket{\psi_{\mathrm{target}}} \braket{\psi_{\mathrm{target}} | \psi (T)}$ is the projection of the final state unto the target state. Notice how in eq. \eqref{eq:gradientForBack} the state $\ket{\chi (T)}$ has been propagated backwards in time. Finally, inserting eq. \eqref{eq:TaudTau} into the derivative of the transfer cost function \eqref{eq:dJTdu} produces
 \begin{equation}
-	\frac{\partial J_T}{\partial u_n (t_j)} = - \Re \Braket{\chi (t_j) | i \frac{ \partial \hat{\mathcal{U}}_{j}}{\partial u_n (t_j)} | \psi (t_{j-1})} \; .
+	\frac{\partial \mathcal{J}_T}{\partial u_n (t_j)} = - \Re \Braket{\chi (t_j) | i \frac{ \partial \hat{\mathcal{U}}_{j}}{\partial u_n (t_j)} | \psi (t_{j-1})} \; .
 	\label{eq:gradientForBack}
 \end{equation}
 The derivative of the propagator, $\hat{\mathcal{U}}_{j}$, is non-trivial, due to possible non-commutativity between the Hamiltonian and its derivative. This results in a series of higher order corrections to the derivative of propagator.
@@ -104,13 +104,13 @@ where $[ X , Y ]_k = [ X ,[ X , Y]]_{k-1}$ and $[X,Y]_0 = Y$ is the definition o
 \end{align}
 Inserting this final expression for the derivative of the propagator into eq. \eqref{eq:dJTdu}, one finds the exact derivative of the infidelity 
 \begin{align}
-\frac{\partial J_T}{\partial u_n (t_j)} &=  - \Re  \Braket{\chi (t_j) | i e^{-i \hat{H} \Delta t}  \sum_{k = 0}^{\infty }  \frac{(-1)^k}{(k+1)!} \left[ -i \hat{H} \Delta t , -i \frac{\partial \hat{H}}{\partial u_n (t_j)} \Delta t  \right]_k | \psi (t_{j-1})}  \nonumber \\
+\frac{\partial \mathcal{J}_T}{\partial u_n (t_j)} &=  - \Re  \Braket{\chi (t_j) | i e^{-i \hat{H} \Delta t}  \sum_{k = 0}^{\infty }  \frac{(-1)^k}{(k+1)!} \left[ -i \hat{H} \Delta t , -i \frac{\partial \hat{H}}{\partial u_n (t_j)} \Delta t  \right]_k | \psi (t_{j-1})}  \nonumber \\
 	&=  - \Re  \Braket{\chi (t_{j-1}) | \sum_{k = 0}^{\infty }  \frac{i^{k} \Delta t^{k+1}}{(k+1)!} \left[ \hat{H} , \frac{\partial \hat{H}}{\partial u_n (t_j)}  \right]_k | \psi (t_{j-1})}  \; . \label{eq:higherOrderGradient}
 \end{align}
 For small time-steps the higher order corrections can be neglected, however, choosing a larger time-step reduces the run-time of the time-evolution, which is critical when describing many-body systems. Therefore, when using large time-steps, higher-order correlations should be included to preserve accuracy. Computing the higher order corrections can be done efficiently by analytically deriving the commutators beforehand. In section \ref{sec:modTMDRG} an alternative propagator is constructed using the Suzuki-Trotter expansion, which causes the gradient to be exact to zeroth order.\\
 Finally, combining the derivatives of eq. \eqref{eq:regularizationGrad} and \eqref{eq:higherOrderGradient} produces the entries of the gradient vector for the cost function
 \begin{align}
-	\frac{\partial J (\boldsymbol{u})}{\partial u_n (t_j)}  &= - \Re \Braket{\chi (t_{j-1}) | \left( i \frac{\partial \hat{H}}{\partial u_n (t_j)} \Delta t + \mathrm{h.o.} \right)  | \psi (t_{j-1})}  \nonumber \\
+	\frac{\partial \mathcal{J} (\boldsymbol{u})}{\partial u_n (t_j)}  &= - \Re \Braket{\chi (t_{j-1}) | \left( i \frac{\partial \hat{H}}{\partial u_n (t_j)} \Delta t + \mathrm{h.o.} \right)  | \psi (t_{j-1})}  \nonumber \\
 	& \quad + \frac{\gamma}{\Delta t} \left( 2 u_n (t_j) - u_n (t_{j+1}) - u_n (t_{j-1}) \right) \; .
 	\label{eq:costGradient}
 \end{align}
@@ -120,10 +120,10 @@ Through the analytically derived gradient, the cost can be iteratively updated u
 \begin{algorithmic}
 \caption{GRAPE Algorithm}
 \State Choose initial control $\boldsymbol{u}^{(1)}$.
-\While{$ J > J_{\mathrm{threshold}}$}
+\While{$ \mathcal{J} > \mathcal{J}_{\mathrm{threshold}}$}
 	\State Calculate $\ket{\psi (t_k)} = \prod_{j=1}^{k} \hat{\mathcal{U}}_j \ket{\psi (0)}$ for $k = 1 \ldots N$.
 	\State Calculate $\ket{\chi (t_k)} = \prod_{j=N}^{k} \hat{\mathcal{U}}_{j}^{\dag} \ket{\chi (T)}$ for $k = N \ldots 1$. 
-	\State Evaluate $\frac{\partial J}{\partial u_n (t_k)}$ for $k = 1 \ldots N$ and $n = 1 \ldots m$ according to eq. \eqref{eq:costGradient}.
+	\State Evaluate $\frac{\partial \mathcal{J}}{\partial u_n (t_k)}$ for $k = 1 \ldots N$ and $n = 1 \ldots m$ according to eq. \eqref{eq:costGradient}.
 	\State Update controls using gradient such that $J^{(i + 1)} < J^{(i)}$. 
 \EndWhile
 \end{algorithmic}
@@ -156,7 +156,7 @@ where the tunneling Hamiltonian, $\hat{H}_J$, is regarded as an uncontrollable d
 \end{equation}
 Since the control at times $t_j$ and $t_{j-1}$ contribute to $\hat{\mathcal{U}}_{j}^{\mathrm{ST}}$, the elements of the cost gradient are
 \begin{equation}
-	\frac{\partial J_T}{\partial U (t_j)} = - \Re \Braket{\chi (t_j) | i  \frac{\partial \hat{\mathcal{U}}_{j}^{\mathrm{ST}}}{\partial U (t_j)} | \psi (t_{j-1})} - \Re \Braket{\chi (t_{j+1}) | i \frac{ \partial \hat{\mathcal{U}}_{j+1}^{\mathrm{ST}}}{\partial U (t_j)} | \psi (t_{j})} \; . \label{eq:STcostderiv}
+	\frac{\partial \mathcal{J}_T}{\partial U (t_j)} = - \Re \Braket{\chi (t_j) | i  \frac{\partial \hat{\mathcal{U}}_{j}^{\mathrm{ST}}}{\partial U (t_j)} | \psi (t_{j-1})} - \Re \Braket{\chi (t_{j+1}) | i \frac{ \partial \hat{\mathcal{U}}_{j+1}^{\mathrm{ST}}}{\partial U (t_j)} | \psi (t_{j})} \; . \label{eq:STcostderiv}
 \end{equation}
 Further examining the derivative of the first propagator reveals
 \begin{align}
@@ -180,7 +180,7 @@ Likewise, the derivative of the second propagator is
 \end{equation}
 Inserting the derivatives of eq. \eqref{eq:STpropderiv1} and \eqref{eq:STpropderiv2} into the derivative of the cost (eq. \eqref{eq:STcostderiv}) yields
 \begin{align}
-	\frac{\partial J_T}{\partial U (t_j)} &= - \Re \Braket{\chi (t_j) |   \left(  \hat{H}_U \Delta t /2 \right) \hat{\mathcal{U}}_{j}^{\mathrm{ST}} | \psi (t_{j-1})} - \Re \Braket{\chi (t_{j+1}) |  \hat{\mathcal{U}}_{j+1}^{\mathrm{ST}} \left(  \hat{H}_U \Delta t /2 \right) | \psi (t_{j})} \nonumber \\
+	\frac{\partial \mathcal{J}_T}{\partial U (t_j)} &= - \Re \Braket{\chi (t_j) |   \left(  \hat{H}_U \Delta t /2 \right) \hat{\mathcal{U}}_{j}^{\mathrm{ST}} | \psi (t_{j-1})} - \Re \Braket{\chi (t_{j+1}) |  \hat{\mathcal{U}}_{j+1}^{\mathrm{ST}} \left(  \hat{H}_U \Delta t /2 \right) | \psi (t_{j})} \nonumber \\
 	&= - \Re \Braket{\chi (t_j) |  \hat{H}_U \Delta t /2  | \psi (t_{j})} - \Re \Braket{\chi (t_{j}) |  \hat{H}_U \Delta t /2   | \psi (t_{j})} \nonumber \\
 	&= - \Re \Braket{\chi (t_j) | \hat{H}_U \Delta t | \psi (t_{j})} \; . \label{eq:STcostgrad}
 \end{align}  
@@ -278,7 +278,8 @@ Interior point methods solve a set of equations derived directly from the KKT co
 \end{align}
 \label{eq:BarrierProblem}
 \end{subequations}
-where $\mu$ is the positive barrier parameter, and $s$ is a vector of slack variables, which transforms the inequality constraint into an equality at the cost of adding additional optimization variables. In order to ensure the direction of the inequality constraint, it is a requirement that $s \geq 0$. While this is an inequality constraint itself, it is enforced via the logarithmic barrier term, which diverges as any component of $s$ approaches zero. Furthermore, the barrier term does not add much complexity to the problem, as it convex and twice differentiable \cite{Wachter2006}.\\
+where $\mu$ is the positive barrier parameter, and $s$ is a vector of slack variables, which transforms the inequality constraint into an equality at the cost of adding additional optimization variables. In order to ensure the direction of the inequality constraint, it is a requirement that $s \geq 0$. While this is an inequality constraint itself, it is enforced via the logarithmic barrier term, which diverges as any component of $s$ approaches zero. Furthermore, the barrier term does not add much complexity to the problem, as it convex and twice differentiable \cite{Wachter2006}.
+
 The step direction towards the KKT-point can be found through Newtons method, however, often one can only take a small step before violating the constraints, hence the pure Newton direction is dubbed the \textit{affine scaling direction} \cite{wright}. The barrier approach consists of finding solutions of the barrier problem \eqref{eq:BarrierProblem} for a sequence of barrier parameters $\{ \mu_k \}$ converging to zero. Several strategies exist for updating the barrier parameters \cite{Byrd1997,Fiacco1990}, however, their common goal is to bias the step direction of the algorithm, such that the longest possible steps can be taken. The solutions of the barrier subproblems can be denoted $(x(\mu),s(\mu), \lambda(\mu),\zeta(\mu))$, and the trajectory of these points is known as the \textit{primal-dual central path}, which converges to $(x^*,s^*, \lambda^*,\zeta^*)$ as $\mu \to 0$ \cite{wright}.\\
 
 The KKT conditions of the barrier problem \eqref{eq:BarrierProblem} can be expressed in a single mapping 
@@ -372,10 +373,10 @@ The great advantage of employing a reduced basis representation is the drastic r
 The Gradient-Optimization Using Parametrization or \textsc{GROUP} algorithm introduced in \cite{sorensen2018} combines the chopped basis representation with the \textsc{GRAPE} algorithm. A comparison between different optimization algorithms for optimal control demonstrated that \textsc{GROUP} outperformed both \textsc{GRAPE} and Nelder-Mead with \textsc{CRAB} in term of fidelity reached and number of function evaluations required for convergence. \\
 Parameterizing the control alters the gradient of the cost function \eqref{eq:costGradient}. The new gradient can be derived using the chain rule
 \begin{align}
-	\frac{\partial J (c)}{\partial c_n} &= \sum_{j = 1}^{N} \frac{\partial J (u)}{\partial u(t_j)} \frac{\partial u(t_j)}{\partial c_n} \nonumber \\
-	&= \sum_{j = 1}^{N} \frac{\partial J }{\partial u(t_j)} S(t_j) f_n(t_j) \; , \label{eq:GROUPgradient} 
+	\frac{\partial \mathcal{J} (c)}{\partial c_n} &= \sum_{j = 1}^{N} \frac{\partial \mathcal{J} (u)}{\partial u(t_j)} \frac{\partial u(t_j)}{\partial c_n} \nonumber \\
+	&= \sum_{j = 1}^{N} \frac{\partial \mathcal{J} }{\partial u(t_j)} S(t_j) f_n(t_j) \; , \label{eq:GROUPgradient} 
 \end{align}
-where only a single control has been chosen for cleaner notation. The gradient in \textsc{GROUP} is more complicated than in \textsc{GRAPE}, however, the cost of computing the gradient is still dominated by the evaluation of the original derivative ${\partial J }/{\partial u(t_j)}$. Therefore, the increased computational cost of evaluating the gradient can be considered negligible \cite{sorensen2018}.\\
+where only a single control has been chosen for cleaner notation. The gradient in \textsc{GROUP} is more complicated than in \textsc{GRAPE}, however, the cost of computing the gradient is still dominated by the evaluation of the original derivative ${\partial \mathcal{J} }/{\partial u(t_j)}$. Therefore, the increased computational cost of evaluating the gradient can be considered negligible \cite{sorensen2018}.\\
 In addition, the chopped basis parameterization changes the derivatives of the constraints as well. Thus, the new constraint Jacobian can be derived using the chain rule as well
 \begin{align}
 	(A_h (c))_{i,n}  &= \sum_{j = 1}^{N} \frac{\partial h_i (u ) }{\partial u(t_j)} \frac{\partial u(t_j)}{\partial c_n} \nonumber \\
@@ -390,7 +391,8 @@ Lastly, the parameterization of the control also alters the Hessians of the cont
 
 
 \section{Quantum Speed Limit}
-A subtlety in the formulation of optimal control problems is that one is only searching for the control, $\boldsymbol{u}(t)$, which steers the initial state into the target-state at exactly the duration $t = T$. However, it is often desirable to obtain the desired state in the shortest timespan possible. If a solution exists at $t= T_1$, it might not exist at $t = T_2 < T_1$. The shortest duration for which a solution can be found is called the \textit{quantum speed limit} (QSL). The speed at which the system can evolve is determined by the relevant energy scales. If the system only has access to finite energies, a lower bound for how fast the system can evolve exists, which in turn leads to the QSL \cite{Caneva2009}.\\
+A subtlety in the formulation of optimal control problems is that one is only searching for the control, $\boldsymbol{u}(t)$, which steers the initial state into the target-state at exactly the duration $t = T$. However, it is often desirable to obtain the desired state in the shortest timespan possible. If a solution exists at $t= T_1$, it might not exist at $t = T_2 < T_1$. The shortest duration for which a solution can be found is called the \textit{quantum speed limit} (QSL). The speed at which the system can evolve is determined by the relevant energy scales. If the system only has access to finite energies, a lower bound for how fast the system can evolve exists, which in turn leads to the QSL \cite{Caneva2009}.
+
 The quantum speed limit can also be interpreted geometrically by examining how the state of the system moves through the Hilbert space. Considering the transfer $\ket{\psi} \to \ket{\chi}$, the fidelity $F = |\braket{\psi | \chi}|$ is a measure of the overlap of the states. The fidelity is zero if the two states are orthogonal, while its maximum value of one is obtained if the states are identical up to a global phase. The distance between the two states in the Hilbert space can be interpreted as an angle \cite{Wootters1981}
 \begin{equation}
 	\theta = \arccos \left( \sqrt{F} \right) \; ,
