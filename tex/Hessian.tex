@@ -4,18 +4,19 @@ Consider the cost
 \begin{equation}
 	\mathcal{J}_T = \frac{1}{2} \left( 1- |\Braket{\psi_t | \psi (T)}|^2 \right)  = \frac{1}{2} \left( 1- \Bigg|\Braket{\psi_t | \prod_{j = 1}^{N} \hat{\mathcal{U}}_j |\psi (0)} \Bigg| ^2 \right) \; ,
 \end{equation}
-where the general propagator is $\hat{\mathcal{U}}_j \equiv \hat{\mathcal{U}} (u(t_j)) = \exp \{ -i \hat{H} \Delta t \}$, and the Hamiltonian is of the form
+where the general propagator is $\hat{\mathcal{U}}_j \equiv \hat{\mathcal{U}} (u(t_j)) = \exp \{ -i \hat{H} (t_j) \Delta t \}$, and the Hamiltonian is of the form
 \begin{equation}
-	\hat{H} =  \hat{H}_0 + \sum_{n = 1}^{m}  \hat{H}_n (u_n(t)) \; .
+	\hat{H}(t_j) =  \hat{H}_0 (t_j) + \sum_{n = 1}^{m}  \hat{H}_n (u_n (t_j)) \; .
 \end{equation}\\
-Defining the transfer probability amplitude $\mathcal{T} \equiv \braket{\psi_t | \psi (T)}$, the derivative of the cost is given by
+Defining the transfer probability amplitude $\mathcal{T} \equiv \braket{\psi_t | \psi (T)}$, the derivative of the cost can be formulated as
 \begin{equation}
 	\frac{\partial \mathcal{J}_T}{\partial u_n (t_j)} = - \frac{1}{2} \frac{\partial}{\partial u_n (t_j)}  \mathcal{T}^* \mathcal{T}   = - \Re \left( \mathcal{T}^* \frac{\partial \mathcal{T}}{\partial u_n (t_j)} \right) \; ,
 \end{equation}
 where
 \begin{align}
 	\frac{\partial \mathcal{T}}{\partial u_n (t_j)} &= \frac{\partial }{\partial u_n (t_j)} \Braket{\psi_t | \prod_{j = 1}^{N} \hat{\mathcal{U}}_j | \psi (0)} \nonumber \\
-	&= \Braket{\psi_t | \hat{\mathcal{U}}_N \ldots \hat{\mathcal{U}}_{j+1} \frac{\partial \hat{\mathcal{U}}_{j}}{\partial u_n (t_j)} \hat{\mathcal{U}}_{j-1} \ldots \hat{\mathcal{U}}_{1} | \psi (0)} \; .
+	&= \Braket{\psi_t | \hat{\mathcal{U}}_N \ldots \hat{\mathcal{U}}_{j+1} \frac{\partial \hat{\mathcal{U}}_{j}}{\partial u_n (t_j)} \hat{\mathcal{U}}_{j-1} \ldots \hat{\mathcal{U}}_{1} | \psi (0)} \nonumber \\
+	&= \Braket{\psi_t (t_j) |  \frac{\partial \hat{\mathcal{U}}_{j}}{\partial u_n (t_j)}  | \psi (t_{j-1})} \; .
 	\label{eq:singleDerivT}
 \end{align}
 The matrix elements of the cost Hessian have the form
@@ -28,14 +29,13 @@ The first term of the Hessian is easily computed from the elements of the gradie
 \begin{equation}
 	\frac{\partial \mathcal{T}}{\partial u_n (t_j)} \frac{\partial \mathcal{T}^*}{\partial u_n (t_i)} = \Braket{\psi_t (t_j) | \frac{\partial \hat{\mathcal{U}}_{j}}{\partial u_n (t_j)} | \psi (t_{j-1})} \Braket{\psi (t_{i-1}) | \frac{\partial \hat{\mathcal{U}}_{i}^\dag}{\partial u_n (t_i)} | \psi_t (t_{i})} \; .
 \end{equation}
-The second term of the Hessian is more complicated. Assuming $j > i$ for simplicity, the derivative can be calculated from eq. \eqref{eq:singleDerivT}
-\begin{align}
-	\frac{\partial^2 \mathcal{T}}{\partial u_n (t_j)   \partial u_n (t_i)} =  \Braket{\psi_t (t_j) | \frac{\partial \hat{\mathcal{U}}_{j}}{\partial u_n (t_j)}  \; \left( \prod_{k = i+1}^{j-1} \hat{\mathcal{U}}_{k}  \right) \; \frac{\partial \hat{\mathcal{U}}_{i}}{\partial u_n (t_i)}  | \psi (t_{i-1})} \; .
-	\label{eq:doubleDerivT}
-\end{align}
-The Hessian is real and symmetric. Therefore the derivative above is also valid for the case of $ j < i$. For $i = j$  the internal product of propagators vanishes, and the diagonal contributions are simply
+Meanwhile, the second term of the Hessian is more complicated, although it can easily be derived from eq. \eqref{eq:singleDerivT}
 \begin{equation}
-	\frac{\partial^2 \mathcal{T}}{\partial^2 u_n (t_i)} =  \Braket{\psi_t (t_i) | \frac{\partial ^2 \hat{\mathcal{U}}_{j}}{\partial u_n ^2 (t_j) }   | \psi (t_{i-1})} \; .
+	\frac{\partial^2 \mathcal{T}}{\partial u_n (t_j) \partial u_n (t_i)} =  
+	\begin{dcases}
+   \Braket{\psi_t (t_j) | \frac{\partial \hat{\mathcal{U}}_{j}}{\partial u_n (t_j)}  \; \left( \prod_{k = i+1}^{j-1} \hat{\mathcal{U}}_{k}  \right) \; \frac{\partial \hat{\mathcal{U}}_{i}}{\partial u_n (t_i)}  | \psi (t_{i-1})} , & \text{for $i \neq j$}.\\
+    \Braket{\psi_t (t_i) | \frac{\partial ^2 \hat{\mathcal{U}}_{j}}{\partial u_n ^2 (t_j) }   | \psi (t_{i-1})}	, & \text{for $i = j$}.
+  	\end{dcases} \; .
 \end{equation}
 Thus, defining $\ket{\chi (T)} \equiv i \mathcal{T} \ket{\psi_t}  = i \ket{\psi_t} \braket{\psi_t | \psi (T)}$, the matrix elements of the Hessian read
 \begin{align}
@@ -46,17 +46,30 @@ Thus, defining $\ket{\chi (T)} \equiv i \mathcal{T} \ket{\psi_t}  = i \ket{\psi_
 
 Consider the case where the control Hamiltonians, $\hat{H}_n$, are diagonal, whereby they and their derivatives mutually commute. Expanding the propagator through the Suzuki-Trotter expansion and evaluating the control function at each end of the time-step interval produces the propagator 
 \begin{equation}
-	\hat{\mathcal{U}}_{j}^{\mathrm{ST}} = \left( \prod_{n = 1}^{m} e^{ -i \hat{H}_n (u_n (t_j)) \Delta t /2 } \right) \: e^{ -i \hat{H}_0 \Delta t } \: \left( \prod_{n = 1}^{m} e^{  -i  \hat{H}_n (u_n (t_{j-1}))  \Delta t /2 } \right) \; .
+	\hat{\mathcal{U}}_{j}^{\mathrm{ST}} = \left( \prod_{n = 1}^{m} e^{ -i \hat{H}_n (t_j) \Delta t /2 } \right) \: e^{ -i \hat{H}_0 \Delta t } \: \left( \prod_{n = 1}^{m} e^{  -i  \hat{H}_n  (t_{j-1})  \Delta t /2 } \right) \; .
 \end{equation}
-The derivative of the propagator is
+The derivative of the Suzuki-Trotter propagator is
 \begin{equation}
-	\frac{\partial \hat{\mathcal{U}}_{k}^{\mathrm{ST}}}{\partial u_n (t_j)} = \left( -i \hat{H}_n (u_n (t_j)) \Delta t /2   \right) \hat{\mathcal{U}}_{j}^{\mathrm{ST}} \delta_{j , k} + \hat{\mathcal{U}}_{j}^{\mathrm{ST}} \left( -i \hat{H}_n (u_n (t_{j-1}))  \Delta t /2  \right)  \delta_{j , k+1} \; ,
+	\frac{\partial \hat{\mathcal{U}}_{k}^{\mathrm{ST}}}{\partial u_n (t_j)} = \left( -i \frac{\partial \hat{H}_n (t_j)}{\partial u_n (t_j)} \frac{\Delta t}{2} \right) \hat{\mathcal{U}}_{j}^{\mathrm{ST}} \delta_{j , k} + \hat{\mathcal{U}}_{j}^{\mathrm{ST}} \left( -i \frac{\partial \hat{H}_n (t_{j-1})}{\partial u_n (t_{j-1})} \frac{\Delta t}{2} \right)  \delta_{j , k+1} \; ,
 \end{equation}
-where the two contributions origin from the end-point evaluation of the control. Inserting the propagator into the elements of the Hessian \eqref{eq:generalHessianElements} produces 
+where the two contributions origin from the end-point evaluation of the control. Thus, the derivatives with respect to $u_n (t_j)$ stated above will have contributions from both $\hat{\mathcal{U}}_{j}^{\mathrm{ST}}$ and $\hat{\mathcal{U}}_{j+1}^{\mathrm{ST}}$. Thereby the first order derivative of the transfer probability amplitude reads 
+\begin{equation}
+	\frac{\partial \mathcal{T}^{\mathrm{ST}}}{\partial u_n (t_j)} = -i \Delta t \Braket{\psi_t (t_j) | \frac{\partial \hat{H}_n (t_j)}{\partial u_n (t_j)} | \psi (t_j) } \; ,
+\end{equation}
+while the second order derivative is
+\begin{equation}
+	\frac{\partial^2 \mathcal{T}^{\mathrm{ST}}}{\partial u_n (t_j) \partial u_n (t_i)} =  
+	\begin{dcases}
+   - \Delta t^2 \Braket{\psi_t (t_i) | \frac{\partial \hat{H}_n (t_i)}{\partial u_n (t_i)} \left( \prod_{k = j + 1}^{i} \hat{\mathcal{U}}_{k}^{\mathrm{ST}} \right) \frac{\partial \hat{H}_n (t_j)}{\partial u_n (t_j)} | \psi (t_j) } , & \text{for $i \neq j$}.\\
+    - i \Delta t \Braket{\psi_t (t_i) | \frac{\partial^2 \hat{H}_n (t_j)}{\partial u_n ^2 (t_j)} - i \Delta t \left( \frac{\partial \hat{H}_n (t_j)}{\partial u_n (t_j)} \right)^2 | \psi (t_j) }	, & \text{for $i = j$}.
+  	\end{dcases} \; .
+\end{equation} 
+
+Inserting the propagator into the elements of the Hessian \eqref{eq:generalHessianElements} produces 
 \begin{align}
 	\frac{\partial^2 \mathcal{J}}{\partial u_n (t_j) \partial u_n (t_i)} =& - \Re \left( \Braket{\psi_t (t_j) | \frac{\partial \hat{H}_n (u_n (t_j))}{\partial u_n (t_j)} | \psi (t_{j})} \Braket{\psi (t_{i}) | \frac{\partial \hat{H}_n ^* (u_n (t_i))}{\partial u_n (t_i)} | \psi_t (t_{i})} \right) \Delta t ^2 \nonumber \\
 	&+ \Im \Braket{\chi (t_j) | \frac{\partial \hat{H}_n (u_n (t_j))}{\partial u_n (t_j)}  \; \left( \prod_{k = i+1}^{j} \hat{\mathcal{U}}_{k}^{\mathrm{ST}}  \right) \; \frac{\partial \hat{H}_n (u_n (t_i))}{\partial u_n (t_i)}  | \psi (t_{i})} \Delta t^ 2 \; ,
 	\label{eq:expandedHessianElements}
 \end{align}
-where the hermitian conjugate of the control Hamiltonian $\hat{H}_n$ is simply the conjugate, as it is considered diagonal.\\ 
+where the hermitian conjugate of the control Hamiltonian $\hat{H}_n$ is simply the conjugate, as it is considered diagonal. \\ 
 Having already computed the elements of the gradient, the number of step-propagations needed for the computation of the full Hessian is $N^2 / 2 - N$ due to the symmetry of the matrix and the lack of new propagations for computing the diagonal elements.
