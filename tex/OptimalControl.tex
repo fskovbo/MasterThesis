@@ -33,7 +33,7 @@ Assume the transfer time, $T$, is discretized in steps of $\Delta t = T/N$. Subj
 \end{equation}
 The time-evolution of the system during the time step $j$ is given by the propagator
 \begin{equation}
-	\hat{\mathcal{U}}_j \equiv \hat{\mathcal{U}} (u(t_j)) = \exp \bigg\{ -i \left(  \sum_{n = 1}^{m}  \hat{H}_n (u_n(t_j))  \right) \Delta t \bigg\} \; . 
+	\hat{\mathcal{U}}_j \equiv \hat{\mathcal{U}} (u(t_j)) = \exp \bigg\{ -i \left( \hat{H}_0  \sum_{n = 1}^{m}  \hat{H}_n (u_n(t_j))  \right) \Delta t \bigg\} \; . 
 \end{equation} 
 Thereby, the cost function \eqref{eq:grapeCost} becomes
 \begin{equation}
@@ -47,21 +47,21 @@ First, consider the derivative of the regularization
 	&= \frac{\gamma}{\Delta t} \left( 2 u_n (t_j) - u_n (t_{j+1}) - u_n (t_{j-1}) \right) \; . \label{eq:regularizationGrad}
 \end{align}
 The part of the gradient related to the regularization depends only on the control, whereby it can be calculated without considering the state of the system.\\ 
-Next, consider the derivative of $\mathcal{J}_T$. Defining the transfer probability amplitude $\tau \equiv \braket{\psi_{\mathrm{target}} | \psi (T)}$, the derivative of the final infidelity with respect to the control can be written as 
+Next, consider the derivative of $\mathcal{J}_T$. Defining the transfer probability amplitude $\mathcal{T} \equiv \braket{\psi_{\mathrm{target}} | \psi (T)}$, the derivative of the final infidelity with respect to the control can be written as 
 \begin{equation}
-	\frac{\partial \mathcal{J}_T}{\partial u_n (t_j)} = - \frac{1}{2} \frac{\partial}{\partial u_n (t_j)}  \tau^* \tau   = - \Re \left( \tau^* \frac{\partial \tau}{\partial u_n (t_j)} \right) \; .
+	\frac{\partial \mathcal{J}_T}{\partial u_n (t_j)} = - \frac{1}{2} \frac{\partial}{\partial u_n (t_j)}  \mathcal{T}^* \mathcal{T}   = - \Re \left( \mathcal{T}^* \frac{\partial \mathcal{T}}{\partial u_n (t_j)} \right) \; .
 	\label{eq:dJTdu}
 \end{equation}
-From eq. \eqref{eq:dJTdu} it is evident that the derivative of the infidelity depends only on the derivative of the transfer probability amplitude, ${\partial \tau}/{\partial u_n (t_j)}$. This derivative can be rewritten as
+From eq. \eqref{eq:dJTdu} it is evident that the derivative of the infidelity depends only on the derivative of the transfer probability amplitude, ${\partial \mathcal{T}}/{\partial u_n (t_j)}$. This derivative can be rewritten as
 \begin{align}
-	\frac{\partial \tau}{\partial u_n (t_j)} &= \frac{\partial }{\partial u_n (t_j)} \Braket{\psi_{\mathrm{target}} | \prod_{j = 1}^{N} \hat{\mathcal{U}}_j | \psi (0)} \nonumber \\
+	\frac{\partial \mathcal{T}}{\partial u_n (t_j)} &= \frac{\partial }{\partial u_n (t_j)} \Braket{\psi_{\mathrm{target}} | \prod_{j = 1}^{N} \hat{\mathcal{U}}_j | \psi (0)} \nonumber \\
 	&= \Braket{\psi_{\mathrm{target}} | \hat{\mathcal{U}}_N \ldots \hat{\mathcal{U}}_{j+1} \frac{\partial \hat{\mathcal{U}}_{j}}{\partial u_n (t_j)} \hat{\mathcal{U}}_{j-1} \ldots \hat{\mathcal{U}}_{1} | \psi (0)}
 	\label{eq:dcdu}
 \end{align}
-Multiplying eq. \eqref{eq:dcdu} with $\tau^*$ yields
+Multiplying eq. \eqref{eq:dcdu} with $\mathcal{T}^*$ yields
 \begin{align}
-	\tau^* \frac{\partial \tau}{\partial u_n (t_j)} &=  \braket{\psi(T) | \psi_{\mathrm{target}}} \Braket{\psi_{\mathrm{target}} | \prod_{j' = j +1}^{N} \hat{\mathcal{U}}_{j '} \frac{\partial \hat{\mathcal{U}}_{j}}{\partial u_n (t_j)} \prod_{j' = 1}^{ j-1} \hat{\mathcal{U}}_{j '} | \psi (0)} \\
-	&= i \Braket{\chi (T) | \prod_{j' = j +1}^{M} \hat{\mathcal{U}}_{j '} \frac{\partial \hat{\mathcal{U}}_{j}}{\partial u_n (t_j)} \prod_{j' = 1}^{ j-1} \hat{\mathcal{U}}_{j '} | \psi (0)} \\
+	\mathcal{T}^* \frac{\partial \mathcal{T}}{\partial u_n (t_j)} &=  \braket{\psi(T) | \psi_{\mathrm{target}}} \Braket{\psi_{\mathrm{target}} | \prod_{j' = j +1}^{N} \hat{\mathcal{U}}_{j '} \frac{\partial \hat{\mathcal{U}}_{j}}{\partial u_n (t_j)} \prod_{j' = 1}^{ j-1} \hat{\mathcal{U}}_{j '} | \psi (0)} \\
+	&= i \Braket{\chi (T) | \prod_{j' = j +1}^{N} \hat{\mathcal{U}}_{j '} \frac{\partial \hat{\mathcal{U}}_{j}}{\partial u_n (t_j)} \prod_{j' = 1}^{ j-1} \hat{\mathcal{U}}_{j '} | \psi (0)} \\
 	&= i \Braket{\chi (t_j) |  \frac{\partial \hat{\mathcal{U}}_{j}}{\partial u_n (t_j)} | \psi (t_{j-1})} \; ,
 	\label{eq:TaudTau}
 \end{align}
@@ -426,6 +426,6 @@ if the states $\ket{\psi}$ and $\ket{\chi}$ are orthogonal. Interpreting the sta
 	F(T) = \sin ^2 \left( \int_{0}^{T} - \dv{\theta (t)}{t} \mathrm{d} t \right) =  \sin ^2 \left( \eval{ - \theta(t)}_{0}^{T} \right) = \sin ^2 \left( \frac{\pi}{2} \frac{T}{T_{\mathrm{QSL}}} \right) \; .
 	\label{eq:FidelityDurationSin2}
 \end{equation}  
-The relation $\theta (T) = \frac{\pi}{2} \left( 1 -  \frac{T}{T_{\mathrm{QSL}}} \right)$ is only valid if the state is moving on a geodesic, whereas eq. \eqref{eq:FidelityDurationSin1} is more general. A similar behavior to eq. \eqref{eq:FidelityDurationSin2} was reported in \cite{Caneva2011}, where a number of systems were shown to behave according to the relation.
+The relation $\theta (T) = \frac{\pi}{2} \left( 1 -  \frac{T}{T_{\mathrm{QSL}}} \right)$ is only valid if the state is moving on a geodesic, whereas eq. \eqref{eq:FidelityDurationSin1} is more general. A similar behavior to eq. \eqref{eq:FidelityDurationSin2} was reported in \cite{Caneva2011}, where a number of systems were shown to behave according to the relation. However, it should be stressed that the relation \eqref{eq:FidelityDurationSin2} requires the initial and final states to be orthogonal and the system to be recast as an effective two-level system.
 
 For an example of optimal control see Appendix \ref{chap:LZexample}, which illustrates some of the consequences of the quantum speed limit.
