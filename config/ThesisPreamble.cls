@@ -262,7 +262,7 @@
 
 \DeclareMathOperator{\e}{e}
 \DeclareMathOperator{\im}{i}
-
+\newcommand*{\LargerCdot}{\raisebox{-0.35ex}{\scalebox{1.5}{$\cdot$}}}
 
 \newtheorem{theorem}{Theorem}
 

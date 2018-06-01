@@ -434,5 +434,54 @@ phase transition makes problem very non-trivial\\
 correlations near/at critical point \\
 dynamically crossing critical point (breakdown of adiabadicity, Kibble-Zurek, amplification of quantum fluctuations, spreading of correlations and entanglement) \\
 
+An important phenomenon for understanding non-equilibrium dynamics of local Hamiltonian models is the light-cone-like propagation of information within the system \cite{Eisert2015}. The effective light-cone limits the speed at which a system can respond to sudden changes in the Hamiltonian and is therefore important when considering the dynamical crossing of a phase transition.
+While the existence of light-cones in relativistic quantum field theories is well known, no strict light-cone behavior is is present in general, non-relativistic quantum systems. However, for quantum systems evolving according to a local Hamiltonian, the propagation velocity of information is limited according to the Lieb-Robinson bounds \cite{Lieb1972}.\\ 
+Consider a general lattice system with the local Hamiltonian
+\begin{equation}
+	\hat{H} (t) = \sum_{\langle i,j \rangle} \hat{h}_{ij}(t) \; ,
+\end{equation}
+where $\langle \LargerCdot , \LargerCdot \rangle$ denotes nearest-neighbour sites. For two non-overlapping blocks of the lattice $A$, $B$ the Lieb-Robinson bound makes a statement about the operator norm of the commutator
+of any operators $\hat{O}_A$ and $\hat{O}_B$ in regions $A$, $B$ taken at
+different times
+\begin{equation}
+	\left\lVert \left[ \hat{O}_A (t) , \hat{O}_B (0) \right] \right\rVert \leq c \lVert \hat{O}_A \rVert \; \lVert \hat{O}_B \rVert
+	\min \left( | \hat{O}_A | , | \hat{O}_B | \right) \exp \left(-  \frac{L - v |t|}{\gamma} \right) \; ,
+	\label{eq:LiebRobinsonBound}
+\end{equation}
+where $L$ is the distance between $A$ and $B$, and $| A |$, $| B |$ denote the size (number of sites) in each block \cite{Bravyi2006}. The positive constants $c,v,\lambda > 0$ are determined by the maximum norm of the local Hamiltonians $\max_{\langle i,j \rangle} \max_{t}  \lVert \hat{h}_{ij} (t) \rVert $ and are therefore system dependent. The time-dependent operator norm of the commutator can be considered a measurement of correlated information separated in space and time, and it is effectively bound by the light-cone emerging from the exponential term of eq. \eqref{eq:LiebRobinsonBound}.
+A complete understanding of time-dependent Lieb-Robinson bound \eqref{eq:LiebRobinsonBound} is outside the scope of this thesis, however, two remarkable consequences regarding the spreading of information can be inferred from the bound: (i) information propagating outside the light-cone is exponentially suppressed \cite{Bravyi2006}, and (ii) correlations within the system is mediated through entangled quasi-particles \cite{Cheneau2012}, whose ballistic propagation velocity is limited by $v$ \cite{Calabrese2006}. The propagation velocity, $v$, different than the sound velocity of the system for curved dispersion relations \cite{Lauchli2008}, whereby it is referred to as the \textit{Lieb-Robinson velocity}.
+
+\begin{figure}[h!]
+\centering % <-- add this
+\begin{subfigure}[t]{0.48\textwidth}
+	\hspace{-3mm} 
+  	\includegraphics[width=1.1\textwidth]{Figures/QuasiParticles.pdf}
+\end{subfigure}
+\begin{subfigure}[t]{0.48\textwidth} 
+	 %\hspace{5mm}
+  	\includegraphics[width=1.1\textwidth]{Figures/LightConeDemo.pdf}
+\end{subfigure}
+\caption{Illustration of light-cone-like propagation of information. \textbf{(a)} one dimensional ultracold gas of bosonic atoms being abruptly quenched to a deep lattice configuration. \textbf{(b)} Entangled quasi-particle pairs emerge at all sites and propagate ballistically following the quench. \textbf{(c)} Density plot of the evolution of $\ket{1}_{0}$ in an $L = 61$ lattice according to a simple Hubbard Hamiltonian \eqref{eq:simpleHubbardModel}. Figures \textbf{(a)} and \textbf{(b)} are adopted from \cite{Cheneau2012}.}
+\label{fig:LightCone}
+\end{figure}
+
+Experimental evidence of an effective light-cone in a one-dimensional Bose-Hubbard system was shown in \cite{Cheneau2012}, where ... 
+
+To illustrate the propagation of correlation-mediating quasi-particles the evolution of an impurity in a simple Hubbard model was examined. Consider a Hubbard Hamiltonian of the form
+\begin{equation}
+	\hat{H} = - J \sum_{\langle i,j \rangle} \hat{a}_{i}^{\dag} \hat{a}_{j} \; ,
+	\label{eq:simpleHubbardModel}
+\end{equation} 
+which contains no interactions. A quasi-particle excitation may not have strong interactions with the remaining system, although they may mutually interact. Here a single particle is considered, whereby a negligible  interaction is a reasonable approximation. Meanwhile, the quasi-particle will be experiencing the same lattice potential and any underlying harmonic confinement, if it remains in the lowest band. Here, a flat lattice (no underlying potential) is considered. Thus, the model described is equivalent to a quasi-particle excitation on top of a homogeneous Mott-insualator.
+Figure \ref{fig:LightCone}(c) shows the density evolution of a single impurity, $\ket{1}_{0}$, initially placed at the central cite in a lattice of size $L = 61$. Here, the consequences of the effective light-cone are very obvious, as the propagation velocity is clearly bounded by a constant. Further examining the emerging cone, one will notice an exponentially suppressed population just outside the cone (more visible near the boundary). Due to the open boundaries of the system, the quasi-particle is reflected at the edge of the lattice, causing it to interfere with itself \cite{Calabrese2006}.  
+
+Due to the breakdown of adiabadicity around the critical point, it is inevitable that quasi-particle excitations will be created when transitioning from a superfluid to a Mott-insulator. Engineering a lattice depth ramping sequence which utilizes the interference of quasi-particle excitations may be the key to achieving low-defect Mott-insulators in short durations.
+
+
+At the critical point the correlation length diverges ENTANGLEMENT which greatly complicates a description of the system, however, when dynamically crossing the phase transition the entanglement can only grow linearly due to the light cone making a description possible .....
+
+
+The light-cone and Kibble-Zurek are not connected. Kibble-Zurek is strictly for phase transitions, while the light-cone is a general phenomenon emerging from the local Hamiltonian.
+
 
 The emergence of the quantum phenomena described above greatly complicates the process of engineering a lattice ramp sequence, which bring the system from a superfluid to a Mott-Insulating ground state. While classical approaches fail to capture the rich dynamics of the phase transition, simulations of the system can be performed through tensor network methods, which provide a low-entanglement effective theory \cite{Gillman2018}. Although the low-entanglement approximation inevitably fails for long durations, the finite spreading velocity of entanglement within the system enables the use of tensor-network methods for simulating dynamics for short durations \cite{Eisert2015}. 
