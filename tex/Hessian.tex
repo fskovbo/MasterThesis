@@ -40,7 +40,8 @@ Meanwhile, the second term of the Hessian is more complicated, although it can e
 Thus, defining $\ket{\chi (T)} \equiv i \mathcal{T} \ket{\psi_t}  = i \ket{\psi_t} \braket{\psi_t | \psi (T)}$, the matrix elements of the Hessian read
 \begin{align}
 	\frac{\partial^2 \mathcal{J}}{\partial u_n (t_j) \partial u_n (t_i)} =& - \Re \left( \Braket{\psi_t (t_j) | \frac{\partial \hat{\mathcal{U}}_{j}}{\partial u_n (t_j)} | \psi (t_{j-1})} \Braket{\psi (t_{i-1}) | \frac{\partial \hat{\mathcal{U}}_{i}^\dag}{\partial u_n (t_i)} | \psi_t (t_{i})} \right) \nonumber \\
-	&+ \Im \Braket{\chi (t_j) | \frac{\partial \hat{\mathcal{U}}_{j}}{\partial u_n (t_j)}  \; \left( \prod_{k = i+1}^{j-1} \hat{\mathcal{U}}_{k}  \right) \; \frac{\partial \hat{\mathcal{U}}_{i}}{\partial u_n (t_i)}  | \psi (t_{i-1})} \; .
+	&+ \Im \Braket{\chi (t_j) | \frac{\partial \hat{\mathcal{U}}_{j}}{\partial u_n (t_j)}  \; \left( \prod_{k = i+1}^{j-1} \hat{\mathcal{U}}_{k}  \right) \; \frac{\partial \hat{\mathcal{U}}_{i}}{\partial u_n (t_i)}  | \psi (t_{i-1})} (1 - \delta_{i , j}) \nonumber \\
+	&+ \Im 	 \Braket{\chi (t_i) | \frac{\partial ^2 \hat{\mathcal{U}}_{j}}{\partial u_n ^2 (t_j) }   | \psi (t_{i-1})} \delta_{i , j} \; .
 	\label{eq:generalHessianElements}
 \end{align}
 
@@ -67,8 +68,9 @@ while the second order derivative is
 
 Inserting the propagator into the elements of the Hessian \eqref{eq:generalHessianElements} produces 
 \begin{align}
-	\frac{\partial^2 \mathcal{J}}{\partial u_n (t_j) \partial u_n (t_i)} =& - \Re \left( \Braket{\psi_t (t_j) | \frac{\partial \hat{H}_n (u_n (t_j))}{\partial u_n (t_j)} | \psi (t_{j})} \Braket{\psi (t_{i}) | \frac{\partial \hat{H}_n ^* (u_n (t_i))}{\partial u_n (t_i)} | \psi_t (t_{i})} \right) \Delta t ^2 \nonumber \\
-	&+ \Im \Braket{\chi (t_j) | \frac{\partial \hat{H}_n (u_n (t_j))}{\partial u_n (t_j)}  \; \left( \prod_{k = i+1}^{j} \hat{\mathcal{U}}_{k}^{\mathrm{ST}}  \right) \; \frac{\partial \hat{H}_n (u_n (t_i))}{\partial u_n (t_i)}  | \psi (t_{i})} \Delta t^ 2 \; ,
+	\frac{\partial^2 \mathcal{J}}{\partial u_n (t_j) \partial u_n (t_i)} =& - \Re \left( \Braket{\psi_t (t_j) | \frac{\partial \hat{H}_n  (t_j)}{\partial u_n (t_j)} | \psi (t_{j})} \Braket{\psi (t_{i}) | \frac{\partial \hat{H}_n ^* (t_i)}{\partial u_n (t_i)} | \psi_t (t_{i})} \right) \Delta t ^2 \nonumber \\
+	&- \Im \Braket{\chi (t_j) | \frac{\partial \hat{H}_n  (t_j)}{\partial u_n (t_j)}  \; \left( \prod_{k = i+1}^{j} \hat{\mathcal{U}}_{k}^{\mathrm{ST}}  \right) \; \frac{\partial \hat{H}_n (t_i)}{\partial u_n (t_i)}  | \psi (t_{i})} \Delta t^ 2  ( 1 - \delta_{i , j}) \nonumber \\
+	&- \Re \Braket{\chi (t_i) | \frac{\partial^2 \hat{H}_n (t_j)}{\partial u_n ^2 (t_j)} - i \Delta t \left( \frac{\partial \hat{H}_n (t_j)}{\partial u_n (t_j)} \right)^2 | \psi (t_j) } \Delta t \delta_{i,j} \; ,
 	\label{eq:expandedHessianElements}
 \end{align}
 where the hermitian conjugate of the control Hamiltonian $\hat{H}_n$ is simply the conjugate, as it is considered diagonal. \\ 
