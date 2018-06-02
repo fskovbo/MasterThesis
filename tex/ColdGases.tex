@@ -213,10 +213,8 @@ The Gross-Pitaevskii equation is very similar to the Schrödinger equation with 
 The Bose-Hubbard model describes weakly interacting bosons in a periodic lattice within the tight binding limit. The model is perfectly capable of predicting results with good accuracy, however, two conditions must hold in order for it to be valid: (i) both the thermal energy and the mean interaction energy at a single site must be much smaller than the separation to first excited band, $\hbar \omega_0$, and (ii) the Wannier functions decay essentially within the length of the lattice constant \cite{manybodyBloch}.
 Under these conditions one is assured that only the lowest band is taken into account, and that only nearest-neighbour interactions take place.
 
-The Bose-Hubbard model is interesting, as it supports two distinct phases: the Superfluid phase and the Mott-Insulator phase. Furthermore, the model contains effects such as a quantum phase transition between the two phases mentioned above, which can be crossed without any change in external parameters. 
-
-WRITE MORE ABOUT PHASE TRANSITION
-NON INTEGRABLE MODEL
+The Bose-Hubbard model is interesting, as it supports two distinct phases: the Superfluid phase and the Mott-Insulator phase. Furthermore, the model contains effects such as a quantum phase transition between the two phases mentioned above, which can be crossed without any change in external parameters.
+While crossing the critical point a state experiences a variety of quantum phenomena, which have great implications for the dynamics of the system.
 
 
 \subsection{The Bose-Hubbard Hamiltonian}
@@ -428,12 +426,34 @@ The $\mu_{\pm}$ curves encloses the region where the system is in the Mott-Insul
 The mean-field solution of the Bose-Hubbard model is only an approximation, which proves quite inaccurate for one dimension. This is obvious when comparing the critical ratio for the mean-field approach, $\left( U/J \right)_{crit}^{MF,1D} = 11.66$, with numerical results computed using the DMRG method, $\left( U/J \right)_{crit}^{DMRG,1D} = 3.37$, \cite{Kuhner2000}. Nevertheless, the mean-field gives a good intuitive feeling of the physics taking place and how one can describe them without resorting to diagonalizing the Hamiltonian.
 
 
-\subsection{Crossing the Phase Transition}
+\section{Non-Equilibirum Dynamics near Critical Points}
+The standard procedure for experimentally preparing a Mott-insulator is condensing a gas of cold bosons into a shallow lattice, which effectively forms a superfluid in an equilibrium state. The lattice depth is then slowly ramped up, thereby changing the fraction $U/J$ and driving the phase transition to the Mott \cite{manybodyBloch,Greiner2002}. The constant change of a parameter can be considered a continuous quench of the initial state, whereby the system exhibit out-of-equilibrium dynamics.
 
-phase transition makes problem very non-trivial\\
-correlations near/at critical point \\
-dynamically crossing critical point (breakdown of adiabadicity, Kibble-Zurek, amplification of quantum fluctuations, spreading of correlations and entanglement) \\
+This section briefly covers some of the phenomena emerging when crossing a second order phase (continuous) transition like that of the Bose-Hubbard model. The goal is not to provide a full description of these phenomena but rather to illustrate some of the challenges associated with dynamically crossing the critical point.
 
+\subsection{Breakdown of Adiabaticity}
+Many experimental procedures rely on adiabaticity for state preparation. The adiabatic theorem in quantum mechanics state that under slow enough external perturbations, no transitions between energy levels take place. For systems with an energy gap between the ground and excited states this is particularly useful, as the ground state can only being excited through the Landau-Zener mechanism \cite{Landau1932,Zener1932} under small perturbations. Thus, state transfers can be achieved adiabatically in gapped systems. In most many-body systems the distance is exponentially small, whereby the time-scale of an adiabatic parameter variation grows exponentially large \cite{Polkovnikov2008}. The one-dimensional superfluid phase is gapless, whereby the energy spectrum is continuous. Therefore, any change in the parameters of a superfluid ground state will results in excitations in the form of Bogoliubov quasi-particles \cite{Polkovnikov2008,Ozeri2005}.
+Furthermore, in the vicinity of a critical point the relaxation time-scale of the system diverges, which is known as the \textit{critical slowing down} \cite{Zurek2005}.
+
+Thus, adibadicity is bound to break down when transitioning from a superfluid to a Mott-insulating state by varying the fraction $U/J$. However, changes of parameters are often still referred to as "adiabatic" if they are sufficiently slow compared to the natural time scales of the systems.
+
+\subsection{The Kibble-Zurek Mechanism}
+The Kible-Zurek theory describes the emergence of topological defect following a quench through a second-order (continuous) phase transition \cite{Zurek2005}.\\
+Consider a system in equilibrium described by a correlation length $\xi$. In the vicinity of a critical point the correlation length diverges as a power law
+\begin{equation}
+	\xi  \approx \xi_0 |\epsilon (t)|^{-\nu} \quad , \; \epsilon > 0 \; ,
+\end{equation} 
+where $\nu$ is a static critical exponent, and $\epsilon$ is a reduced coupling, which is zero at the critical point. Thus, near the critical point the equilibrium state is characterized by an infinite correlation length.\\
+Assume a state initially in equilibrium begin evolved towards the critical point \cite{Kibble1976}.  
+Approaching a second-order phase transition, an equilibrium state can have a relaxation time-scale, $\tau$, which diverges according to
+\begin{equation}
+	\tau \approx \tau_0 |\epsilon (t)|^{-\mu} \quad , \; \epsilon > 0 \; ,
+\end{equation}
+near the critical point \cite{Zurek2005}. Here, the parameter $\mu$ is another critical exponent. This divergence of the response time of the state referred to as the \textit{critical slowing down} and causes an inevitable breakdown of adibaticity. As the relaxation time becomes larger than the time before reaching the transition, the systems effectively enters a "freeze-out" period, in which the correlation length no longer can evolve. Thus, the system crosses the critical point without $\xi$ ever having spanned the entire system, which results in the formation of broken-symmetry phase domains, or defects, with independent values of the underlying order parameter \cite{Gillman2018}. This phenomenon is known as the Kibble-Zurek mechanism.
+In the context of the Bose-Hubbard model, the Kibble-Zurek mechanism is dependent on the direction of the phase transition, due the completely different energy spectra of the phases. While the transition from the gapped Mott-insulating state to a superfluid will produce topological defects, the opposite transition will amplify the quantum fluctuations of the initial state. Thus, the number-fluctuations of the initial superfluid state may carry over to the Mott-insulator, however, the magnitude of these fluctuations will depend on the exact form of the parameter variation \cite{Schutzhold2006}.
+
+
+\subsection{Light-Cone Propagation of Correlations}
 An important phenomenon for understanding non-equilibrium dynamics of local Hamiltonian models is the light-cone-like propagation of information within the system \cite{Eisert2015}. The effective light-cone limits the speed at which a system can respond to sudden changes in the Hamiltonian and is therefore important when considering the dynamical crossing of a phase transition.
 While the existence of light-cones in relativistic quantum field theories is well known, no strict light-cone behavior is is present in general, non-relativistic quantum systems. However, for quantum systems evolving according to a local Hamiltonian, the propagation velocity of information is limited according to the Lieb-Robinson bounds \cite{Lieb1972}.\\ 
 Consider a general lattice system with the local Hamiltonian
@@ -473,17 +493,7 @@ To illustrate the propagation of correlation-mediating quasi-particles the evolu
 	\label{eq:simpleHubbardModel}
 \end{equation} 
 which contains no interactions. A quasi-particle excitation may not have strong interactions with the remaining system, although they may mutually interact. Here a single particle is considered, whereby a negligible  interaction is a reasonable approximation. Meanwhile, the quasi-particle will be experiencing the same lattice potential and any underlying harmonic confinement, if it remains in the lowest band. Here, a flat lattice (no underlying potential) is considered. Thus, the model described is equivalent to a quasi-particle excitation on top of a homogeneous Mott-insualator.
-Figure \ref{fig:LightCone}(c) shows the density evolution of a single impurity, $\ket{1}_{0}$, initially placed at the central cite in a lattice of size $L = 61$. The resulting density wave is very reminiscent of a light/cone, as the probability velocity is bounded by a constant. Further examining the emerging cone, one will notice an exponentially suppressed population just outside the cone (more visible near the boundary). Due to the open boundaries of the system, the quasi-particle is reflected at the edge of the lattice, causing it to interfere with itself \cite{Calabrese2006}.
- 
-It should be stressed that the density wave shown in figure \ref{fig:LightCone} is not light-cone but merely the propagation of a single quasi-particle-like impurity. In a physical system quasi-particles will emerge at all sites, whereby the Lieb-Robinson velocity is different from the spreading velocity of non-interacting particles. In fact, the experimental investigation of light-cones in the Bose-Hubbard model found information velocities much higher than single-particle spreading velocities, yet lower than the Lieb-Robinson bound \cite{Cheneau2012}. While the simple Hubbard model illustrates the propagation of a single quasi-particle, the propagation of information within a many-body system is a many-body effect itself. 
+Figure \ref{fig:LightCone}(c) shows the density evolution of a single impurity, $\ket{1}_{0}$, initially placed at the central cite in a lattice of size $L = 61$. The resulting density wave is very reminiscent of a light/cone, as the probability velocity is bounded by a constant. Further examining the emerging cone, one will notice an exponentially suppressed population just outside the cone (more visible near the boundary). Due to the open boundaries of the system, the quasi-particle is reflected at the edge of the lattice, causing it to interfere with itself \cite{Calabrese2006}.\\
+It should be stressed that the density wave shown in figure \ref{fig:LightCone} is not light-cone but merely the propagation of a single quasi-particle-like impurity. In a physical system quasi-particles will emerge at all sites, whereby the Lieb-Robinson velocity is different from the spreading velocity of non-interacting particles. In fact, the experimental investigation of light-cones in the Bose-Hubbard model found information velocities much higher than single-particle spreading velocities, yet lower than the Lieb-Robinson bound \cite{Cheneau2012}. While the simple Hubbard model illustrates the propagation of a single quasi-particle, the propagation of information within a many-body system is a many-body effect itself. \\
 
-Due to the breakdown of adiabadicity around the critical point, it is inevitable that quasi-particle excitations will be created when transitioning from a superfluid to a Mott-insulator. Engineering a lattice depth ramping sequence which utilizes the interference of quasi-particle excitations may be the key to achieving low-defect Mott-insulators in short durations.
-
-
-At the critical point the correlation length diverges ENTANGLEMENT which greatly complicates a description of the system, however, when dynamically crossing the phase transition the entanglement can only grow linearly due to the light cone making a description possible .....
-
-
-The light-cone and Kibble-Zurek are not connected. Kibble-Zurek is strictly for phase transitions, while the light-cone is a general phenomenon emerging from the local Hamiltonian.
-
-
-The emergence of the quantum phenomena described above greatly complicates the process of engineering a lattice ramp sequence, which bring the system from a superfluid to a Mott-Insulating ground state. While classical approaches fail to capture the rich dynamics of the phase transition, simulations of the system can be performed through tensor network methods, which provide a low-entanglement effective theory \cite{Gillman2018}. Although the low-entanglement approximation inevitably fails for long durations, the finite spreading velocity of entanglement within the system enables the use of tensor-network methods for simulating dynamics for short durations \cite{Eisert2015}. 
+Due to the breakdown of adiabaticity around the critical point, it is inevitable that quasi-particle excitations will be created when transitioning from a superfluid to a Mott-insulator. Furthermore, a study of the Mott to superfluid phase transition showed that the propagation of correlations was well described for fast ramp sequences by ballistically spreading quasi-particles following the Lieb-Robinson bounds, while slower ramps required the interaction of quasi-particles to be considered \cite{Braun2015}. Therefore, engineering a lattice ramping sequence bringing the system from a superfluid to a Mott-Insulating ground state is a highly difficult task. While classical approaches fail to capture the rich dynamics of the phase transition, simulations of the system can be performed through tensor network methods, which provide a low-entanglement effective theory \cite{Gillman2018}. Although the low-entanglement approximation inevitably fails for long durations, the finite spreading velocity of correlations within the system enables the use of tensor-network methods for simulating dynamics for short durations \cite{Eisert2015}. 
