@@ -9,9 +9,9 @@ In order to address the crossing of the phase transition in the Bose-Hubbard mod
 Due to limits of the physical model, the control problem is subjected to a series of constraints, which makes the optimization very difficult. 
 Interior Point methods are considered some of the most powerful algorithms for solving non-linear, constrained problems. Using the gradient of the cost function, the algorithm approaches the optimal control values from within the feasible region. Thus, interior point methods require fewer, but more expensive, steps to converge, which is a beneficial feature when using the computationally expensive GRAPE gradient. The version of the Interior Point method used here is implemented in IPOPT library \cite{Wachter2006}.\\
 
-In this chapter the performance and accuracy of the framework is analyzed. First, an analysis of suitable optimization settings and boundary conditions are made. In addition, the bond dimension of the matrix product state required to capture the dynamics of the phase transition is examined. Next, the framework is applied to a small Bose-Hubbard system of five sites and five particles in order to gauge proper basis sizes and convergence criteria. In this regime the results can be compared with a previous optimization of the Bose-Hubbard phase transition through exact diagonalization \cite{MajaJulie}. Finally, a system of 15 sites and 15 particles is treated, which is outside the scope of traditional exact diagonalization approaches.   
-
-
+In this chapter the performance and accuracy of the framework is analyzed. First, suitable optimization settings and boundary conditions are discussed.
+Next, the framework is applied to a small Bose-Hubbard system of five sites and five particles, and its performance is compared to optimizations performed using the Nelder-Mead method.
+Finally, the application of the framework on larger systems is discussed, and an analysis of the entanglement entropy during quenches past the critical point is made. 
 
 
 \section{Determining Parameters}
@@ -23,7 +23,7 @@ The time evolution is carried out using Suzuki-Trotter decomposed propagator, wh
 \subsection{Boundary Conditions and Constraints}
 The Bose-Hubbard model is only well defined within the tight-binding limit. Below this limit the Wannier functions may start overlapping with the next-nearest neighbouring sites thereby facilitating two-site hopping, which is not accounted for in the model. Thus, the control function must be subjected to a lower boundary. In \cite{FrankBloch,Doria2011} initial lattice depths at $V_0 (0) = 3 E_{\mathrm{rec}}$ and $2 E_{\mathrm{rec}}$ were chosen, where it was argued that the model is still a decent approximation at this depth.
 Taking a conservative approach, the control here is subjected to the constraint $\left( U/J \right) (t) \geq 2$, which corresponds to a lattice depth around three recoil energies for a gas of Rb-87 atoms and an optical lattice with wavelength $\lambda = 1064 \: \mathrm{nm}$. 
-Furthermore, the initial control value was set to the minimum value $(U/J) (0) = 2$. 
+The initial control value was set slightly above the minimum value at $(U/J) (0) = 2.5$. Initially, the first control value was chosen to be equal to the lower bound, however, initiating the interior point algorithm at the edge of the feasible region caused to method to exhibit a poor convergence rate during its initial cycles.
 The final control value was set to $(U/J) (T) = 50$, which roughly corresponds to the final lattice depth of $V_0 (T) = 14 E_{\mathrm{rec}}$ used in \cite{FrankBloch}.\\
 The initial and target state were calculated from the control parameter at the start and end of the duration respectively using the DMRG algorithm. Thus, the states are insured to be the ground state at each end of the duration, whereby the optimized state transfer will bring be between two ground states.
 
@@ -39,39 +39,6 @@ Therefore, a ramp sequence was proposed in \cite{Zakrzewski2009}, which has an i
     \label{fig:LinSigSeed}
 \end{figure}
 Figure \ref{fig:LinSigSeed} shows the distribution of seeds used for the optimizations. Due to control parameter being the interaction strength of the Bose-Hubbard model, the phase transition occurs at quite a low control value. Hence, the initial part of the seed is a slowly increasing linear ramp, which crosses the point of the phase transition with a small slope. A shape function has been multiplied to the seeds enforcing a horizontal slope at the start and end of the duration, which helps avoiding any kinks in the control curve.
-
-
-\subsection{Tensor Truncation}
-A central operation in tensor network calculations is the singular value decomposition or Schmidt decomposition. From the entries of the resulting diagonal eigenmatrix, eigenstates with only little contribution to the current state can be inferred. These states can be discarded with minimal loss of accuracy of the tensorial representation. Discarding eigenstates effectively constitutes a truncation of the tensor bond dimension, whereby one avoids their otherwise exponential scaling. The two central parameters for the truncation are the maximum bond dimension, $D$, and the threshold (or conversely error) for when a state is discarded, $\epsilon_t$.
-As discussed in ..... the entanglement entropy increases rapidly around the point of the phase transition. Therefore, the bond dimension required to describe a ground state near the critical point is much higher than otherwise needed for the system. As the system is quenched, the initial ground state decays into a superposition of many eigenstates, whereby the truncation error will rise if a maximum bond dimension is kept \cite{Daley2004}. Therefore, the system is not in the ground state during the phase transition.
-
-To analyze the dynamical scaling of the bond dimension, a system with $L, N_p = 15$ and truncation threshold $\epsilon_t = 10^{-8}$ was time-evolved using an adiabatic-like ramp shown in figure \ref{fig:BondDimComparison}(a).  
-\begin{figure}[h!]
-    \centering
-    \includegraphics[width=0.7\textwidth]{Figures/BondDim/BondDimComparison.pdf}
-    \caption{Ramp sequence for a series of maximum bond dimensions, $D$, and constant truncation threshold $\epsilon_t = 10^{-8}$. The Bose-Hubbard phase transition is marked by a dashed line. \textbf{(a)} the ramp used. \textbf{(b)} infidelities obtained for various values of $D$.  \textbf{(c)} absolute difference in infidelity between non-bounded bond dimension ($D = 500$) and remaining bond dimensions. }
-    \label{fig:BondDimComparison}
-\end{figure}
-Infidelities calculated for various maximum bond dimensions are illustrated in \ref{fig:BondDimComparison}(b-c). Here, the value $D = 500$ has no influence on the bond dimensions, as the truncation is dominated by the threshold. The results obtained for different values of $D$ are very similar initially but starts diverging as time passes. This behavior is expected, as the initial differences between the tensorial representations are amplified during the time-evolution. Nevertheless, the variance in obtained infidelity is relatively small, which confirms the weak scaling with maximum bond dimension reported in \cite{Daley2004}.
-
-To understand the magnitude of the truncations, all the bond dimension of the non-bounded ($D=500$) state are plotted for the ramp duration, which van be seen in figure \ref{fig:BondDimEvolution}(a).
-\begin{figure}[h!]
-    \centering
-    \includegraphics[width=0.7\textwidth]{Figures/BondDim/BondDimEvolution.pdf}
-    \caption{Bond dimensions for MPS with $L, N_p = 15$ and $\epsilon_t = 10^{-8}$. \textbf{(a)} evolution of bond dimensions as system is subjected to ramp shown in fig. \ref{fig:BondDimComparison}(a). The dashed line marks the Bose-Hubbard phase transition. \textbf{(b)} bond dimensions of boundary states.}
-    \label{fig:BondDimEvolution}
-\end{figure}
-Initially the bond dimension remains constant, as the ramp is not very steep, whereby the threshold-based truncation keeps the bond dimension stable. At the point of the phase transition the ramp is still almost flat, while the bond dimension suddenly starts increasing rapidly. Although the bond dimension is expected to increase over time \cite{Daley2004}, its sudden increase must be attributed to the large entanglement entropy at the critical point. Unexpectedly, the bond dimensions continue to increase at the same rate for a long time after the phase transition. While this is not completely understood, it can be attributed to either physical dynamics of quasiparticles excited at the critical point \cite{Braun2015}, or mathematical dynamics, as information is propagated at limited speed through tensor network via the Schmidt decompositions.
-The bond dimensions of the ground state Mott-Insulator at $U/J = 50$ shown in figure \ref{fig:BondDimEvolution}(b) are much smalled than those of the evolved state at the end of the ramp. Examining the final fidelity displayed in figure \ref{fig:BondDimComparison}(b) reveals that the final state is indeed not in the ground state. Nevertheless, the final bond dimension is remarkably high, but truncating it has only little effect on the fidelity as discussed earlier. Thus, much of the information held in the bond indices at the end of the duration must be redundant, whereby it could be remnants of the phase transition not yet truncated away.
-
-Although the convergence may only scale weakly with the maximum bond dimension, truncating the tensors of the MPS may affect the gradients, which are required to be accurate in order for the L-BFGS approximation to be valid \cite{deFouquieres2011}. 
-\begin{figure}[h!]
-    \centering
-    \includegraphics[width=0.7\textwidth]{Figures/BondDim/GradientBondComparison.pdf}
-    \caption{\textbf{(a)} GRAPE gradient elements calculated for various maximum bond dimension. \textbf{(b)} difference of derivatives between calculations for $D = 500$ and remaining bond dimensions. \textbf{(c)} absolute differences of derivatives.}
-    \label{fig:GradientBondDim}
-\end{figure}
-Figure \ref{fig:GradientBondDim} shows the results of calculating the gradient elements \ref{eq:STcostgrad} for the ramp shown in figure \ref{fig:BondDimComparison}(a). Compared with the infidelity, the gradient scales more strongly with the maximum bond dimension. Therefore, the truncation is limited by the derivative of the cost function rather than the function itself. Unlike the infidelity, the gradient becomes gradually better during the ramp sequence. The same phenomenon is discussed in section \ref{sec:TrotterGrad} and is caused by the accumulated error when calculating $\ket{\chi (0)}$. Lastly, the gradient shows no signs of being influenced by the phase transition. Thus, gradient-based methods appear to be very well suited for optimal control problems, which involves crossing a critical point.
 
 
 
@@ -123,4 +90,37 @@ To investigate the basis size required to describe the optimal solutions, a seri
 The results of the scan over the basis size can be seen in figure \ref{fig:FidelityBasisSize5}. From figure \ref{fig:FidelityBasisSize5}(a) it is evident that a basis size of around 20 and above consistently produces high-fidelity solutions, while the quality of solutions using a smaller basis size fluctuated greatly. Thus, high-fidelity ramps for $T = 2.5$ have at least 20 frequency components. Although results obtained with a smaller basis are generally worse, high fidelity solutions are still possible to achieve, as the optimal solution may still be realizable using only few frequencies. This can be observed in figure \ref{fig:FidelityBasisSize5}(b), where the infidelity of the best solution remains constant, while the median fidelity of the solutions decreases. The large spread in final fidelity is a consequence of a more complicated optimization landscape with artificial minima.
 
 
-\section{Optimal Control of Large Lattice Systems} \label{sec:20partOptimization}
+\section{Application on Larger Systems} \label{sec:appLargeSystems}
+
+
+\subsection{Truncation of Tensors}
+A central operation in tensor network calculations is the singular value decomposition or Schmidt decomposition. From the entries of the resulting diagonal eigenmatrix, eigenstates with only little contribution to the current state can be inferred. These states can be discarded with minimal loss of accuracy of the tensorial representation. Discarding eigenstates effectively constitutes a truncation of the tensor bond dimension, whereby one avoids their otherwise exponential scaling. The two central parameters for the truncation are the maximum bond dimension, $D$, and the threshold (or conversely error) for when a state is discarded, $\epsilon_t$.
+As discussed in ..... the entanglement entropy increases rapidly around the point of the phase transition. Therefore, the bond dimension required to describe a ground state near the critical point is much higher than otherwise needed for the system. As the system is quenched, the initial ground state decays into a superposition of many eigenstates, whereby the truncation error will rise if a maximum bond dimension is kept \cite{Daley2004}. Therefore, the system is not in the ground state during the phase transition.
+
+To analyze the dynamical scaling of the bond dimension, a system with $L, N_p = 15$ and truncation threshold $\epsilon_t = 10^{-8}$ was time-evolved using an adiabatic-like ramp shown in figure \ref{fig:BondDimComparison}(a).  
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.7\textwidth]{Figures/BondDim/BondDimComparison.pdf}
+    \caption{Ramp sequence for a series of maximum bond dimensions, $D$, and constant truncation threshold $\epsilon_t = 10^{-8}$. The Bose-Hubbard phase transition is marked by a dashed line. \textbf{(a)} the ramp used. \textbf{(b)} infidelities obtained for various values of $D$.  \textbf{(c)} absolute difference in infidelity between non-bounded bond dimension ($D = 500$) and remaining bond dimensions. }
+    \label{fig:BondDimComparison}
+\end{figure}
+Infidelities calculated for various maximum bond dimensions are illustrated in \ref{fig:BondDimComparison}(b-c). Here, the value $D = 500$ has no influence on the bond dimensions, as the truncation is dominated by the threshold. The results obtained for different values of $D$ are very similar initially but starts diverging as time passes. This behavior is expected, as the initial differences between the tensorial representations are amplified during the time-evolution. Nevertheless, the variance in obtained infidelity is relatively small, which confirms the weak scaling with maximum bond dimension reported in \cite{Daley2004}.
+
+To understand the magnitude of the truncations, all the bond dimension of the non-bounded ($D=500$) state are plotted for the ramp duration, which van be seen in figure \ref{fig:BondDimEvolution}(a).
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.7\textwidth]{Figures/BondDim/BondDimEvolution.pdf}
+    \caption{Bond dimensions for MPS with $L, N_p = 15$ and $\epsilon_t = 10^{-8}$. \textbf{(a)} evolution of bond dimensions as system is subjected to ramp shown in fig. \ref{fig:BondDimComparison}(a). The dashed line marks the Bose-Hubbard phase transition. \textbf{(b)} bond dimensions of boundary states.}
+    \label{fig:BondDimEvolution}
+\end{figure}
+Initially the bond dimension remains constant, as the ramp is not very steep, whereby the threshold-based truncation keeps the bond dimension stable. At the point of the phase transition the ramp is still almost flat, while the bond dimension suddenly starts increasing rapidly. Although the bond dimension is expected to increase over time \cite{Daley2004}, its sudden increase must be attributed to the large entanglement entropy at the critical point. Unexpectedly, the bond dimensions continue to increase at the same rate for a long time after the phase transition. While this is not completely understood, it can be attributed to either physical dynamics of quasiparticles excited at the critical point \cite{Braun2015}, or mathematical dynamics, as information is propagated at limited speed through tensor network via the Schmidt decompositions.
+The bond dimensions of the ground state Mott-Insulator at $U/J = 50$ shown in figure \ref{fig:BondDimEvolution}(b) are much smalled than those of the evolved state at the end of the ramp. Examining the final fidelity displayed in figure \ref{fig:BondDimComparison}(b) reveals that the final state is indeed not in the ground state. Nevertheless, the final bond dimension is remarkably high, but truncating it has only little effect on the fidelity as discussed earlier. Thus, much of the information held in the bond indices at the end of the duration must be redundant, whereby it could be remnants of the phase transition not yet truncated away.
+
+Although the convergence may only scale weakly with the maximum bond dimension, truncating the tensors of the MPS may affect the gradients, which are required to be accurate in order for the L-BFGS approximation to be valid \cite{deFouquieres2011}. 
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.7\textwidth]{Figures/BondDim/GradientBondComparison.pdf}
+    \caption{\textbf{(a)} GRAPE gradient elements calculated for various maximum bond dimension. \textbf{(b)} difference of derivatives between calculations for $D = 500$ and remaining bond dimensions. \textbf{(c)} absolute differences of derivatives.}
+    \label{fig:GradientBondDim}
+\end{figure}
+Figure \ref{fig:GradientBondDim} shows the results of calculating the gradient elements \ref{eq:STcostgrad} for the ramp shown in figure \ref{fig:BondDimComparison}(a). Compared with the infidelity, the gradient scales more strongly with the maximum bond dimension. Therefore, the truncation is limited by the derivative of the cost function rather than the function itself. Unlike the infidelity, the gradient becomes gradually better during the ramp sequence. The same phenomenon is discussed in section \ref{sec:TrotterGrad} and is caused by the accumulated error when calculating $\ket{\chi (0)}$. Lastly, the gradient shows no signs of being influenced by the phase transition. Thus, gradient-based methods appear to be very well suited for optimal control problems, which involves crossing a critical point.
