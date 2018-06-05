@@ -89,4 +89,4 @@ Inserting the propagator into the elements of the Hessian \eqref{eq:generalHessi
 	&- \Re \Braket{\chi (t_i) | \frac{\partial^2 \hat{H}_n (t_j)}{\partial u_n ^2 (t_j)} - i \Delta t \left( \frac{\partial \hat{H}_n (t_j)}{\partial u_n (t_j)} \right)^2 | \psi (t_j) } \Delta t \delta_{i,j} \; .
 	\label{eq:expandedHessianElements}
 \end{align}
-Having already computed the elements of the gradient, the number of step-propagations needed for the computation of the full Hessian is $N^2 / 2 - N$ due to the symmetry of the matrix and the lack of new propagations for computing the diagonal elements.
+Having already computed the elements of the gradient, the number of step-propagations needed for the computation of the full Hessian is $N(N - 1)/2$ due to the symmetry of the matrix and the lack of new propagations for computing the diagonal elements.
