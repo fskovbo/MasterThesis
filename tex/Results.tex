@@ -51,7 +51,7 @@ To illustrate the the achieved fidelity's dependence on duration of the control 
 Figure \ref{fig:FidelityDuration5} shows the final fidelities obtained for various durations from 100 different initial controls.
 \begin{figure}[h!]
     \centering
-    \includegraphics[width=0.8\textwidth]{Figures/5part/FidelityDuration.pdf}
+    \includegraphics[width=0.9\textwidth]{Figures/L5/FidelityDuration.pdf}
     \caption{\textit{Final fidelity obtained for optimal control at various durations. \textbf{(a)} the dotted line marks the median fidelity achieved, while the shaded area displays the $25\%$- and $75\%$-quartiles of the solutions. \textbf{(b)} the lowest infidelity achieved for each duration. }}
     \label{fig:FidelityDuration5}
 \end{figure}
@@ -63,6 +63,15 @@ Obtaining unit fidelity in a complex quantum system is very difficult, whereby a
 Further information regarding the control landscape and the consistency of the algorithm can be inferred from the spread in fidelities shown in figure \ref{fig:FidelityDuration5}.a. A large variety of final fidelities may be due to a control landscape with many local minima. On the other hand, the same phenomenon could be caused by the inability of an algorithm to accurately converge to the minimum. The interior point method is a very robust algorithm capable of handling non-linear constraints, whereby it is reasonable to assume the variations in solutions being caused by the underlying control landscape. Considering the fairly large variation in seeds shown in figure \ref{fig:LinSigSeed}, the control landscape of the 5-site problem must be relatively simple, as the variation in obtained fidelity is rather small.
 
 
+\subsection{Convergence Rate}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Figures/L5/CostProgress.pdf}
+    \caption{Hej}
+    \label{fig:CostProgress}
+\end{figure}
+
 \subsection{Optimized Ramp Sequences}
 
 KIBBLE-ZUREK NUMBER FLUCTUATIONS!
@@ -70,7 +79,7 @@ KIBBLE-ZUREK NUMBER FLUCTUATIONS!
 A central question is how the optimized ramp sequence differs from its initial seed in both shape and fidelity reached. From figure \ref{fig:FidelityDuration5} one observes that durations around $T = 2.5$ consistently produce solutions with very high fidelity. The lowest infidelities reached at this duration are around $I \approx 10^{-3}$. 
 \begin{figure}[h!]
     \centering
-    \includegraphics[width=0.8\textwidth]{Figures/5part/ExtendedRampT25.pdf}
+    \includegraphics[width=0.9\textwidth]{Figures/L5/RampPlot.pdf}
     \caption{\textit{Solution with highest fidelity achieved for duration $T = 2.5$. The dashed, red line marks the end of the duration, from which the system is further evolved using the final control value. \textbf{(a)} logarithmically scaled expectation value of the number operator, $\braket{\hat{n}_i}$, for each site as the system is evolved according to the optimized ramp. \textbf{(b)} the initial and optimized ramp sequences along with the corresponding evolution of fidelities.}}
     \label{fig:ExtendedRamp5}
 \end{figure}
@@ -86,7 +95,7 @@ In the implementation of GROUP used for these calculations, the basis functions 
 To investigate the basis size required to describe the optimal solutions, a series of optimizations were made for various basis sizes at the duration $T = 2.5$. 
 \begin{figure}[h!]
     \centering
-    \includegraphics[width=0.8\textwidth]{Figures/5part/BestFidelityBasisSize.pdf}
+    \includegraphics[width=0.9\textwidth]{Figures/L5/FidelityBasisSize.pdf}
     \caption{\textit{Final fidelity obtained for optimal control at various optimization space dimensions for duration $T = 2.5$. \textbf{(a)} the dotted line marks the median fidelity achieved, while the shaded area displays the $25\%$- and $75\%$-quartiles of the solutions. \textbf{(b)} the lowest infidelities achieved for each basis size.}}
     \label{fig:FidelityBasisSize5}
 \end{figure}
