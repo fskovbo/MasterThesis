@@ -49,7 +49,7 @@ Lastly, a regularization factor of $\gamma = 10^{-6}$ was employed. Since the co
 
 \subsection{Determining the Quantum Speed Limit}
 In order to determine the quantum speed limit, one must solve the optimization problem for a series of durations, as calculating the quantum speed limit is otherwise a formidable task. In a complex quantum system, unit fidelity is only obtainable at very long duration \cite{CITE}. Therefore, one must decide on a fidelity threshold at which the obtained final state is sufficiently close to the target state. When deciding on this threshold, one must consider the size of the systems, as high fidelities are generally harder to obtain for larger systems. In \cite{MajaJulie} a similar optimization was made for lattice system of 3 sites. There, an infidelity threshold of $I_{\mathrm{QSL}} = 10^{-3}$ was used, which will be adopted for this optimization.
-Since the result of the optimization often depends on the initial guess, 50 optimizations were carried out using both Nelder-Mead and interior point methods. The seeds were drawn for the distribution of ramps shown in figure \ref{fig:LinSigSeed}. 
+Since the result of the optimization often depends on the initial guess, 50 optimizations were carried out using both Nelder-Mead and interior point methods. The seeds were drawn for the distribution of ramps shown in figure \ref{fig:LinSigSeed}. For the following calculations a chopped basis size of $M = 20$ was chosen.
 
 Figure \ref{fig:FidelityDuration} shows the final fidelities obtained for the superfluid to Mott-insulator transfer in the 5-site Bose-Hubbard system. While both methods manage to produce high fidelities, the interior method is clearly consistently better at every duration.
 \begin{figure}[h!]
@@ -69,13 +69,18 @@ Previous optimizations of the superfluid to Mott-insulator phase have employed a
 
 
 \subsection{Convergence Rate}
-
+Although obtaining a high fidelity is an impressive feat, most optimization algorithms should be capable of achieving high fidelities if a low enough convergence tolerance is employed. However, choosing a too high convergence tolerance will result in the algorithm running for long periods of time while only achieving minor improvements to the result. Therefore, it is important to investigate the convergence rate of the different methods, as their efficiency is extremely important for applications on larger systems.
 \begin{figure}[h!]
     \centering
     \includegraphics[width=0.9\textwidth]{Figures/L5/CostProgress.pdf}
-    \caption{Hej}
+    \caption{Optimization progress of the different optimization algorithms at various durations. The dotted line marks the median cost \eqref{eq:grapeCost} at a given number of time evolution, while the shaded area illustrates the $25\%$- and $75\%$-quartiles of the current solutions.}
     \label{fig:CostProgress}
 \end{figure}
+
+Figure \ref{fig:CostProgress} illustrates the cost function value achieved as a function of time evolutions.
+
+
+write about : IP uses time evolutions for gradient as well, while NM only for evaluating cost.
 
 \subsection{Optimized Ramp Sequences}
 
