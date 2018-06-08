@@ -21,7 +21,7 @@ where
 \end{align}
 The matrix elements of the cost Hessian have the form
 \begin{align}
-	\frac{\partial^2 \mathcal{J}}{\partial u_n (t_j) \partial u_n (t_i)} &= - \frac{1}{2} \bigg( \frac{\partial^2 \mathcal{T}}{\partial u_n (t_j)   \partial u_n (t_i)} \mathcal{T}^* + \frac{\partial \mathcal{T}}{\partial u_n (t_j)} \frac{\partial \mathcal{T}^*}{\partial u_n (t_i)} \nonumber \\
+	\frac{\partial^2 \mathcal{J}_T}{\partial u_n (t_j) \partial u_n (t_i)} &= - \frac{1}{2} \bigg( \frac{\partial^2 \mathcal{T}}{\partial u_n (t_j)   \partial u_n (t_i)} \mathcal{T}^* + \frac{\partial \mathcal{T}}{\partial u_n (t_j)} \frac{\partial \mathcal{T}^*}{\partial u_n (t_i)} \nonumber \\
 	&\qquad \quad + \frac{\partial \mathcal{T}^*}{\partial u_n (t_j)} \frac{\partial \mathcal{T}}{\partial u_n (t_i)} + \mathcal{T} \frac{\partial^2 \mathcal{T}^*}{\partial u_n (t_j)   \partial u_n (t_i)} \bigg) \nonumber \\
 	&= - \Re \left( \frac{\partial \mathcal{T}}{\partial u_n (t_j)} \frac{\partial \mathcal{T}^*}{\partial u_n (t_i)} \right) - \Re \left( \frac{\partial^2 \mathcal{T}}{\partial u_n (t_j)   \partial u_n (t_i)} \mathcal{T}^* \right) \; .
 \end{align}
@@ -37,16 +37,16 @@ Meanwhile, the second term of the Hessian is more complicated, although it can e
     \Braket{\psi_t (t_i) | \frac{\partial ^2 \hat{\mathcal{U}}_{j}}{\partial u_n ^2 (t_j) }   | \psi (t_{i-1})}	, & \text{for $i = j$}.
   	\end{dcases} \; .
 \end{equation}
-Thus, defining $\ket{\chi (T)} \equiv i \mathcal{T} \ket{\psi_t}  = i \ket{\psi_t} \braket{\psi_t | \psi (T)}$, the matrix elements of the Hessian read
+Finally, the matrix elements of the Hessian read
 \begin{align}
-	\frac{\partial^2 \mathcal{J}}{\partial u_n (t_j) \partial u_n (t_i)} =& - \Re \left( \Braket{\psi_t (t_j) | \frac{\partial \hat{\mathcal{U}}_{j}}{\partial u_n (t_j)} | \psi (t_{j-1})} \Braket{\psi (t_{i-1}) | \frac{\partial \hat{\mathcal{U}}_{i}^\dag}{\partial u_n (t_i)} | \psi_t (t_{i})} \right) \nonumber \\
-	&+ \Im \Braket{\chi (t_j) | \frac{\partial \hat{\mathcal{U}}_{j}}{\partial u_n (t_j)}  \; \left( \prod_{k = i+1}^{j-1} \hat{\mathcal{U}}_{k}  \right) \; \frac{\partial \hat{\mathcal{U}}_{i}}{\partial u_n (t_i)}  | \psi (t_{i-1})} (1 - \delta_{i , j}) \nonumber \\
-	&+ \Im 	 \Braket{\chi (t_i) | \frac{\partial ^2 \hat{\mathcal{U}}_{j}}{\partial u_n ^2 (t_j) }   | \psi (t_{i-1})} \delta_{i , j} \; .
+	\frac{\partial^2 \mathcal{J}_T}{\partial u_n (t_j) \partial u_n (t_i)} =& - \Re \left( \Braket{\psi_t (t_j) | \frac{\partial \hat{\mathcal{U}}_{j}}{\partial u_n (t_j)} | \psi (t_{j-1})} \Braket{\psi (t_{i-1}) | \frac{\partial \hat{\mathcal{U}}_{i}^\dag}{\partial u_n (t_i)} | \psi_t (t_{i})} \right) \nonumber \\
+	&- \Re \left( \mathcal{T}^* \Braket{\psi_t (t_j) | \frac{\partial \hat{\mathcal{U}}_{j}}{\partial u_n (t_j)}  \; \left( \prod_{k = i+1}^{j-1} \hat{\mathcal{U}}_{k}  \right) \; \frac{\partial \hat{\mathcal{U}}_{i}}{\partial u_n (t_i)}  | \psi (t_{i-1})} (1 - \delta_{i , j}) \right) \nonumber \\
+	&- \Re \left( \mathcal{T}^* \Braket{\psi_t (t_i) | \frac{\partial ^2 \hat{\mathcal{U}}_{j}}{\partial u_n ^2 (t_j) }   | \psi (t_{i-1})} \delta_{i , j} \right) \; .
 	\label{eq:generalHessianElements}
 \end{align}
 
 
-\subsubsection{Hessian for Suzuki-Trotter Propagator}
+\subsection*{Hessian for Suzuki-Trotter Propagator}
 Consider the case where the control Hamiltonians, $\hat{H}_n$, are diagonal, whereby they and their derivatives mutually commute. Expanding the propagator through the Suzuki-Trotter expansion and evaluating the control function at each end of the time-step interval produces the propagator 
 \begin{equation}
 	\hat{\mathcal{U}}_{j}^{\mathrm{ST}} = \left( \prod_{n = 1}^{m} e^{ -i \hat{H}_n (t_j) \Delta t /2 } \right) \: e^{ -i \hat{H}_0 \Delta t } \: \left( \prod_{n = 1}^{m} e^{  -i  \hat{H}_n  (t_{j-1})  \Delta t /2 } \right) \; .
@@ -84,9 +84,44 @@ Thus, the second order derivatives of the transfer probability amplitude can be 
 \end{equation} 
 Inserting the propagator into the elements of the Hessian \eqref{eq:generalHessianElements} produces 
 \begin{align}
-	\frac{\partial^2 \mathcal{J}}{\partial u_n (t_j) \partial u_n (t_i)} =& - \Re \left( \Braket{\psi_t (t_j) | \frac{\partial \hat{H}_n  (t_j)}{\partial u_n (t_j)} | \psi (t_{j})} \Braket{\psi (t_{i}) | \frac{\partial \hat{H}_n  (t_i)}{\partial u_n (t_i)} | \psi_t (t_{i})} \right) \Delta t ^2 \nonumber \\
-	&- \Im \Braket{\chi (t_j) | \frac{\partial \hat{H}_n  (t_j)}{\partial u_n (t_j)}  \; \left( \prod_{k = i+1}^{j} \hat{\mathcal{U}}_{k}^{\mathrm{ST}}  \right) \; \frac{\partial \hat{H}_n (t_i)}{\partial u_n (t_i)}  | \psi (t_{i})} \Delta t^ 2  ( 1 - \delta_{i , j}) \nonumber \\
-	&- \Re \Braket{\chi (t_i) | \frac{\partial^2 \hat{H}_n (t_j)}{\partial u_n ^2 (t_j)} - i \Delta t \left( \frac{\partial \hat{H}_n (t_j)}{\partial u_n (t_j)} \right)^2 | \psi (t_j) } \Delta t \delta_{i,j} \; .
+	\frac{\partial^2 \mathcal{J}_T}{\partial u_n (t_j) \partial u_n (t_i)} =& - \Re \left( \Braket{\psi_t (t_j) | \frac{\partial \hat{H}_n  (t_j)}{\partial u_n (t_j)} | \psi (t_{j})} \Braket{\psi (t_{i}) | \frac{\partial \hat{H}_n  (t_i)}{\partial u_n (t_i)} | \psi_t (t_{i})} \right) \Delta t ^2 \nonumber \\
+	&+ \Re \left( \mathcal{T}^* \Braket{\psi_t (t_j) | \frac{\partial \hat{H}_n  (t_j)}{\partial u_n (t_j)}  \; \left( \prod_{k = i+1}^{j} \hat{\mathcal{U}}_{k}^{\mathrm{ST}}  \right) \; \frac{\partial \hat{H}_n (t_i)}{\partial u_n (t_i)}  | \psi (t_{i})} \Delta t^ 2  ( 1 - \delta_{i , j}) \right) \nonumber \\
+	&+ \Re \left( i \mathcal{T}^* \Braket{\psi_t (t_i) | \frac{\partial^2 \hat{H}_n (t_j)}{\partial u_n ^2 (t_j)} - i \Delta t \left( \frac{\partial \hat{H}_n (t_j)}{\partial u_n (t_j)} \right)^2 | \psi (t_j) } \Delta t \delta_{i,j} \right) \; .
 	\label{eq:expandedHessianElements}
 \end{align}
 Having already computed the elements of the gradient, the number of step-propagations needed for the computation of the full Hessian is $N(N - 1)/2$ due to the symmetry of the matrix and the lack of new propagations for computing the diagonal elements.
+
+
+\subsection*{Regularization Hessian}
+To avoid large variations in the control, a regularization term is often added to the cost function
+\begin{equation}
+	\mathcal{J}_R =\frac{\gamma}{2} \sum_{n=1}^{m} \int_{0}^{T} \left( \pdv{u_n}{t} \right)^2 \mathrm{d}t \; .
+\end{equation} 
+The gradient elements of the regularization read
+\begin{align}
+	\frac{\partial \mathcal{J}_R}{\partial u_n (t_j)} &= \frac{\gamma}{2} \left( 2 \frac{u_n (t_j) - u_n (t_{j-1})}{\Delta t^2} - 2 \frac{u_n (t_{j+1}) - u_n (t_j)}{\Delta t^2} \right) \Delta t \nonumber \\
+	&= \frac{\gamma}{\Delta t} \left( 2 u_n (t_j) - u_n (t_{j+1}) - u_n (t_{j-1}) \right) \; ,
+\end{align}
+whereby the second-order derivatives are
+\begin{equation}
+	\frac{\partial \mathcal{J}_R}{\partial u_n (t_j) \partial u_n (t_i)} = \frac{\gamma}{\Delta t} \left( 2 \delta_{i,j} - \delta_{i,j+1} - \delta_{i,j-1} \right) \; .
+\end{equation}
+Thus, the regularization Hessian matrix is square with $2$'s on the diagonal and $-1$'s on the off-diagonals.
+
+
+\subsection*{Hessian in Chopped Basis}
+In the GROUP algorithm the control is parameterized using a chopped basis of smooth functions
+\begin{equation}
+	u(t) = u_0 (t) + S(t) \sum_{n=1}^{M} c_n f_n (t) \; .
+\end{equation}    
+The coefficients $c_n$ become the new optimization parameters, whereby the derivatives above must be translated to be in terms of $c_n$. This is achieved through the chain rule
+\begin{align}
+	\frac{\partial^2 \mathcal{J}}{\partial c_i \partial c_j} &= \sum_{k = 1}^{N} \frac{\partial \mathcal{J}}{\partial u (t_k)} \frac{\partial ^2 u (t_k)}{\partial c_i \partial c_j} + \sum_{k = 1}^{N} \sum_{l = 1}^{N} \frac{\partial^2 \mathcal{J}}{\partial u (t_k) \partial u (t_j)} \frac{\partial u (t_k)}{\partial c_i} \frac{\partial u (t_l)}{\partial c_j} \nonumber \\
+	&= \sum_{k = 1}^{N} \sum_{l = 1}^{N} \frac{\partial^2 \mathcal{J}}{\partial u (t_k) \partial u (t_j)} f_i (t_k) f_j (t_l) S(t_k) S(t_l) \; ,
+\end{align}
+where the second-order derivative is fairly simple due to ${\partial ^2 u (t_k)}/{\partial c_i \partial c_j} = 0$.
+The parameterized Hessian can be efficiently calculated through an inner product
+\begin{equation}
+	\frac{\partial^2 \mathcal{J}}{\partial c_i \partial c_j} = \boldsymbol{v}_{i}^{\mathrm{T}} \boldsymbol{H} \boldsymbol{v}_j \; ,
+\end{equation}
+where $\boldsymbol{H}$ is the non-parameterized Hessian matrix, and $\boldsymbol{v}_j$ is a vector with elements $\boldsymbol{v}_j (l) = f_j (t_l) S(t_l)$.

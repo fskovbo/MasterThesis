@@ -387,7 +387,7 @@ where $h(u)$ are the constraint functions, and $(A_h (u))_{i,j} = {\partial h_i 
 	(A_h (c))_{i,n} = \sum_{j = 1}^{N} \delta_{i,j} S(t_j) f_n (t_j) = S(t_i) f_n (t_i) \; .
 \end{equation} 
 Thus, the elements of the parametrized $N \times M$ Jacobian matrix remain constant throughout the entire optimization process for this problem.\\
-Lastly, the parameterization of the control also alters the Hessians of the control problem. However, the implementation of the interior point method used here \cite{Wachter2006} is capable of approximating both the objective and constraint Hessians from previous derivatives using the L-BFGS algorithm \cite{Liu1989}. Therefore, calculating the transformed derivatives is sufficient, and the general Hessians will not be derived here.
+Lastly, the parameterization of the control also alters the Hessians of the control problem. However, the implementation of the interior point method used here \cite{Wachter2006} is capable of approximating both the objective and constraint Hessians from previous derivatives using the L-BFGS algorithm \cite{Liu1989}. Therefore, calculating the transformed first-order derivatives is sufficient, and the general Hessians will not be derived here.
 
 
 \section{Quantum Speed Limit}
