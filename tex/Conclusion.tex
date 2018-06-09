@@ -1,3 +1,17 @@
 \chapter{Conclusion}
 
-This is a conclusion ....
+This thesis presents the construction and application of a framework for computing optimal control sequences of quantum many-body systems in lattices. To demonstrate its effectiveness, the framework was used to find an optimal phase transition from the superfluid to the Mott-insulating phase of the Bose-Hubbard model. Due to the non-integrability of the model, the vastly different energy spectrum of the two phases, and the breakdown of adiabadicity at the critical point, this control problem is highly non-trivial.
+
+The framework consists of multiple components working together in order to overcome the difficulties otherwise associated with describing such complex systems. 
+Quantum states and operators are represented through tensor networks, which address the issue of exponentially large Hilbert spaces through \textit{area law} scalings of entanglement within the system. 
+This description remains valid a longer durations due the finite propagation velocity of correlations in the lattice, which was shown to follow an effective light-cone.
+Unlike previous studies of optimal control through tensor networks from literature \cite{Doria2011,FrankBloch}, the framework presented here utilizes gradient-based optimization techniques.
+Hence, the GROUP algorithm was employed for finding optimal controls, as it has previously been shown to outperform standard, derivative-free methods \cite{sorensen2018}.
+For the time-evolution of the tensor state, a Suzuki-Trotter expanded propagator was employed. Here it was shown that parameterizing the control problem through diagonal operators caused all higher-order contributions to the gradient to vanish. Hence, derivatives utilized in gradients and Hessians can be calculated both efficiently and exactly.
+
+Optimal control problem are typically subjected to a series of constraints due to limitations in experiments or the model. Therefore, interior point methods were employed to to optimize the control functions using the gradients supplied by GROUP, as they are excellent at handling constrained, non-linear problems. 
+Through the framework, both the interior point and the standard Nelder-Mead method were used to find optimal control sequences for the Bose-Hubbard phase transition in a 5-site lattice. Here, the framework outperformed literature methods both in terms of fidelity achieved and convergence rate by a huge margin. Interestingly, the optimized control sequences appear to utilize highly non-adiabatic dynamics to realize high fidelity state transfers.
+
+Conducting optimizations for large systems is extremely resource demanding. Therefore, an analysis of the number of eigenstates contributing to the dynamics was mad, in order to gauge the level of truncation of the tensor network required for creating a valid low-entanglement theory for the dynamics.
+The analysis showed that a large number of the eigenstates contributing to Schmidt decompositions of the systems can be discarded without any significant impacts on the dynamics.
+Thus, with the addition of a Hessian matrix, the framework should be capable of efficiently conducting optimizations for large system.
