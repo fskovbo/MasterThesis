@@ -6,11 +6,7 @@ Neutral atoms in particular offer the unique feature of tunable collisional prop
 
 By overlapping counter-propagating laser beams, one can create periodic potentials known as \textit{optical lattices}. These types of potentials are extremely versatile, as they can be created in a multitude of different configurations. Furthermore, the periodic nature of the potential causes the emergence of energy spectra in the form of bands, which is otherwise known from condensed matter physics. Together with the tunable interactions from Feshbach resonances, a wide range of Hamiltonians can be mapped unto ultracold gases in optical lattices \cite{JakschZoller, Bloch2012}.\\
 
-A weakly interacting bosonic gas trapped in an optical lattice a well described by a macroscopic wavefunction akin to a Bose-Einstein condensate. However, as the interaction strength grows, the system becomes increasingly correlated. A prominent example is the Bose-Hubbard model, describing bosons occupying the lowest Bloch band of a lattice. This model features a quantum phase transition between a weakly interacting superfluid phase and a strongly correlated Mott-insulator \cite{Fisher1989}.
-
-While the ground state equilibrium physics of the two phases are relatively simple, understanding the quantum phenomena emerging when dynamically crossing the critical point is very difficult. Although a full investigation of such highly out-of-equilibrium dynamics is outside the scope of the thesis, this chapter will illustrate some of these phenomena and their effects on the phase transition.  
-
-
+A weakly interacting bosonic gas trapped in an optical lattice a well described by a macroscopic wavefunction akin to a Bose-Einstein condensate. However, as the interaction strength grows, the system becomes increasingly correlated. A prominent example is the Bose-Hubbard model, describing bosons occupying the lowest Bloch band of a lattice. This model features a quantum phase transition between a weakly interacting superfluid phase and a strongly correlated Mott-insulator \cite{Fisher1989}. These two phases exhibit very different properties, as  particles are highly de-localized across the entire lattice in the superfluid phase, while the Mott is defined by zero compressibility, as the atoms are evenly distributed in the lattice. Several methods exist for deriving phase diagrams of the Bose-Hubbard model. Here, a mean-field approach is taken, as it provides a very intuitive description of the model,
 
 
 \section{Optical Lattice Potentials}
@@ -436,75 +432,3 @@ A better understanding of the results can be obtained by examining figure \ref{f
 The $\mu_{\pm}$ curves enclose the region where the system is in the Mott-insulating phase. $(1/\bar{U})_{crit} = (J/U)_{crit}$ can be read off the graph from the point where the two curves $\mu_{\pm}$ meet. No number fluctuations take place in the Mott-insulator, whereby the particle number per site is well defined. As the chemical potential increases, each site can accommodate more particles as long as the increase in chemical potential compensates the increased energy due to interactions between the particles.
 
 The mean-field solution of the Bose-Hubbard model is only an approximation, which proves quite inaccurate for one dimension. This is obvious when comparing the critical ratio for the mean-field approach, $\left( U/J \right)_{crit}^{MF,1D} = 11.66$, with numerical results computed using the DMRG method, $\left( U/J \right)_{crit}^{DMRG,1D} = 3.37$, \cite{Kuhner2000}. Nevertheless, the mean-field gives a good intuitive feeling of the physics taking place and how one can describe them without resorting to diagonalizing the full Hamiltonian.
-
-
-\section{Non-Equilibrium Dynamics near Critical Points}
-The standard procedure for experimentally preparing a Mott-insulator is condensing a gas of cold bosons into a shallow lattice, which effectively forms a superfluid in an equilibrium state. The lattice depth is then slowly ramped up, thereby changing the fraction $U/J$ and driving the phase transition to the Mott \cite{manybodyBloch,Greiner2002}. The constant change of a parameter can be considered a continuous quench of the initial state, whereby the system exhibit out-of-equilibrium dynamics.
-
-This section briefly covers some of the phenomena emerging when crossing a second order phase (continuous) transition like that of the Bose-Hubbard model. The goal is not to provide a full description of these phenomena but rather to illustrate some of the challenges associated with dynamically crossing the critical point.
-
-\subsection{Breakdown of Adiabaticity}
-Many experimental procedures rely on adiabaticity for state preparation. The adiabatic theorem in quantum mechanics states that under slow enough external perturbations, no transitions between energy levels take place. For systems with an energy gap between the ground and excited states this is particularly useful, as the ground state can only become excited through the Landau-Zener mechanism \cite{Landau1932,Zener1932} under small perturbations. Thus, state transfers can be achieved adiabatically in gapped systems. In many many-body systems the distance between energy levels is exponentially small, whereby the time-scale of an adiabatic parameter variation grows exponentially large \cite{Polkovnikov2008}. The one-dimensional superfluid phase is gapless, whereby the energy spectrum is continuous. Therefore, any change in the parameters of a superfluid ground state will results in excitations in the form of Bogoliubov quasi-particles \cite{Polkovnikov2008,Ozeri2005}.
-Furthermore, in the vicinity of a critical point the relaxation time-scale of the system diverges, which is known as the \textit{critical slowing down} \cite{Zurek2005}.
-
-Thus, adibadicity is bound to break down when transitioning from a superfluid to a Mott-insulating state by varying the fraction $U/J$. However, changes of parameters are often still referred to as "adiabatic" if they are sufficiently slow compared to the natural time scales of the systems.
-
-\subsection{The Kibble-Zurek Mechanism}
-The Kible-Zurek theory describes the emergence of topological defects following a quench through a second-order (continuous) phase transition \cite{Zurek2005}.\\
-Consider a system in equilibrium described by a correlation length $\xi$. In the vicinity of a critical point the correlation length diverges as a power law
-\begin{equation}
-	\xi  \approx \xi_0 |\epsilon (t)|^{-\nu} \quad , \; \epsilon > 0 \; ,
-\end{equation} 
-where $\nu$ is a static critical exponent, and $\epsilon$ is a reduced coupling, which is zero at the critical point. Thus, near the critical point the equilibrium state is characterized by an infinite correlation length \cite{Kibble1976}.\\
-Assume a state initially in equilibrium begin evolved towards the critical point.  Approaching a second-order phase transition, the equilibrium state will have a relaxation time-scale, $\tau$, which diverges according to
-\begin{equation}
-	\tau \approx \tau_0 |\epsilon (t)|^{-\mu} \quad , \; \epsilon > 0 \; ,
-\end{equation}
-near the critical point \cite{Zurek2005}. Here, the parameter $\mu$ is another critical exponent. This divergence of the response time of the state is referred to as the \textit{critical slowing down} and causes an inevitable breakdown of adibaticity. As the relaxation time becomes larger than the time before reaching the transition, the systems effectively enters a "freeze-out" period, in which the correlation length no longer can evolve. Thus, the system crosses the critical point without $\xi$ ever having spanned the entire system, which results in the formation of broken-symmetry phase domains, or defects, with independent values of the underlying order parameter \cite{Gillman2018}. This phenomenon is known as the Kibble-Zurek mechanism.
-In the context of the Bose-Hubbard model, the Kibble-Zurek mechanism is dependent on the direction of the phase transition, due the completely different energy spectra of the phases. While the transition from the gapped Mott-insulating state to a superfluid will produce topological defects, the opposite transition will amplify the quantum fluctuations of the initial state. Thus, the number-fluctuations of the initial superfluid state may carry over to the Mott-insulator, however, the magnitude of these fluctuations will depend on the exact form and time-scale of the parameter variation \cite{Schutzhold2006}.
-
-
-\subsection{Light-Cone Propagation of Correlations}
-An important phenomenon for understanding non-equilibrium dynamics of local Hamiltonian models is the light-cone-like propagation of information within the system \cite{Eisert2015}. The effective light-cone limits the speed at which a system can respond to sudden changes in the Hamiltonian and is therefore important when considering the dynamical crossing of a phase transition.
-While the existence of light-cones in relativistic quantum field theories is well known, no strict light-cone behavior is is present in general, non-relativistic quantum systems. However, for quantum systems evolving according to a local Hamiltonian, the propagation velocity of information is limited according to the Lieb-Robinson bounds \cite{Lieb1972}.\\ 
-Consider a general lattice system with the local Hamiltonian
-\begin{equation}
-	\hat{H} (t) = \sum_{\langle i,j \rangle} \hat{h}_{ij}(t) \; ,
-\end{equation}
-where $\langle \LargerCdot , \LargerCdot \rangle$ denotes nearest-neighbour sites. For two non-overlapping blocks of the lattice $A$, $B$ the Lieb-Robinson bound makes a statement about the operator norm of the commutator
-of any operators $\hat{O}_A$ and $\hat{O}_B$ in regions $A$, $B$ taken at
-different times
-\begin{equation}
-	\left\lVert \left[ \hat{O}_A (t) , \hat{O}_B (0) \right] \right\rVert \leq c \lVert \hat{O}_A \rVert \; \lVert \hat{O}_B \rVert
-	\min \left( | \hat{O}_A | , | \hat{O}_B | \right) \exp \left(-  \frac{L - v |t|}{\gamma} \right) \; ,
-	\label{eq:LiebRobinsonBound}
-\end{equation}
-where $L$ is the distance between $A$ and $B$, and $| A |$, $| B |$ denote the size (number of sites) in each block \cite{Bravyi2006}. The positive constants $c,v,\lambda > 0$ are determined by the maximum norm of the local Hamiltonians $\max_{\langle i,j \rangle} \max_{t}  \lVert \hat{h}_{ij} (t) \rVert $ and are therefore system dependent. The time-dependent operator norm of the commutator can be considered a measurement of correlated information separated in space and time, and it is effectively bound by the light-cone emerging from the exponential term of eq. \eqref{eq:LiebRobinsonBound}.
-A complete understanding of time-dependent Lieb-Robinson bound \eqref{eq:LiebRobinsonBound} is outside the scope of this thesis, however, two remarkable consequences regarding the spreading of information can be inferred from the bound: (i) information propagating outside the light-cone is exponentially suppressed \cite{Bravyi2006}, and (ii) correlations within the system is mediated through entangled quasi-particles \cite{Cheneau2012}, whose ballistic propagation velocity is limited by $v$ \cite{Calabrese2006}. Their propagation velocity is different from the sound velocity of the system for curved dispersion relations \cite{Lauchli2008}, whereby it is referred to as the \textit{Lieb-Robinson velocity}.
-
-\begin{figure}[h!]
-\centering % <-- add this
-\begin{subfigure}[t]{0.48\textwidth}
-	\hspace{-3mm} 
-  	\includegraphics[width=1.1\textwidth]{Figures/QuasiParticles.pdf}
-\end{subfigure}
-\begin{subfigure}[t]{0.48\textwidth} 
-	 %\hspace{5mm}
-  	\includegraphics[width=1.1\textwidth]{Figures/LightConeDemo.pdf}
-\end{subfigure}
-\caption{Illustration of light-cone-like propagation of information. \textbf{(a)} One dimensional ultracold gas of bosonic atoms in a Mott configuration being abruptly quenched to a shallow lattice. \textbf{(b)} Entangled quasi-particle pairs emerge at all sites and propagate ballistically following the quench. \textbf{(c)} Density plot of the evolution of $\ket{1}_{0}$ in an $L = 61$ lattice according to a simple Hubbard Hamiltonian \eqref{eq:simpleHubbardModel}. Figures \textbf{(a)} and \textbf{(b)} are adopted from \cite{Cheneau2012}.}
-\label{fig:LightCone}
-\end{figure}
-
-Experimental evidence of an effective light-cone in a one-dimensional Bose-Hubbard system was shown in \cite{Cheneau2012}. In the experiment, a Mott-insulating ground state was quenched to near the critical point as shown in figure \ref{fig:LightCone}(a). The initial ground state was thereby highly excited and acted as source for quasi-particles consisting of \textit{dublons} (excess particle) and \textit{holons} (hole) shown in figure \ref{fig:LightCone}(b). By measuring the two-point parity correlation function, the spreading of information through the system was shown to propagate at a constant velocity limited by the Lieb-Robinson bound.
-
-To illustrate the propagation of correlation-mediating quasi-particles, the evolution of an impurity in a simple Hubbard model was examined. Consider a Hubbard Hamiltonian of the form
-\begin{equation}
-	\hat{H} = - J \sum_{\langle i,j \rangle} \hat{a}_{i}^{\dag} \hat{a}_{j} \; ,
-	\label{eq:simpleHubbardModel}
-\end{equation} 
-which contains no interactions. A quasi-particle excitation may not have strong interactions with the remaining system, although they may mutually interact. Here a single particle is considered, whereby a negligible  interaction is a reasonable approximation. Meanwhile, the quasi-particle will be experiencing the same lattice potential and any underlying harmonic confinement, if it remains in the lowest band. Here, a flat lattice (no underlying potential) is considered. Thus, the model described is equivalent to a quasi-particle excitation on top of a homogeneous Mott-insualator.
-Figure \ref{fig:LightCone}(c) shows the density evolution of a single impurity, $\ket{1}_{0}$, initially placed at the central cite in a lattice of size $L = 61$. The resulting density wave is very reminiscent of a light-cone, as the probability velocity is bounded by a constant. Further examining the emerging cone, one will notice an exponentially suppressed population just outside the cone (more visible near the boundary). Due to the open boundaries of the system, the quasi-particle is reflected at the edge of the lattice, causing it to interfere with itself \cite{Calabrese2006}.\\
-It should be stressed that the density wave shown in figure \ref{fig:LightCone}(c) is not a true light-cone but merely the density-wave of a single quasi-particle-like impurity. In a physical system quasi-particles will emerge at all sites, whereby the Lieb-Robinson velocity is different from the spreading velocity of non-interacting particles. In fact, the experimental investigation of light-cones in the Bose-Hubbard model found information velocities much higher than single-particle spreading velocities, yet lower than the Lieb-Robinson bound \cite{Cheneau2012}. While the simple Hubbard model illustrates the propagation of a single quasi-particle, the propagation of information within a many-body system is a many-body effect itself. \\
-
-Due to the breakdown of adiabaticity around the critical point, it is inevitable that quasi-particle excitations will be created when transitioning from a superfluid to a Mott-insulator. Furthermore, a study of the Mott to superfluid phase transition showed that the propagation of correlations was well described by ballistically spreading quasi-particles for fast ramp sequences, while slower ramps required the interaction of quasi-particles to be considered \cite{Braun2015}. Therefore, engineering a lattice ramping sequence bringing the system from a superfluid to a Mott-insulating ground state is a highly difficult task. While classical approaches fail to capture the rich dynamics of the phase transition, simulations of the system can be performed through tensor network methods, which provide a low-entanglement effective theory \cite{Gillman2018}. Although the low-entanglement approximation inevitably fails for long durations, the finite spreading velocity of correlations within the system enables the use of tensor-network methods for simulating dynamics for short durations \cite{Eisert2015}. 
