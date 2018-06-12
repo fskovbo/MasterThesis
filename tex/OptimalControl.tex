@@ -194,7 +194,7 @@ Thus, the combination of the Suzuki-Trotter expansion and a diagonal control Ham
     \caption{\textbf{(a)} Numerical gradient along with gradient calculated via eq. \eqref{eq:STcostgrad}. \textbf{(b)} Difference between the two gradients. \textbf{(c)} Absolute relative difference between the two gradients.}
     \label{fig:CompareGradientsGRAPE}
 \end{figure}
-A comparison between a numerically calculated gradient and the analytically derived gradient of eq. \eqref{eq:STcostgrad} can be seen in figure \ref{fig:CompareGradientsGRAPE}. As evident from the figure, the derived cost gradient is very accurate, which is necessary for an efficient optimization procedure. The difference between the two gradients is largest at the beginning of the sequence, due to the accumulated error from the time evolution of $\ket{\chi (0)}$, which is derived from two time evolutions over the entire duration.
+A comparison between a numerically calculated gradient and the analytically derived gradient of eq. \eqref{eq:STcostgrad} can be seen in figure \ref{fig:CompareGradientsGRAPE}. As evident from the figure, the derived cost gradient is very accurate, which is necessary for an efficient optimization procedure. The difference between the two gradients is largest for low values of $t$, due to the accumulated error from the time evolution of $\ket{\chi (0)}$, which is derived from two time evolutions over the entire duration.
 
 
 \section{Interior Point Methods} \label{sec:IntPoint}
