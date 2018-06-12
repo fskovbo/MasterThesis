@@ -17,7 +17,7 @@ Consider a bipartition of the Hilbert space $\mathcal{H} = \mathcal{H}_A \otimes
 \begin{equation}
 	\ket{\psi} = \sum_{\alpha} \Lambda_{\alpha} \ket{\alpha}_A \otimes \ket{\alpha}_B \; ,
 \end{equation}
-where the states $\{ \ket{\alpha}_{A(B)} \}$ form an orthonormal basis of $\mathcal{H}_{A(B)}$, and $\Lambda_{\alpha} \ge 0$ are the Schmidt coefficients fulfilling $\sum_{\alpha} \Lambda_{\alpha}^2 = 1$ \cite{Pathak2013}. If only one term contributes to the Schmidt decomposition, the state is a product state i.e. the two parts of the Hilbert space are not mutually entangled. More terms implies that the state is entangled. From the Schmidt decomposition one can determine the reduced density matrix
+where the states $\{ \ket{\alpha}_{A(B)} \}$ form an orthonormal basis of $\mathcal{H}_{A(B)}$, and $\Lambda_{\alpha} \ge 0$ are the Schmidt coefficients fulfilling $\sum_{\alpha} \Lambda_{\alpha}^2 = 1$ \cite{Pathak2013}. If only one term contributes to the Schmidt decomposition, the state is a product state i.e. the two parts of the Hilbert space are not mutually entangled. More terms implies that the state is entangled. From the Schmidt decomposition one can determine the reduced density matrix of the subsystem $A$
 \begin{equation}
 	\rho_A = \Tr _B \ket{\psi}\bra{\psi} = \sum_{\alpha} \Lambda_{\alpha}^2 \ket{\alpha}_A \bra{\alpha}_A \; ,  
 \end{equation}
@@ -29,7 +29,7 @@ From the Schmidt decomposition one can determine the entanglement entropy of the
 \end{equation}
 Quite often, one is not concerned with the actual entanglement entropy of the system, but rather how it scales when the region in question grows in size. It is natural to assume that the entanglement entropy scales with  the \textit{volume} of the system, since this is the case for thermal systems. However, ground states of one-dimensional quantum many-body systems often follow an \textit{area law}, meaning that the scaling of the entropy is linear in the boundary area of the region. This is especially the case for systems with a gapped and local Hamiltonian \cite{Cramer}.
 
-In a one dimensional lattice the boundary size of a bipartition is constant  independently of where the cut is made. Hence, the entanglement entropy will be bounded above, if the system follows an area law. This can be understood intuitively, as only degrees of freedom within the correlation length, $\xi$, of the boundary will be entangled, no matter where in the system the boundary is present \cite{Hastings2007}. This observation is the key to the success of numerical computations for one-dimensional systems, as the limited degree of entanglement enables the truncation of unused eigenstates without loss of accuracy in the representation of the state. Thus, many different states can be efficiently described by tensor networks despite existing in an exponentially large Hilbert space.
+In a one dimensional lattice the boundary size of a bipartition is constant  independently of where the cut is made. Hence, the entanglement entropy will be bounded above, if the system follows an area law. This can be understood intuitively, as only degrees of freedom within the correlation length, $\xi$, of the boundary will be entangled, no matter where in the system the boundary is present \cite{Hastings2007}. This observation is the key to the success of numerical computations for one-dimensional systems, as the limited degree of entanglement enables the truncation of unused eigenstates without loss of accuracy in the representation of the state. Thus, one-dimensional quantum states can be efficiently described by tensor networks despite existing in an exponentially large Hilbert space.
 
 
 \section{Construction of an MPS} \label{sec:construct_MPS}
@@ -39,7 +39,7 @@ Tensors can be merged by contracting the bond connecting them, which is done by 
 
 Consider a chain of $L$ sites with each site having a $d$-dimensional local Hilbert space $\{ \ket{j_n} \}$, where $n = 1, \ldots, L$. An arbitrary quantum state of this system reads
 \begin{equation}
-	\ket{\psi} = \sum_{j_1, \ldots, j_L} c_{j_1 \ldots j_L} \ket{j_1, \ldots, j_L} \; .
+	\ket{\psi} = \sum_{j_1, \ldots, j_L}^{d} c_{j_1 \ldots j_L} \ket{j_1, \ldots, j_L} \; .
 	\label{eq:arbstate}
 \end{equation}
 This description of a general state can be parametrized to the MPS form by applying successive Schmidt decomposition. However, in practice this is done through Singular Value Decompositions (SVD), as these are faster to perform numerically. The two approaches are equivalent, as the singular value decomposition is essentially a restatement of the Schmidt decomposition \cite{Pathak2013}.
@@ -61,7 +61,7 @@ The $d^L$-dimensional vector $c_{j_1 \ldots j_L}$ is reshaped into a $(d \times 
 \begin{equation}
 	c_{j_1 \ldots j_L} = \Psi_{j_1 , (j_2 \ldots j_L)} = \sum_{\alpha_1}^{d} U_{j_1 , \alpha_1} S_{\alpha_1 , \alpha_1} (V^{\dag})_{\alpha_1 , (j_2 \ldots j_L)} = \sum_{\alpha_1}^{d} A_{\alpha_1}^{j_1} \Psi_{(\alpha_1 j_2),(j_3 \ldots j_L)} \; ,
 \end{equation}
-where $U$ has been reshaped into $d$ row vectors $A^{j_1}$ with entries $A_{\alpha_1}^{j_1} = U_{j_1 , \alpha_1}$. In this notation $A_{\alpha_1}^{j_1}$ is a tensor with physical indices $j_1$ and bond indices $\alpha_1$. Furthermore, $S$ and $V^{\dag}$ has been multiplied and reshaped into a $(d^2 \times d^{L-2})$ matrix, $\Psi_{(\alpha_1 j_2),(j_3 \ldots j_L)}$.
+where $U$ has been reshaped into $d$ row vectors $A^{j_1}$ with entries $A_{\alpha_1}^{j_1} = U_{j_1 , \alpha_1}$. In this notation $A_{\alpha_1}^{j_1}$ is a tensor with the physical index $j_1$ and bond index $\alpha_1$. Furthermore, $S$ and $V^{\dag}$ has been multiplied and reshaped into a $(d^2 \times d^{L-2})$ matrix, $\Psi_{(\alpha_1 j_2),(j_3 \ldots j_L)}$.
 
 \item
 The new matrix $\Psi_{(\alpha_1 j_2),(j_3 \ldots j_L)}$ is subjected to an SVD decomposition
@@ -85,11 +85,11 @@ where the sum can be recognized as a matrix multiplication allowing a neater not
 \end{figure}
 The construction of an MPS is illustrated in figure \ref{fig:MPSbuild}. Thereby, the original state (equation \ref{eq:arbstate}) can be written as a matrix product state in the form \cite{schollwock}
 \begin{equation}
-	\ket{\psi} = \sum_{j_1, \ldots, j_L} A^{j_1} A^{j_2} \ldots A^{j_{L-1}} A^{j_{L}} \ket{j_1, \ldots, j_L} \; .
+	\ket{\psi} = \sum_{j_1, \ldots, j_L}^{d} A^{j_1} A^{j_2} \ldots A^{j_{L-1}} A^{j_{L}} \ket{j_1, \ldots, j_L} \; .
 	\label{eq:MPS_LC} 
 \end{equation}
 Following the construction sequence, the dimensions of the matrices $A^{j_n}$ follow a pyramid-like structure $(1 \times d ),(d \times d^2) , \ldots , (d^{L/2 -1} \times d^{L/2}) , (d^{L/2} \times d^{L/2 -1 }), \ldots , (d \times 1)$, where $L$ is taken as even for simplicity. 
-However, the state can be represented much more efficiently by truncating the dimensions of the matrices (bonds), due to the area law scaling of entanglement entropy \cite{EntropyScaling}. A bond dimension $\chi$ infers an entanglement entropy bounded by $S(\rho_A) = \mathcal{O}(\log \chi)$ \cite{Gillman2018}, whereby one often can discard the contribution of many eigenstates without loss of accuracy. In practice this is done by keeping only the $D$ largest singular values of the SVD matrix $S$, as these contribute the most to the state. Alternatively  one can discard all eigenstates contributing with eigenvalues less than some threshold $\epsilon_t$.
+However, the state can be represented much more efficiently by truncating the dimensions of the bond indices, due to the area law scaling of entanglement entropy \cite{EntropyScaling}. A bond dimension $\chi$ infers an entanglement entropy bounded by $S(\rho_A) = \mathcal{O}(\log \chi)$ \cite{Gillman2018}, whereby one often can discard the contribution of many eigenstates without loss of accuracy. In practice this is done by keeping only the $D$ largest singular values of the SVD matrix $S$, as these contribute the most to the state. Alternatively  one can discard all eigenstates contributing with eigenvalues less than some threshold $\epsilon_t$.
 
 
 \section{Canonical Forms}
@@ -147,9 +147,9 @@ Consider the procedure of building an MPS in the left-canonical form, where $c_{
 \begin{equation}
 	c_{j_1 \ldots j_L} = \sum_{\alpha_n} \left( A^{j_1} \ldots  A^{j_n} \right) _{\alpha_n} S_{\alpha_n , \alpha_n} (V^{\dag})_{\alpha_n , (j_{n+1} \ldots j_L)} \; .
 \end{equation}
-By reshaping $V^{\dag}$  into the matrix $\Psi_{(\alpha_n j_{n+1} \ldots j_{N-1}),j_N}$, one can initiate a successive decomposition from the right, resulting in a set of right-normalized matrices. The final result reads
+By reshaping $V^{\dag}$  into the matrix $\Psi_{(\alpha_n j_{n+1} \ldots j_{L-1}),j_L}$, one can initiate a successive decomposition from the right, resulting in a set of right-normalized matrices. The final result reads
 \begin{equation}
-	c_{j_1 \ldots j_N} = A^{j_1} \ldots A^{j_n} S B^{j_{n+1}} \ldots B^{j_L} \; ,
+	c_{j_1 \ldots j_L} = A^{j_1} \ldots A^{j_n} S B^{j_{n+1}} \ldots B^{j_L} \; ,
 	\label{eq:mixedCanon}
 \end{equation}
 which is illustrated in figure \ref{fig:MixedCanonical1}.
@@ -166,7 +166,7 @@ which is illustrated in figure \ref{fig:MixedCanonical1}.
   	\input{Diagrams/mixedCanon.tex}
 	\label{fig:MixedCanonical2}
 \end{subfigure}
-\caption{\textit{Two variants of the mixed-canonical form of an MPS. The form \textbf{(a)} retains the matrix S originating from the SVD, whereby the MPS is directly brought into the form of a Schmidt decomposition. Multiplying S into either ites left or right neighbour creates the form \textbf{(b)}, which has a central site containing the normalization of the entire state. The form \textbf{(b)} is well suited for measuring local properties of the state.}}
+\caption{Two variants of the mixed-canonical form of an MPS. The form \textbf{(a)} retains the matrix S originating from the SVD, whereby the MPS is directly brought into the form of a Schmidt decomposition. Multiplying S into either ites left or right neighbour creates the form \textbf{(b)}, which has a central site containing the normalization of the entire state. The form \textbf{(b)} is well suited for measuring local properties of the state.}
 \end{figure}
 In the mixed-canonical form the Schmidt decomposition can be read directly from the form of the MPS by introducing the vectors
 \begin{align}
@@ -178,7 +178,7 @@ whereby the state can be written in the form
 	\ket{\psi} = \sum_{\alpha_n} S_{\alpha_n , \alpha_n} \ket{\alpha_n}_A \ket{\alpha_n}_B \; . \label{eq:MixedFormA}
 \end{equation}
 In order for eq. \eqref{eq:MixedFormA} to be considered a Schmidt decomposition, the matrix $S$ must fulfill $\sum_{\alpha_n} (S_{\alpha_n , \alpha_n})^2 = 1$, which is fulfilled by default by the SVD. Furthermore, the states $\ket{\alpha_n}_A$ and $\ket{\alpha_n}_B$ have to be orthonormal respectively, which they are by construction.\\
-Another useful version of the mixed-canonical form is depicted in figure \ref{fig:MixedCanonical2}, where the matrix $S$ of eq. \eqref{eq:mixedCanon} has been multiplied unto the matrix to either the left or right of it. The result is a central cite, which is neither left- nor right-normalized, but instead contains the normalization of the entire state. Overlaps can expectation values can be computed very efficiently using the mixed-canonical form, as most of the tensor network can be explicitly contracted due to the normalization. 
+Another useful version of the mixed-canonical form is depicted in figure \ref{fig:MixedCanonical2}, where the matrix $S$ of eq. \eqref{eq:mixedCanon} has been multiplied unto the matrix to either the left or right of it. The result is a central cite, which is neither left- nor right-normalized, but instead contains the normalization of the entire state. Overlaps and expectation values can be computed very efficiently using the mixed-canonical form, as most of the tensor network can be explicitly contracted due to the normalization. 
  
 
 \section{Matrix Product Operators} \label{sec:MPO}
@@ -192,11 +192,11 @@ Expressing an operator $\hat{O}$ in the basis of the local states, one can write
 	\hat{O} = \sum_{\boldsymbol{j} , \boldsymbol{j'}} \ket{\boldsymbol{j}} \bra{\boldsymbol{j}} \hat{O} \ket{\boldsymbol{j'}} \bra{\boldsymbol{j'}} = \sum_{\boldsymbol{j} , \boldsymbol{j'}} W^{j_1 , j_1 '} W^{j_2 , j_2 '} \ldots W^{j_L , j_L '} \ket{\boldsymbol{j}} \bra{\boldsymbol{j '}} \; ,
 	\label{eq:MPOrep}
 \end{equation}
-where the coefficients are $\bra{\boldsymbol{j}} \hat{O} \ket{\boldsymbol{j'}} = W^{j_1 , j_1 '} W^{j_2 , j_2 '} \ldots W^{j_L , j_L '}$. The operator matrices, $W^{j_n , j_n '}$, differ from the state matrices, $M$, as the representation of the operators needs both an ingoing and an outgoing physical index. The ingoing physical index is depicted graphically as an extra vertical leg. A pictorial representation of the operator $\hat{O}$ can be seen in figure \ref{fig:MPOchain}.
+where the coefficients are $\bra{\boldsymbol{j}} \hat{O} \ket{\boldsymbol{j'}} = W^{j_1 , j_1 '} W^{j_2 , j_2 '} \ldots W^{j_L , j_L '}$. The operator matrices, $W^{j_n , j_n '}$, differ from the state matrices, $M^{j_n}$, as the representation of the operators needs both an ingoing and an outgoing physical index. The ingoing physical index is depicted graphically as an extra vertical leg. A pictorial representation of the operator $\hat{O}$ can be seen in figure \ref{fig:MPOchain}.
 \begin{figure}[h!]
 	\centering
 	\input{Diagrams/MPOchain.tex}
-	\caption{\textit{An operator $\hat{O}$ expressed in the MPS form (MPO). The resulting matrix product operator has two physical indices marked by vertical lines, which corresponds to an ingoing and outgoing physical state.}}
+	\caption{An operator $\hat{O}$ expressed in the MPS form (MPO). The resulting matrix product operator has two physical indices marked by vertical lines, which corresponds to an ingoing and outgoing physical state.}
 	\label{fig:MPOchain}
 \end{figure}
 
@@ -209,14 +209,14 @@ Applying a matrix product operator to a matrix product state is simply a matrix 
 &\equiv \sum_{\boldsymbol{j}} N^{j_1} N^{j_2} \ldots \ket{\boldsymbol{j}} \; = \; \ket{\phi}
 \label{eq:optBracketsMPO}
 \end{align} 
-The result is a new MPS, $\ket{\phi}$, which is described by the matrices $N^{j_n}$ and is illustrated in figure \ref{fig:MPOcont}. These matrices have the dimensions of the product of the dimensions of the original MPS and MPO. Thus, applying an operator leaves the form of the MPS invariant but increases the matrix dimensions.
+The result is a new MPS, $\ket{\phi}$, which is described by the matrices $N^{j_n}$ and is illustrated in figure \ref{fig:MPOcont}. The bond dimensions of the new state matrices, $N$, are the product of the bond dimensions of the original MPS and MPO. Thus, applying an operator leaves the form of the MPS invariant but increases the matrix dimensions.
 \begin{figure}[h!]
 	\centering
 	\input{Diagrams/MPOcontract.tex}
 	\caption{\textit{Application of an MPO, $\hat{O}$, to an MPS, $\ket{\psi}$. Matching physical indices are contracted resulting in a new MPS, $\ket{\phi}$, with increased matrix dimensions.}}
 	\label{fig:MPOcont}
 \end{figure}
-If the dimension of the MPS is $D$, and the dimension of the MPO is $D_W$, the total computational cost of the operation is $\mathcal{O}(L d^2 D_W ^2 D^2)$.\cite{schollwock, McCulloch2007}
+If the maximum bond dimension of the MPS is $D$, and the dimension of the MPO is $D_W$, the total computational cost of the operation is $\mathcal{O}(L d^2 D_W ^2 D^2)$ \cite{schollwock, McCulloch2007}.
 
 \section{Correlation Functions and Measurement of Local Properties}
 \label{sec:correlationFunctions}
@@ -256,7 +256,7 @@ Correlation functions can also be calculated efficiently using matrix product st
 Bringing the MPS into a mixed-canonical form with the central tensor at site $m$ results in the outer parts of the network being explicitly contracted as identities. However, the otherwise right-normalized tensors between the two operators can not be contracted as identities, as the right-most operator breaks the canonical form. Thus, one has to contract a network of length $k+1$, which is done most efficiently following the optimal bracketing described in Appendix \ref{chap:diagrams}. The complexity of the entire contraction is of order $\mathcal{O}(k D^3 d)$.
 
 \subsection{Correlation length} \label{sec:CorrelationLength}
-Although the MPS formalism excels at describing one dimensional systems, it struggles with describing long ranged correlations, due to how it is constructed.
+Although the MPS formalism excels at describing one-dimensional systems, it struggles at capturing long-ranged correlations, due to how it is constructed.
 Consider a general MPS in no particular canonical form. The \textit{transfer operator} is defined as
 \begin{equation}
 	\hat{E}^{[n]} = \sum_{\alpha_{n-1}, \alpha_{n-1}'} \sum_{\alpha_{n}, \alpha_{n}'} E_{(\alpha_{n-1} \alpha_{n-1}'),(\alpha_{n}  \alpha_{n}')}^{[n]} \left( \ket{\alpha_{n-1}}\bra{\alpha_{n-1}'} \right) \left( \ket{\alpha_{n}}\bra{\alpha_{n}'} \right) \; ,
@@ -269,17 +269,17 @@ The transfer operator is essentially a complete, positive map from operators def
 \begin{equation}
 	\{ \ket{\alpha_{n-1}}\bra{\alpha_{n-1}'} \} \to \{ \ket{\alpha_{n}}\bra{\alpha_{n}'} \} \; .
 \end{equation}
-The most important property of the transfer matrix is that all its eigenvalues $|\lambda_k| \leq 1 $ if the corresponding state is either left- or right-normalized \cite{schollwock}. \\
+The most important property of the transfer matrix is that all its eigenvalues follow $|\lambda_k| \leq 1 $ if the corresponding state is either left- or right-normalized \cite{schollwock}. \\
 Generalizing the transfer operator matrix elements \eqref{eq:transfermatrixelem1} to contraction with an operator $\hat{O}$ at site $n$ yields 
 \begin{equation}
 	E_{O}^{[n]} = \sum_{j_n , j_n '} O^{j_n , j_n '} M^{[n] j_n *} \otimes  M^{[n] j_n '} \; . \label{eq:transfermatrixelem2}
 \end{equation}
-Thereby, correlation functions can be expressed using only the transfer matrices of eq. \eqref{eq:transfermatrixelem1} and \eqref{eq:transfermatrixelem2}. Assuming a translational invariant transfer matrices for a left-normalized state, whereby the correlation can be expressed as  
+Thereby, correlation functions can be expressed using only the transfer matrices of eq. \eqref{eq:transfermatrixelem1} and \eqref{eq:transfermatrixelem2}. Assuming a translational invariant transfer matrices for a left-normalized state, a correlation function can be expressed as  
 \begin{align}
 	\bra{\psi} \hat{O}^{[i]} \hat{O}^{[j]} \ket{\psi} &= \Tr E^{[1]} \ldots E^{[i-1]} E_{O}^{[i]} E^{[i+1]} \ldots E^{[j-1]} E_{O}^{[j]} E^{[j+1]} \ldots E^{[L]} \nonumber \\
 	&= \Tr E_{O}^{[i]} E^{j-i-1} E_{O}^{[j]} E^{L-j+i-1} \nonumber \\ 
 	&= \sum_{l , k} \bra{l} E_{O}^{[i]} \ket{k} \lambda_{k}^{j-i-1} \bra{k} E_{O}^{[j]} \ket{l} \lambda_{l}^{L-j+i-1} \nonumber \\ 
-	&= \sum_{k} \bra{1} E_{O}^{[i]} \ket{k} \lambda_{k}^{j-i-1} \bra{k} E_{O}^{[j]} \ket{1} \qquad (\mathrm{for } L \to \infty)
+	&= \sum_{k} \bra{1} E_{O}^{[i]} \ket{k} \lambda_{k}^{j-i-1} \bra{k} E_{O}^{[j]} \ket{1} \qquad (\mathrm{for } \; L \to \infty)
 \end{align}
 where $\ket{k}$ and $\ket{l}$ are eigenstates of the transfer operator with eigenvalues $\lambda$. Since $|\lambda_k| \leq 1 $, only the leading eigenvalue $\lambda_1 = 1$ remains as $L \to \infty$. Defining the distance between two sites as $r = |j - i -1|$ and the correlation  length as $\xi_k = -1/\ln \lambda_k$, the correlation function can be written as
 \begin{equation}
@@ -289,18 +289,21 @@ where $c_k = \bra{1} E_{O}^{[i]} \ket{k} \bra{k} E_{O}^{[j]} \ket{1}$. \cite{sch
 \begin{figure}[h!]
     \centering
     \includegraphics[width=0.8\textwidth]{Figures/DensityMatrices.pdf}
-    \caption{\textit{\textbf{(a-c)} Density matrices of a 50 site system for $U/J = 0, \; 0.5, \; 12$. \textbf{(d)} entries of the 15th row of the density matrices plotted as a function of distance from the diagonal, $r$. }}
+    \caption{\textit{\textbf{(a-c)} Density matrices of a 50 site system for $U/J = 0, \; 0.5, \; 12$. \textbf{(d)} Entries of the 15th row of the density matrices plotted as a function of distance from the diagonal, $r$. }}
     \label{fig:DensityMatrices}
 \end{figure}
-According to eq. \eqref{eq:corrfunction}, correlation functions are given by a linear combination of exponential functions in the MPS description. Therefore, matrix product states struggle describing long range correlations, such as the superfluid single-particle correlations. While single-particle correlations decay exponentially for the Mott-Insulator, it decays following a power-law for superfluids
+According to eq. \eqref{eq:corrfunction}, correlation functions are given by a linear combination of exponential functions in the MPS description. Therefore, matrix product states struggle at fully capturing long-ranged correlations, such as the superfluid single-particle correlations. Single-particle correlations decay exponentially for the Mott-insulator, while they for superfluids decay following a power-law 
 \begin{equation}
 	\braket{\hat{a}_{i}^{\dag} \hat{a}_{j}} \sim |i - j|^{-K_b /2} \; ,
 	\label{eq:superfluidCorrelation}
 \end{equation}
-where $K_b$ is the Tomonaga-Luttinger parameter \cite{characPhases}. For short distances eq. \eqref{eq:corrfunction} is able to accurately approximate a power-law, however, only the slowest exponential decay will survive as distances grow larger. Hence, the correlation turns into a pure exponential decay with $\xi = -1/ \ln \lambda$, where $\lambda$ is the largest eigenvalue of $\hat{E}$ contributing to the correlation.\\
+where $K_b$ is the Tomonaga-Luttinger parameter \cite{characPhases}. For short distances eq. \eqref{eq:corrfunction} is able to accurately approximate a power-law, however, only the slowest exponential decay will survive as distances grow larger. Hence, the correlation turns into a pure exponential decay with $\xi = -1/ \ln \lambda$, where $\lambda$ is the largest eigenvalue of $\hat{E}$.\\
 To demonstrate the correlation properties of matrix product states, consider figure \ref{fig:DensityMatrices} depicting the density matrix with entries $\rho_{i,j} = \bra{\psi} \hat{a}_{i}^{\dag} \hat{a}_{j} \ket{\psi}$ for the ground state of a Bose-Hubbard system with $L = 50$ sites and unit occupancy. The ground state was found at various fractions of $U/J$ using the DMRG algorithm detailed in Section \ref{sec:DMRG}.
-Figures \ref{fig:DensityMatrices}(a) and \ref{fig:DensityMatrices}(c) show the density matrix plotted for the superfluid and the Mott-Insulator limit respectively. In the superfluid limit, long-range correlations are present, which is seen by large off-diagonal elements. However, since all correlations decay exponentially in the MPS description, the algorithm has difficulty approximating the very long range correlations of the system. This is visualized in figure \ref{fig:DensityMatrices}(d), where the correlation function is plotted against distance from the diagonal. The superfluid graph has a hump on it, which is an artifact of the MPS description and DMRG algorithm. Due to the very long correlation length, the graph should be almost flat except for the rapid drop in the end, which is due to the closed boundary conditions.
+Figures \ref{fig:DensityMatrices}(a) and \ref{fig:DensityMatrices}(c) show the density matrix plotted for the superfluid and the Mott-insulator limit respectively. In the superfluid limit, long-range correlations are present, which is seen by large off-diagonal elements. In the superfluid phase the energy of the system is minimized by de-localizing the particles across the entire lattice. However, the open boundary conditions causes a depletion of particles at the outer sites. This in turn results in the decrease of single-particle correlations near the boundary.
 
-In the Mott-Insulator limit no interaction takes place between sites, and the correlation length is zero. Hence, the correlation matrix contains only diagonal elements of equal magnitude. Figure \ref{fig:DensityMatrices}(c) shows some off-diagonal elements of non-zero magnitude, since the system is not a pure Mott-Insulator at $U/J = 12$. Nevertheless, the correlations are well described by only a single exponential function, as seen by the figure.
+Figure \ref{fig:DensityMatrices}(d) displays the single-particle correlation function as function of distance from the diagonal. In the $U/J = 0$ limit, the correlation function clearly does not exhibit a power-law behavior. The reason for this is two-fold: First, correlation functions are given by an exponential series in the MPS representation, which causes a poor description of very long-ranged correlation. Secondly, in the limit of large systems and negligible interactions the superfluid spectrum becomes gapless, whereby the ground state does not strictly follow an area law anymore. Therefore, the DMRG algorithm must search the entire Hilbert space for the ground state candidates resulting in a much worse convergence. 
 
-Finally, figure \ref{fig:DensityMatrices}(b) illustrates the density matrix for a system with $U/J = 0.5$, which is primarily a superfluid. The particles are not completely de-localized, which is noticeable from the well defined diagonal. Plotting the correlation function reveals the best approximation being a power-law, confirming the system is indeed a superfluid. 
+
+In the Mott-insulator limit no interaction takes place between sites, and the correlation length is zero. Hence, the density matrix contains only diagonal elements of equal magnitude. The density matrix shown in figure \ref{fig:DensityMatrices}(c) shows some off-diagonal elements of non-zero magnitude, since the system is not a pure Mott-Insulator at $U/J = 12$. Nevertheless, the correlations are well described by only a single exponential function, as seen by the figure.
+
+Finally, figure \ref{fig:DensityMatrices}(b) illustrates the density matrix for a system with $U/J = 0.5$, which is still in the superfluid phase but has finite interactions. The particles are not completely de-localized, which is noticeable from the visible diagonal. Plotting the correlation function reveals the best approximation being a power-law, confirming the system is indeed a superfluid. 

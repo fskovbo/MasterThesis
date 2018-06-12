@@ -18,12 +18,12 @@ and final state
 which are both expressed in terms of the angles of the Bloch sphere.
 In \cite{QOCTtwolevel} the quantum speed limit of such a state transfer was derived to be 
 \begin{equation}
-	T_{\mathrm{QSL}} = \lvert \frac{\theta_T - \theta_0}{2 \Omega_R} \rvert \; . 
+	T_{\mathrm{QSL}} = \left\lvert \frac{\theta_T - \theta_0}{2 \Omega_R} \right\rvert \; . 
 \end{equation}
-Consider the case of $\ket{\psi_0} = \ket{0}$ and $\ket{\psi_T} = \ket{1}$, whereby the quantum speed limit is $T_{\mathrm{QSL}} = \frac{\pi}{2 \Omega_R}$. 
+Consider the case of $\ket{\psi_0} = \ket{0}$ and $\ket{\psi_T} = \ket{1}$, whereby the quantum speed limit is $T_{\mathrm{QSL}} = {\pi}/{2 \Omega_R}$. 
 
 \subsubsection{Optimal control using GRAPE} 
-In this example $\Omega_R = 1$ for simplicity. Examining the Hamiltonian of eq. \eqref{eq:LZhamiltonian}, it is clear that the state transfer $\ket{0} \to \ket{1}$ can be achieved efficiently by letting $u(t) \equiv \Delta (t) = 0$ for the entire duration. To create an interesting example, the control is subjected to the boundary conditions $u(0) = 0$ and $u(T) = 2 T$.\\
+In this example $\Omega_R = 1$ for simplicity. Examining the Hamiltonian of eq. \eqref{eq:LZhamiltonian}, it is clear that the state transfer $\ket{0} \to \ket{1}$ can be achieved efficiently by letting $u(t) \equiv \Delta (t) = 0$ for the entire duration. To create an interesting example, the control is subjected to the boundary conditions $u(0) = 0$ and $u(T) = 2 T$.
 \renewcommand{\thesubfigure}{\alph{subfigure}}
 \begin{figure}[h!]
 \centering % <-- add this
@@ -37,9 +37,10 @@ In this example $\Omega_R = 1$ for simplicity. Examining the Hamiltonian of eq. 
   	\includegraphics[width=\textwidth]{Figures/LZpath1.pdf}
 \end{subfigure}
 
-\caption{\textit{Optimal control of LZ-system using GRAPE for $T_1 = \pi / 2$. \textbf{(a)}: Initial and optimized control sequence. \textbf{(b)}: Path traced out on the Bloch sphere by the quantum state, as it is evolved according to the control.}}
+\caption{Optimal control of LZ-system using GRAPE for $T_1 = \pi / 2$. \textbf{(a)} Initial and optimized control sequence. \textbf{(b)} Path traced out on the Bloch sphere by the quantum state, as it is evolved according to the control.}
 \label{fig:LZopt1}
 \end{figure}
+
 Figure \ref{fig:LZopt1} displays the results of optimizing the state transfer using the GRAPE algorithm for duration $T_1 = \pi / 2$. The algorithm takes an initial linear seed, which clearly does not reach the target state. Meanwhile, the optimized control achieves perfect transfer, which is as expected, as the quantum speed limit for the transfer is $T_{\mathrm{QSL}} = T_1 = \pi / 2$, whereby a solution should exist for this duration. However, any duration shorter should not be sufficient to reach the target state.\\ 
 \begin{figure}[h!]
 \centering % <-- add this
@@ -53,7 +54,7 @@ Figure \ref{fig:LZopt1} displays the results of optimizing the state transfer us
   	\includegraphics[width=\textwidth]{Figures/LZpath2.pdf}
 \end{subfigure}
 
-\caption{\textit{Optimal control of LZ-system using GRAPE for $T_2 = 2$. \textbf{(a)}: Initial and optimized control sequence. \textbf{(b)}: Path traced out on the Bloch sphere by the quantum state, as it is evolved according to the control.}}
+\caption{Optimal control of LZ-system using GRAPE for $T_2 = 2$. \textbf{(a)} Initial and optimized control sequence. \textbf{(b)} Path traced out on the Bloch sphere by the quantum state, as it is evolved according to the control.}
 \label{fig:LZopt2}
 \end{figure}
 Next, consider figure \ref{fig:LZopt2}, which shows the optimization results for duration $T_2 =  2$. As this duration is larger than the quantum speed limit, a solution exist for $T_2$. However, the path of the state on the Bloch sphere is much less direct than for the previous case. This is a consequence of how the optimal control problem is formulated, as one is searching for a control resulting in $\ket{\psi (T)} = \ket{\psi _{\mathrm{Target}}}$. Thus, the path of the state has no impact on the cost. Figures \ref{fig:LZopt1} and \ref{fig:LZopt2} illustrate this point, as many different paths from $\ket{\psi _0} \to \ket{\psi _{\mathrm{Target}}}$ are possible for large durations, whereas only few possible solutions are available at durations close to the quantum speed limit.

@@ -1,14 +1,14 @@
 \chapter{Ultracold Quantum Gases in Optical Lattices}
 
-Ultracold bosonic and fermionic quantum gases provide an incredible versatile tool in quantum research, as many novel quantum phenomena occur at extremely low temperatures. On of the most striking examples is the macroscopic population of the ground state of bosonic systems at sufficiently low temperatures, better known as a Bose-Einstein condensate \cite{WiemanCornell1995}.
+Ultracold bosonic and fermionic quantum gases provide an incredible versatile tool in quantum research, as many novel quantum phenomena occur at extremely low temperatures. On of the most striking examples is a macroscopic population of the ground state of bosonic systems at sufficiently low temperatures, known as a Bose-Einstein condensate \cite{WiemanCornell1995}.
 
-Neutral atoms in particular offer the unique feature of tunable collisional properties through Feshbach resonances, where any two-body scattering length can be achieved by applying a magnetic field \cite{Inouye1998,Zwierlein2004}. However, unlike for charged particles, magnetic traps can only trap a small subset of the available spin states of the neutral atoms \cite{Bloch2005}. Therefore, one must employ optical dipole traps, which utilize the interaction between an oscillating electric field and the resulting induced dipole moment in the atoms to generate potentials \cite{grimm}. However, any scattering of the atoms off the electric field must be suppressed to maintain low temperatures, which is achieved through large detunings and high field intensities \cite{manybodyBloch}. Hence, lasers are required for creating optical potentials.
+Neutral atoms in particular offer the unique feature of tunable collisional properties through Feshbach resonances, where any two-body scattering length can be achieved by applying a magnetic field \cite{Inouye1998,Zwierlein2004}. However, unlike for charged particles, magnetic traps can only trap a small subset of the available spin states of the neutral atoms \cite{Bloch2005}. Therefore, one must employ optical dipole traps, which utilize the interaction between an oscillating electric field and the induced dipole moment in the atoms to generate potentials \cite{grimm}. However, any scattering of the atoms off the electric field must be suppressed to maintain low temperatures, which is achieved through large detunings and high field intensities \cite{manybodyBloch}. Hence, lasers are required for creating optical potentials.
 
-By overlapping counter-propagating laser beams, one can create periodic potentials known as \textit{optical lattices}. These types of potentials are extremely versatile, as they can be created in a multitude of different configurations. Furthermore, the periodic nature of the potential gives rise to several phenomena otherwise known from condensed matter physics. Together with the tunable interactions from Feshbach resonances, a wide range of Hamiltonians can be mapped unto ultracold gases in optical lattices \cite{JakschZoller, Bloch2012}.\\
+By overlapping counter-propagating laser beams, one can create periodic potentials known as \textit{optical lattices}. These types of potentials are extremely versatile, as they can be created in a multitude of different configurations. Furthermore, the periodic nature of the potential causes the emergence of energy spectra in the form of bands, which is otherwise known from condensed matter physics. Together with the tunable interactions from Feshbach resonances, a wide range of Hamiltonians can be mapped unto ultracold gases in optical lattices \cite{JakschZoller, Bloch2012}.\\
 
 A weakly interacting bosonic gas trapped in an optical lattice a well described by a macroscopic wavefunction akin to a Bose-Einstein condensate. However, as the interaction strength grows, the system becomes increasingly correlated. A prominent example is the Bose-Hubbard model, describing bosons occupying the lowest Bloch band of a lattice. This model features a quantum phase transition between a weakly interacting superfluid phase and a strongly correlated Mott-insulator \cite{Fisher1989}.
 
-While the ground state equilibrium physics of the two phases are relatively simple, understanding the quantum phenomena emerging when dynamically crossing the critical point is very difficult. While a full investigation of such highly out-of-equilibrium dynamics is outside the scope of the thesis, this chapter will illustrate some of these phenomena and their effects on the phase transition.  
+While the ground state equilibrium physics of the two phases are relatively simple, understanding the quantum phenomena emerging when dynamically crossing the critical point is very difficult. Although a full investigation of such highly out-of-equilibrium dynamics is outside the scope of the thesis, this chapter will illustrate some of these phenomena and their effects on the phase transition.  
 
 
 
@@ -28,7 +28,7 @@ where $E_0$ is its amplitude, $\boldsymbol{\varepsilon}$ is its polarization vec
 where $\hat{d} = -e \hat{r}$ is the electric dipole operator.\\
 Consider eq. \eqref{eq:Hdipint} as a perturbation to the Hamiltonian of the atom. To first order the non-degenerate, time-independent perturbation of the energy of state $i$ reads
 \begin{equation}
-	E_{i}^{(i)} = \bra{i} \hat{H}_{int} \ket{i} \; .
+	E_{i}^{(1)} = \bra{i} \hat{H}_{int} \ket{i} \; .
 \end{equation}
 However, all first-order contributions vanish due to the symmetry of the Hamiltonian \eqref{eq:Hdipint}.\\
 To second order the perturbation of state $i$ is given by
@@ -40,7 +40,7 @@ The states $\ket{i}$ and $\ket{j}$ and their corresponding energies, $\varepsilo
 	E_{g/e}^{(2)}=\pm  \frac{ |\bra{e}\hat{d}\ket{g}|^2}{\Delta} |E_0|^2,
 	\label{2ndpert}
 \end{equation}
-where the upper sign is assigned to the atomic ground state $\ket{g}$. This can be rewritten in order to reflect properties of the atom and the field, by considering the intensity of the light, $I = 2 \epsilon_0 c |\boldsymbol{E}|^2 $, and the decay rate of the atom, $\Gamma = \frac{\omega_{0}^3}{3 \pi \epsilon_0 c^3} |\braket{e | \hat{d} | g}|$. Thus, equation \eqref{2ndpert} can be written as \cite{grimm} 
+where the upper sign is assigned to the atomic ground state $\ket{g}$. This can be rewritten in order to reflect properties of the atom and the field, by considering the intensity of the light, $I = 2 \epsilon_0 c |\boldsymbol{E}|^2 $, and the decay rate of the atom, $\Gamma = \frac{\omega_{0}^3}{3 \pi \epsilon_0 c^3} |\braket{e | \hat{d} | g}|^2$. Thus, equation \eqref{2ndpert} can be written as \cite{grimm} 
 \begin{equation}
 	E_{e/g}^{(2)}=\pm \frac{3 \pi c^2}{2 \omega_{0}^3} \frac{\Gamma}{\Delta}I
 	\label{eq:dipolepot}
@@ -60,7 +60,7 @@ Since the sign of the perturbation is reversed for the excited state, the effect
 \begin{equation}
 	\Gamma_{sc} = \frac{3 \pi c^2}{2 \hbar \omega_{0}^3} \left( \frac{\omega}{\omega_0} \right) ^3 \left( \frac{\Gamma}{\Delta} \right) ^2 I \; .
 \end{equation}
-As the detuning becomes small, the laser becomes resonant with the atom causing a large increase in scattered photons. Therefore, one has to choose a large detuning in order for the potential to remain conservative. However, this comes at the cost of a weaker potential. To compensate this, a high laser intensity must be used for the potential to reach sufficient depth. In practice there will be a limit to the laser power available, however, for most alkali-metal atoms the detuning is typically chosen to be large compared to the excited-state hyperfine structure splitting, which provides enough depth while being sufficient to suppress scattering events \cite{manybodyBloch}. 
+As the detuning becomes small, the laser becomes resonant with the atom causing a large increase in scattered photons. Therefore, one has to choose a large detuning in order for the potential to remain conservative. However, this comes at the cost of a weaker potential. To compensate this, a high laser intensity must be used for the potential to reach sufficient depth. In practice there will be a limit to the laser power available, however, for most alkali-metal atoms the detuning is typically chosen to be large compared to the excited-state hyperfine structure splitting, which provides enough depth while sufficiently suppressing scattering events \cite{manybodyBloch}. 
 
 
 \subsection{Optical Lattices}
@@ -77,8 +77,8 @@ where $V_0 = | \frac{3 \pi c^2}{2 \omega_{0}^3} \frac{\Gamma}{\Delta} 4 I_0 |$ i
 	\caption{\textit{\textbf{(a)} Two dimensional optical lattice formed by two mutually orthogonal laser beams. These tubes have a characteristic cigar shape, due to the Gaussian profile of the lasers. \textbf{(b)} Upon using three orthogonal laser beams, the result is a three dimensional lattice reminiscent of a cubic crystal. Figure is adopted from \cite{WideraThesis}.}}
 	\label{fig:OpticalLattice} 
 \end{figure}
-Adding another standing laser beam in a different direction creates a periodic two dimensional potential. For orthogonal polarization of the two lasers, the resulting potential is purely the sum of the sinusoidal standing wave potential, as no interference term is present \cite{lewenstein}. Note, the lattice is only well defined for distances much smaller than the waist of the laser beams, as the lattice is only present within the overlap of the two beams. Various shapes of the lattice can be achieved by adjusting the angle between the beams, however, the most common setup is using two orthogonal beam creating a square lattice of one dimensional tubes, as seen in figure \ref{fig:OpticalLattice}.
-In order to create a three dimensional lattice, as seen in figure \ref{fig:OpticalLattice}, an additional third perpendicular laser beam is needed. In the center of the trap, the lattice potential is then given by
+Adding another standing laser beam in a different direction creates a periodic two dimensional potential. For orthogonal polarization of the two lasers, the resulting potential is purely the sum of the sinusoidal standing wave potential, as no interference term is present \cite{lewenstein}. Note, the lattice is only well defined for distances much smaller than the waist of the laser beams, as the lattice is only present within the overlap of the two beams. Various shapes of the lattice can be achieved by adjusting the angle between the beams, however, the most common setup is using two orthogonal beam creating a square lattice of one dimensional tubes, as seen in figure \ref{fig:OpticalLattice}(a).
+In order to create a three dimensional lattice, as seen in figure \ref{fig:OpticalLattice}(b), an additional third perpendicular laser beam is needed. In the center of the trap, the lattice potential is then given by
 \begin{equation}
 	V(x,y,z) = - V_0 \left( \cos^2{k x } + \cos^2{k y } + \cos^2{k z } \right) \; , \label{eq:3Dlattice}
 \end{equation}
@@ -93,7 +93,7 @@ which is a plane wave modulated by a function with the same periodicity as the p
 This leads to an energy spectrum in the shape of bands with the periodicity of the first \textit{Brillouin Zone}. Bands are denoted by the band index $n$, and their shape is determined by both the shape and the depth of the potential. The potential depth is often denoted in units of the recoil energy $E_{\mathrm{rec}} = \frac{\hbar ^2 k^2}{2 m}$, where $m$ is the mass of the atom, and $k$ is the photon wave number of the light forming the optical lattice. For $V_0 = 0$, the particles are free, hence the bands will be parabolic. Meanwhile, for $V_0 \rightarrow \infty$, no interaction between different wells of the lattice can take place, as the wavefunctions of the trapped atoms will be confined to their respective well. Thus, the lattice is reduced to an array of independent harmonic oscillators, whereby the bands will appear flat with equal spacing \cite{greiner}. 
 
 \subsection{Localized States}
-For lattice potential depths within $5 E_{\mathrm{rec}} \leq V_0 \leq 8 E_{\mathrm{rec}}$, the lattice is in the \textit{tight binding limit}. Within this range the wavefunctions of the trapped atoms will only overlap with other wells in their closest proximity. Thus, interactions between wells are almost purely of nearest neighbour nature. Due to how well localized the wavefunctions are, a basis of Wannier functions is ideal for describing the system. Wannier functions are related to Bloch functions through the Fourier transform \cite{kittel1963}
+Lattice potential depths within $5 E_{\mathrm{rec}} \leq V_0 \leq 8 E_{\mathrm{rec}}$ are in the \textit{tight binding limit}. Within this range the wavefunctions of the trapped atoms will only overlap with other wells in their closest proximity. Thus, interactions between wells are almost purely of nearest neighbour nature. Due to how well localized the wavefunctions are, a basis of Wannier functions is ideal for describing the system. Wannier functions are related to Bloch functions through the Fourier transform \cite{kittel1963}
 \begin{equation}
 	w^{(n)}(\boldsymbol{r}) = \frac{1}{\sqrt{N_L}} \sum_{q} e^{ -i \boldsymbol{q} \boldsymbol{R} } \phi_{\boldsymbol{q}}^{(n)}(\boldsymbol{r}) \; ,
 \end{equation} 
@@ -105,10 +105,10 @@ thus forming a complete basis \cite{manybodyBloch}.
 \begin{figure}[!h]
 	\centering
 	\includegraphics[width=0.8\columnwidth]{Figures/WannierFunctions.pdf} 
-	\caption{\textit{Two one-dimensional Wannier functions plotted for lattice depths of $V_0 = 4.5 E_{\mathrm{rec}}$ \textbf{(a)} and $V_0 = 14 E_{\mathrm{rec}}$ \textbf{(b)} respectively.}}
+	\caption{Two one-dimensional Wannier functions plotted for lattice depths of \textbf{(a)} $V_0 = 4.5 E_{\mathrm{rec}}$ and \textbf{(b)} $V_0 = 14 E_{\mathrm{rec}}$.}
 	\label{fig:WannierPlot} 
 \end{figure}
-Figure \ref{fig:WannierPlot}.a shows Wannier functions plotted for lattice potential depths within the tight binding limit. As evident from the plot, the functions overlap with only their nearest neighbours. In the case of a more shallow lattice, the functions would extends to further wells, while they will tend towards a Gaussian shape as the lattice depth increases \cite{greiner}, which can be seen in figure \ref{fig:WannierPlot}.b.
+Figure \ref{fig:WannierPlot}(a) shows Wannier functions plotted for lattice potential depths around the tight binding limit. As evident from the plot, the functions overlap with only their nearest neighbours. In the case of a more shallow lattice, the functions would extends to further wells, while they will tend towards a Gaussian shape as the lattice depth increases \cite{greiner}, which can be seen in figure \ref{fig:WannierPlot}(b).
 
 
 
@@ -222,8 +222,8 @@ The Gross-Pitaevskii equation is very similar to the Schrödinger equation with 
 The Bose-Hubbard model describes weakly interacting bosons in a periodic lattice within the tight binding limit. The model is perfectly capable of predicting results with good accuracy, however, two conditions must hold in order for it to be valid: (i) both the thermal energy and the mean interaction energy at a single site must be much smaller than the separation to first excited band, $\hbar \omega_0$, and (ii) the Wannier functions decay essentially within the length of the lattice constant \cite{manybodyBloch}.
 Under these conditions one is assured that only the lowest band is taken into account, and that only nearest-neighbour interactions take place.
 
-The Bose-Hubbard model is interesting, as it supports two distinct phases: the Superfluid phase and the Mott-Insulator phase. Furthermore, the model contains effects such as a quantum phase transition between the two phases mentioned above, which can be crossed without any change in external parameters.
-While crossing the critical point a state experiences a variety of quantum phenomena, which have great implications for the dynamics of the system.
+The Bose-Hubbard model is interesting, as it supports two distinct phases: The \textit{superfluid} phase and the \textit{Mott-insulator} phase. Furthermore, the model contains phenomena such as a quantum phase transition between the two phases mentioned above, which can be crossed without any change in external parameters.
+While crossing the critical point, a state experiences a variety of quantum effects, which have great implications for the dynamics of the system.
 
 
 \subsection{The Bose-Hubbard Hamiltonian}
@@ -238,7 +238,7 @@ where
 	J_{i j} &= - \int \mathrm{d}x \ w^*(x-x_i) \left( - \frac{\hbar^2}{2 m} \nabla ^2 + V(x) \right) w(x-x_j) \label{eq:BHparamJ} \\
 	U_{i j k l} &= g \int \mathrm{d}x \ w^*(x-x_i) w^*(x-x_j) w(x-x_k) w(x-x_l) 
 \end{align}
-Since the system is periodic, one can consider a single site, $i = 0$, as representative for the entire lattice. In this way, the different terms of the Hamiltonian can be interpreted as follows:
+Since the system is periodic, one can consider a single site, $i = 0$, as representative for the entire lattice. Thus, the different terms of the Hamiltonian can be interpreted as follows:
 \begin{align}
 	J_{0 0} &= \text{constant energy offset} \nonumber \\
 	J_{0 1} &= \text{"overlap matrix element" to neighbouring site} \nonumber \\
@@ -261,14 +261,14 @@ The first term of the Bose-Hubbard Hamiltonian describes the kinematics within t
 \begin{figure}[!h]
 	\centering
 	\includegraphics[width=0.7\columnwidth]{Figures/UJparameters.pdf} 
-	\caption{\textit{Tunneling matrix element, $J$, of eq. \eqref{eq:BHparamJ} and interaction strength, $U$, of eq. \eqref{eq:BHparamU} as function of lattice depth. The parameters are calculated for Rubidium-87 atoms in an optical lattice with wavelength $\lambda = 1064 \mathrm{nm}$. The phase transition between the superfluid and Mott Insulator is marked with a dashed line.}}
+	\caption{\textit{Tunneling matrix element, $J$ \eqref{eq:BHparamJ}, and interaction strength, $U$ \eqref{eq:BHparamU}, as function of lattice depth. The parameters are calculated for Rubidium-87 atoms in an optical lattice with wavelength $\lambda = 1064 \mathrm{nm}$. The phase transition between the superfluid and Mott-insulator is marked with a dashed line.}}
 	\label{fig:UJparameters} 
 \end{figure}
 Figure \ref{fig:UJparameters} illustrates the parameters of the Bose-Hubbard model as function of the lattice depth. The tunneling matrix element falls of very quickly with increasing lattice depth, as the Wannier functions become localized to their respective wells, thus reducing their overlap. The localization of the Wannier functions also causes the on-site interaction strength to increase.
 
 \subsection{Phases of the Bose-Hubbard Model}
 
-The Bose-Hubbard model supports two quantum phases: The \textit{superfluid} phase and the \textit{Mott-Insulator} phase. These phases depend on the ratio $J/U$, and can be described separately by examining the ground state of the Bose-Hubbard Hamiltonian in the two extreme limits of the $J/U$ ratio.
+The Bose-Hubbard model supports two quantum phases: The \textit{superfluid} phase and the \textit{Mott-insulator} phase. These phases depend on the ratio $J/U$, and can be described separately by examining the ground state of the Bose-Hubbard Hamiltonian in the two extreme limits of the $J/U$ ratio.
 
 \subsubsection{Superfluid Phase}
 For a system where the tunneling matrix element $J$ is dominant, the lowest energy is obtained by delocalizing the atoms over the entire lattice. Thereby the wavefunction will be a product over single-particle states, and the system will be a superfluid \cite{greiner}.\\
@@ -286,7 +286,7 @@ where $L$ is the number of sites in the lattice. Through the Fourier transform t
 \begin{equation}
 	\hat{H}_J = - J \sum_{q = - \infty}^{\infty} \left( e^{- i q d } + e^{i q d} \right) \hat{n}_q \; ,
 \end{equation}
-where $d$ is the lattice distance. In momentum space the Hamiltonian is diagonal and has a continuous energy spectrum
+where $d$ is the lattice distance. In momentum space the Hamiltonian \eqref{hamilSF} is diagonal and has a continuous energy spectrum
 \begin{equation}
 	E_q = -2 J \cos(q d) \; .
 	\label{SFenergy}
@@ -295,7 +295,7 @@ Thus, the excitation spectrum of the superfluid is said to be gapless. The lowes
 \begin{equation}
 	\ket{\Psi_{SF}} =  \frac{1}{\sqrt{N_{p} !}} \left( \hat{a}_{q = 0}^{\dag} \right) ^{N_{p}} \ket{0} = \frac{1}{\sqrt{N_{p} !}} \left( \frac{1}{L} \sum_{j = 1}^{L} \hat{a}_{j}^{\dag} \right) ^{N_{p}} \ket{0} \; ,
 \end{equation} 
-where $N_{p}$ is the number of particles. This state supports a well defined macroscopic phase on each lattice site, since the many-body state is a product over identical single-particle states \cite{greiner}. With all particle condensed into the $q = 0$ momentum space state, the particles are completely de-localized in real space, which can be seen by taking the Fourier transform. For large $N_{p} , L \rightarrow \infty$ at fixed density $N_{p}/L$ the state becomes indistinguishable from having coherent states, $\ket{\alpha} $, on all lattice sites \cite{manybodyBloch}. Since bosonic operators at different sites commute, the superfluid state can be factorized into a product of local coherent states
+where $N_{p}$ is the number of particles. This state supports a well defined macroscopic phase on each lattice site, since the many-body state is a product over identical single-particle states \cite{greiner}. With all particles condensed into the $q = 0$ momentum space state, the particles are completely de-localized in real space, which can be seen by taking the Fourier transform. For large $N_{p} , L \rightarrow \infty$ at fixed density, $N_{p}/L$, the state becomes indistinguishable from having coherent states, $\ket{\alpha} $, on all lattice sites \cite{manybodyBloch}. Since bosonic operators at different sites commute, the superfluid state can be factorized into a product of local coherent states
 \begin{equation}
 	\ket{\Psi_{SF}} \approx \prod_j \left( e^{\sqrt{N_p/L} \hat{a}_{j}^{\dag}} \right) \ket{0} = \ket{\alpha_1} \otimes \ket{\alpha_2} \otimes \ldots
 	\label{stateSF}
@@ -303,10 +303,10 @@ where $N_{p}$ is the number of particles. This state supports a well defined mac
 \begin{figure}[!h]
 	\centering
 	\includegraphics[width=0.8\columnwidth]{Figures/f(n)_SF.JPG} 
-	\caption{\textbf{(a)}The statistics for the number of particles per lattice site $n$ for a filling fraction of $\bar{n}=1$ and $\bar{n}=2$ in the superfluid phase. \textbf{(b)} Illustration of the particles in the lattice. There will be large fluctuations of the number of particles found at each lattice site at a given time. Figure and caption adopted from \cite{greiner}.}
+	\caption{\textbf{(a)} The statistics for the number of particles per lattice site $n$ for a filling fraction of $\bar{n}=1$ and $\bar{n}=2$ in the superfluid phase. \textbf{(b)} Illustration of the particles in the lattice. There will be large fluctuations of the number of particles found at each lattice site at a given time. Figure and caption adopted from \cite{greiner}.}
 	\label{fig:f(n)_SF} 
 \end{figure}
-Coherent states are eigenstates of the annihilation operator $\hat{a} \ket{\alpha} = \alpha \ket{\alpha}$, where $|\alpha |^2$ can be considered the particle density of the system, and $\alpha = |\alpha| e^{i \phi}$, with $\phi$ being a global phase. Utilizing the coherent state form of the wavefunction \eqref{stateSF} the average filling fraction $\bar{n}$ can be calculated
+Coherent states are eigenstates of the annihilation operator $\hat{a} \ket{\alpha} = \alpha \ket{\alpha}$, where $|\alpha |^2$ can be considered the particle density of the system, and $\alpha = |\alpha| e^{i \phi}$, with $\phi$ being a global phase. Utilizing the coherent state form of the wavefunction \eqref{stateSF}, the average filling fraction $\bar{n}$ can be calculated
 \begin{equation}
 	\bar{n} = \braket{\hat{n}_i} = \bra{\Psi_{SF}} \hat{a}_{j}^{\dag} \hat{a}_{j} \ket{\Psi_{SF}} = \frac{N_p}{L} \; ,
 \end{equation}
@@ -314,20 +314,20 @@ as well as the fluctuations of particle number per site
 \begin{equation}
 	\frac{\sqrt{\Delta \bar{n}^2}}{\bar{n}} \sim \frac{1}{\sqrt{\bar{n}}} \; .
 \end{equation}
-Therefore, the probability distribution for the number of atoms at a given site is Poissonian, which can be seen in figure \ref{fig:f(n)_SF}. Due to the relatively large fluctuation of particle number per site, one would find a somewhat random number of atoms at a given site in a single measurement. However, averaging over many measurements well produce the filling fraction $\bar{n}$. In the presence of a finite interaction the resulting distribution would be sub Poissonian due to number squeezing \cite{greiner}.
+Therefore, the probability distribution for the number of atoms at a given site is Poissonian, which is illustrated in figure \ref{fig:f(n)_SF}. Due to the relatively large fluctuations of the particle number per site, one would find a somewhat random number of atoms at a given site in a single measurement. However, averaging over many measurements well produce the filling fraction $\bar{n}$. In the presence of a finite interaction the resulting distribution would be sub Poissonian due to number squeezing \cite{greiner}.
 
 
 \subsubsection{Mott-Insulator Phase}
-In the case of negligible tunneling only the on-site interaction between the atoms has to be taken into account, and the Bose-Hubbard Hamiltonian reduces to
+In the case of negligible tunneling, only the on-site interaction between the atoms has to be taken into account, and the Bose-Hubbard Hamiltonian reduces to
 \begin{equation}
 	\hat{H} = \hat{H}_U = \frac{U}{2} \sum_{i} \hat{n}_i \left( \hat{n}_i -1 \right) \; ,
 	\label{hamilMott}
 \end{equation}
-which is quadratic in $\hat{n}_i$. This heavily penalizes having multiple particles at the same site. Thus, the ground state of the system will be an equal distribution of all the particles throughout the lattice. Any fluctuations from this average will increase the energy, whereby the phase is said to be incompressible \cite{Gemelke2009}. This incompressibility can be formulated as $\partial n / \partial \mu = 0$, where $\mu$ is the chemical potential, and is the defining property of the Mott-Insulator \cite{manybodyBloch}.\\
+which is quadratic in $\hat{n}_i$. This heavily penalizes having multiple particles at the same site. Thus, the ground state of the system will be an equal distribution of all the particles throughout the lattice. Any fluctuations from this average will increase the energy, whereby the phase is said to be incompressible \cite{Gemelke2009}. This incompressibility can be formulated as $\partial n / \partial \mu = 0$, where $\mu$ is the chemical potential, and is the defining property of the Mott-insulator \cite{manybodyBloch}.\\
 \begin{figure}[!h]
 \centering
 \includegraphics[width=0.8\columnwidth]{Figures/f(n)_M.JPG} 
-\caption{\textbf{(a)}The statistics for the number of particles per lattice site $n$ in the Mott-insulator phase, for a filling fraction of $\bar{n}=1$ and $\bar{n}=2$. \textbf{(b)} Illustration of the particles in the lattice. The particles does not hop around in the lattice and are equally distributed. Caption and figure are adapted from \cite{greiner}.}
+\caption{\textbf{(a)} The statistics for the number of particles per lattice site $n$ in the Mott-insulator phase, for a filling fraction of $\bar{n}=1$ and $\bar{n}=2$. \textbf{(b)} Illustration of the particles in the lattice. The particles do not hop around in the lattice and are equally distributed. Caption and figure are adapted from \cite{greiner}.}
 \label{fig:f(n)_M} 
 \end{figure}
 Consider the case of average filling of one particle per site, $\bar{n} = 1$. The many-body state can be described by a product of single particles located on each site \cite{manybodyBloch}
@@ -335,19 +335,19 @@ Consider the case of average filling of one particle per site, $\bar{n} = 1$. Th
 	\ket{\Psi_{Mott}} = \prod_j \hat{a}_{j}^{\dag} \ket{0} \; .
 	\label{eq:MIstate}
 \end{equation}
-Eq. \ref{eq:MIstate} is a simple product of local Fock states with precisely one atom per site, which is illustrated in figure \ref{fig:f(n)_M}. This configuration of atoms minimizes the energy with regards to the Hamiltonian of eq. \eqref{hamilMott}. Any fluctuation from unit occupancy will increase the energy, as merely a single double occupancy will increase the energy by $U$. Thereby, unlike the energy spectrum of the Superfluid, the Mott-Insulator spectrum is gapped. As long as the gain in kinetic energy due to hopping, $J$, is smaller than the on-site interaction, $U$, the atoms remain localized. However, for $J > 0$ the ground state is no longer the product state described in eq. \eqref{eq:MIstate} \cite{manybodyBloch}. As $J$ increases, the gap in the excitation spectrum will gradually decrease until the transition to the superfluid is reached and the spectrum becomes gapless.\\
-While the Mott-Insulator phase has complete localization, the phases on the individual sites have obtained maximum uncertainty. Therefore, no phase coherence between different sites is present \cite{greiner}.
+Eq. \ref{eq:MIstate} is a simple product of local Fock states with precisely one atom per site, which is illustrated in figure \ref{fig:f(n)_M}. This configuration of atoms minimizes the energy with regards to the interaction Hamiltonian \eqref{hamilMott}. Any fluctuation from unit occupancy will increase the energy, as a single double occupancy will increase the energy by $U$. Therefore, unlike the energy spectrum of the superfluid, the Mott-insulator spectrum is gapped. As long as the gain in kinetic energy due to hopping, $J$, is smaller than the on-site interaction, $U$, the atoms remain localized. However, for $J > 0$ the ground state is no longer the product state described in eq. \eqref{eq:MIstate} \cite{manybodyBloch}. As $J$ increases, the gap in the excitation spectrum will gradually decrease until the transition to the superfluid is reached and the spectrum becomes gapless.\\
+While the Mott-insulator phase has complete localization, the phases on the individual sites have obtained maximum uncertainty. Therefore, no phase coherence between different sites is present \cite{greiner}.
 
 
 \subsection{Mean-Field Approximation of Phase Diagram}
-Consider once again the full Bose-Hubbard Hamiltonian \eqref{BHhamil}. The superfluid and the Mott-Insulator account for the two limits of the ratio $J/U$. However, in order to understand the full phase diagram of the Bose-Hubbard model, one has to derive the critical fraction $(J/U)_{crit}$ for which the phase transition occurs. There are several ways of doing this - one of them is looking at a mean-field solution of the Bose-Hubbard model. For simplicity the zero temperature case is treated here. Even without a change of temperature the phase transition still happens, hence it is referred to as a \textit{quantum phase transition}, since the phase transition can happen without change of external parameters \cite{Sachdev2007QPT}.\\
+Consider once again the full Bose-Hubbard Hamiltonian \eqref{BHhamil}. The superfluid and the Mott-insulator account for the two limits of the ratio $J/U$. However, in order to understand the full phase diagram of the Bose-Hubbard model, one has to derive the critical fraction $(J/U)_{crit}$ for which the phase transition occurs. There are several ways of doing this - one of them is looking at a mean-field solution of the Bose-Hubbard model. For simplicity the zero temperature case is treated here. Even without a change of temperature the phase transition still happens, hence it is referred to as a \textit{quantum phase transition}, since the phase transition can happen without change of external parameters \cite{Sachdev2007QPT}.\\
 Applying the mean field approximation to the annihilation operator yields
 \begin{equation}
 	\hat{a}_j = \psi + \delta \hat{a}_j \; ,
 \end{equation}
 where $\psi$ is the locally constant mean field, and $\delta \hat{a}_j$ is the fluctuation term. Inserting this into the Hamiltonian yields
 \begin{equation}
-	\hat{H}_{MF} = -J \sum_{\langle i,j \rangle} \left( \psi^* + \delta \hat{a}_{i}^{\dag} \right) \left( \psi + \delta \hat{a}_{j} \right) + \text{int.}
+	\hat{H}_{MF} = -J \sum_{\langle i,j \rangle} \left( \psi^* + \delta \hat{a}_{i}^{\dag} \right) \left( \psi + \delta \hat{a}_{j} \right) + \hat{H}_U
 \end{equation}
 Instead of considering the Hamiltonian as a whole, it can be considered as a sum of local on-site Hamiltonians
 \begin{equation}
@@ -360,16 +360,16 @@ For a homogeneous system one can express the kinetic part of the Hamiltonian loc
   & \approx \psi^* \psi + \psi^* \left( \hat{a}_j - \psi \right) + \psi \left( \hat{a}_{i}^{\dag} - \psi^* \right) \nonumber \\
 &= \psi^* \hat{a}_j + \psi \hat{a}_{i}^{\dag} - \psi^* \psi \; .
 \end{align}
-Since every term only contains a single index, one can let $j \rightarrow i$ leaving a local description
+Since every term only contains a single index, one can let $j \rightarrow i$ whereby
 \begin{equation}
 	\hat{h}_i = J z \psi^* \psi - J z \left( \psi^* \hat{a}_i + \psi \hat{a}_{i}^{\dag} \right) + \frac{U}{2} \hat{n}_i \left( \hat{n}_i -1 \right) + \mu_i \hat{n}_i \; ,
 	\label{localhamil}
 \end{equation}
 where $z$ is the number of neighbours of site $i$ \cite{vanoosten}. The last term added is a chemical potential, which is needed due to the lack of a fixed local particle number prompting the use of a Grand Canonical Ensemble description.
 
-Landau theory is a general theory regarding phase transitions, which states that in the vicinity of a critical point, one may expand the free energy in a power series of some order parameter. Thus, in order to find $(J/U)_{crit}$, eq. \eqref{localhamil} must be minimized. here, the order parameter is the mean field, hence
+Landau theory is a general theory regarding phase transitions, which states that in the vicinity of a critical point, one may expand the free energy in a power series of some order parameter. Here, the order parameter is the mean field, hence
 \begin{equation}
-	E_{MF} = \text{const. } + a |\psi|^2 + b |\psi|^4 + \ldots \label{eq:landau}
+	E_{MF} = \text{const.} + a |\psi|^2 + b |\psi|^4 + \ldots \label{eq:landau}
 \end{equation} 
 Eq. \eqref{eq:landau} constitutes an effective potential, which dictates certain properties of the system.
 The potential is symmetric in the complex plane allowing the system to have any phase. Furthermore, at some critical value of $a$, (here $a = 0$), the potential will shift from having a single central minimum to having minima at some finite $|\psi|$. This is a U(1) spontaneous symmetry breaking, which in Landau theory is associated with a phase transition \cite{plischke}. Thus, one need to compute the parameter $a$ of equation \eqref{eq:landau}.\\
@@ -378,12 +378,15 @@ One method is using second order perturbation theory, where the $\hat{\psi} = 0$
 	\hat{h}_{i}^{(0)} = J z \left( \psi^* \psi \right) + \frac{U}{2} \hat{n}_i \left( \hat{n}_i -1 \right) - \mu \hat{n}_i \; .
 \end{equation} 
 Since the zero-order solution only contains number operators, the ground state of the solution can be expressed in the Fock basis:
-\begin{align*}
-	\ket{0} \quad &\text{for} \quad \mu < 0 \\
-	\ket{1} \quad &\text{for} \quad 0 \leq \mu < U \\
-	\ket{2} \quad &\text{for} \quad U \leq \mu < 2 U \\
-	& \vdots
-\end{align*} 
+\begin{equation*}
+\ket{\mathrm{gs}}_i = 
+\begin{dcases}
+   \ket{0} , & \text{for $\mu < 0$} \\
+   \ket{1} , & \text{for $0 \leq \mu < U$} \\
+   \ket{2} , & \text{for $U \leq \mu < 2 U$} \\
+   & \vdots
+\end{dcases}
+\end{equation*} 
 The first order perturbation to the energy vanishes, as
 \begin{equation}
 	E_{i}^{(1)} = \bra{n} \delta \hat{a}_i \ket{n} = 0 \; ,
@@ -396,7 +399,7 @@ Here the perturbation Hamiltonian
 \begin{equation}
 	\hat{h}_i = - z J \left( \hat{a}_i \psi^* + \psi \hat{a}_{i}^{\dag} \right)
 \end{equation}
-contains only single creation/annihilation operators, whereby
+contains only single creation/annihilation operator, whereby
 \begin{equation}
 	\bra{n} \delta \hat{h}_i \ket{m} = 0 \quad \text{for} \quad |n - m| \neq 1 \; .
 \end{equation}
@@ -408,10 +411,10 @@ Hence, only off-diagonal matrix elements contribute to the perturbation
 \end{align*}
 Thereby, the second order perturbation energy reduces to
 \begin{align}
-	E_{i}^{(2)} &= \left( J z \right)^2 |\psi|^2 \left( \frac{n}{E_{g}^{(0)}- E_{n-1}^{(0)}} +  \frac{n+1}{E_{n}^{(0)}- E_{n+1}^{(0)}} \right) \nonumber \\
+	E_{i}^{(2)} &= \left( J z \right)^2 |\psi|^2 \left( \frac{n}{E_{n}^{(0)}- E_{n-1}^{(0)}} +  \frac{n+1}{E_{n}^{(0)}- E_{n+1}^{(0)}} \right) \nonumber \\
 	&= \left( J z \right)^2 |\psi|^2 \left( \frac{n}{U(n-1) - \mu} + \frac{n+1}{\mu - U n} \right) \; .
 \end{align}
-From eq. \eqref{eq:landau} $a$ is the pre-factor of all terms proportional $|\psi|^2$. Collecting those across from all the perturbations yields the approximation 
+From eq. \eqref{eq:landau}, the scalar $a$ is the pre-factor of all terms proportional $|\psi|^2$. Collecting all terms from the perturbations yields the approximation 
 \begin{equation}
 	a = J z + \left( J z \right)^2 |\psi|^2 \left( \frac{n}{U(n-1) - \mu} + \frac{n+1}{\mu - U n} \right) \; .
 \end{equation} 
@@ -423,43 +426,42 @@ with $\bar{\mu} = \frac{\mu}{J z}$ and $\bar{U} = \frac{U}{J z}$. Finally, the s
 \begin{equation}
 	\bar{\mu}_{\pm} = \frac{1}{2} \left( \bar{U}(2n -1) \pm \frac{1}{2} \sqrt{\bar{U}^2 - 2 \bar{U} (2 n +1)} \right) \; .
 \end{equation}
-A better understanding of the results can be obtained by examining figure \ref{fig:SFMOTT}, which displays a phase diagram of the Bose-Hubbard model.  
+A better understanding of the results can be obtained by examining figure \ref{fig:SFMOTT}, which displays the mean-field phase diagram of the Bose-Hubbard model.  
 \begin{figure}[h]
 	\centering
 	\includegraphics[width = 0.5\textwidth]{Figures/SFMottPhase.pdf}
 	\label{fig:SFMOTT}
-	\caption{\textit{Phase diagram of Bose-Hubbard model for T = 0. Grey areas mark the Mott-Insulator phase for different number of particles per site, while white regions mark the superfluid phase. \cite{greiner}}}
+	\caption{Phase diagram of Bose-Hubbard model for $T = 0$. Grey areas mark the Mott-insulator phase for different number of particles per site, while white regions mark the superfluid phase. \cite{greiner}}
 \end{figure}
-The $\mu_{\pm}$ curves encloses the region where the system is in the Mott-Insulating phase. $(1/\bar{U})_{crit} = (J/U)_{crit}$ can be read off the graph from the point where the two curves $\mu_{\pm}$ meet. No fluctuations take place in the Mott Insulator, whereby the particle number per site is well defined. As the chemical potential increases each site can accommodate more particles as long as the increase in chemical potential compensates the increased energy due to interactions between the particles.
+The $\mu_{\pm}$ curves enclose the region where the system is in the Mott-insulating phase. $(1/\bar{U})_{crit} = (J/U)_{crit}$ can be read off the graph from the point where the two curves $\mu_{\pm}$ meet. No number fluctuations take place in the Mott-insulator, whereby the particle number per site is well defined. As the chemical potential increases, each site can accommodate more particles as long as the increase in chemical potential compensates the increased energy due to interactions between the particles.
 
-The mean-field solution of the Bose-Hubbard model is only an approximation, which proves quite inaccurate for one dimension. This is obvious when comparing the critical ratio for the mean-field approach, $\left( U/J \right)_{crit}^{MF,1D} = 11.66$, with numerical results computed using the DMRG method, $\left( U/J \right)_{crit}^{DMRG,1D} = 3.37$, \cite{Kuhner2000}. Nevertheless, the mean-field gives a good intuitive feeling of the physics taking place and how one can describe them without resorting to diagonalizing the Hamiltonian.
+The mean-field solution of the Bose-Hubbard model is only an approximation, which proves quite inaccurate for one dimension. This is obvious when comparing the critical ratio for the mean-field approach, $\left( U/J \right)_{crit}^{MF,1D} = 11.66$, with numerical results computed using the DMRG method, $\left( U/J \right)_{crit}^{DMRG,1D} = 3.37$, \cite{Kuhner2000}. Nevertheless, the mean-field gives a good intuitive feeling of the physics taking place and how one can describe them without resorting to diagonalizing the full Hamiltonian.
 
 
-\section{Non-Equilibirum Dynamics near Critical Points}
+\section{Non-Equilibrium Dynamics near Critical Points}
 The standard procedure for experimentally preparing a Mott-insulator is condensing a gas of cold bosons into a shallow lattice, which effectively forms a superfluid in an equilibrium state. The lattice depth is then slowly ramped up, thereby changing the fraction $U/J$ and driving the phase transition to the Mott \cite{manybodyBloch,Greiner2002}. The constant change of a parameter can be considered a continuous quench of the initial state, whereby the system exhibit out-of-equilibrium dynamics.
 
 This section briefly covers some of the phenomena emerging when crossing a second order phase (continuous) transition like that of the Bose-Hubbard model. The goal is not to provide a full description of these phenomena but rather to illustrate some of the challenges associated with dynamically crossing the critical point.
 
 \subsection{Breakdown of Adiabaticity}
-Many experimental procedures rely on adiabaticity for state preparation. The adiabatic theorem in quantum mechanics state that under slow enough external perturbations, no transitions between energy levels take place. For systems with an energy gap between the ground and excited states this is particularly useful, as the ground state can only being excited through the Landau-Zener mechanism \cite{Landau1932,Zener1932} under small perturbations. Thus, state transfers can be achieved adiabatically in gapped systems. In most many-body systems the distance is exponentially small, whereby the time-scale of an adiabatic parameter variation grows exponentially large \cite{Polkovnikov2008}. The one-dimensional superfluid phase is gapless, whereby the energy spectrum is continuous. Therefore, any change in the parameters of a superfluid ground state will results in excitations in the form of Bogoliubov quasi-particles \cite{Polkovnikov2008,Ozeri2005}.
+Many experimental procedures rely on adiabaticity for state preparation. The adiabatic theorem in quantum mechanics states that under slow enough external perturbations, no transitions between energy levels take place. For systems with an energy gap between the ground and excited states this is particularly useful, as the ground state can only become excited through the Landau-Zener mechanism \cite{Landau1932,Zener1932} under small perturbations. Thus, state transfers can be achieved adiabatically in gapped systems. In many many-body systems the distance between energy levels is exponentially small, whereby the time-scale of an adiabatic parameter variation grows exponentially large \cite{Polkovnikov2008}. The one-dimensional superfluid phase is gapless, whereby the energy spectrum is continuous. Therefore, any change in the parameters of a superfluid ground state will results in excitations in the form of Bogoliubov quasi-particles \cite{Polkovnikov2008,Ozeri2005}.
 Furthermore, in the vicinity of a critical point the relaxation time-scale of the system diverges, which is known as the \textit{critical slowing down} \cite{Zurek2005}.
 
 Thus, adibadicity is bound to break down when transitioning from a superfluid to a Mott-insulating state by varying the fraction $U/J$. However, changes of parameters are often still referred to as "adiabatic" if they are sufficiently slow compared to the natural time scales of the systems.
 
 \subsection{The Kibble-Zurek Mechanism}
-The Kible-Zurek theory describes the emergence of topological defect following a quench through a second-order (continuous) phase transition \cite{Zurek2005}.\\
+The Kible-Zurek theory describes the emergence of topological defects following a quench through a second-order (continuous) phase transition \cite{Zurek2005}.\\
 Consider a system in equilibrium described by a correlation length $\xi$. In the vicinity of a critical point the correlation length diverges as a power law
 \begin{equation}
 	\xi  \approx \xi_0 |\epsilon (t)|^{-\nu} \quad , \; \epsilon > 0 \; ,
 \end{equation} 
-where $\nu$ is a static critical exponent, and $\epsilon$ is a reduced coupling, which is zero at the critical point. Thus, near the critical point the equilibrium state is characterized by an infinite correlation length.\\
-Assume a state initially in equilibrium begin evolved towards the critical point \cite{Kibble1976}.  
-Approaching a second-order phase transition, an equilibrium state can have a relaxation time-scale, $\tau$, which diverges according to
+where $\nu$ is a static critical exponent, and $\epsilon$ is a reduced coupling, which is zero at the critical point. Thus, near the critical point the equilibrium state is characterized by an infinite correlation length \cite{Kibble1976}.\\
+Assume a state initially in equilibrium begin evolved towards the critical point.  Approaching a second-order phase transition, the equilibrium state will have a relaxation time-scale, $\tau$, which diverges according to
 \begin{equation}
 	\tau \approx \tau_0 |\epsilon (t)|^{-\mu} \quad , \; \epsilon > 0 \; ,
 \end{equation}
-near the critical point \cite{Zurek2005}. Here, the parameter $\mu$ is another critical exponent. This divergence of the response time of the state referred to as the \textit{critical slowing down} and causes an inevitable breakdown of adibaticity. As the relaxation time becomes larger than the time before reaching the transition, the systems effectively enters a "freeze-out" period, in which the correlation length no longer can evolve. Thus, the system crosses the critical point without $\xi$ ever having spanned the entire system, which results in the formation of broken-symmetry phase domains, or defects, with independent values of the underlying order parameter \cite{Gillman2018}. This phenomenon is known as the Kibble-Zurek mechanism.
-In the context of the Bose-Hubbard model, the Kibble-Zurek mechanism is dependent on the direction of the phase transition, due the completely different energy spectra of the phases. While the transition from the gapped Mott-insulating state to a superfluid will produce topological defects, the opposite transition will amplify the quantum fluctuations of the initial state. Thus, the number-fluctuations of the initial superfluid state may carry over to the Mott-insulator, however, the magnitude of these fluctuations will depend on the exact form of the parameter variation \cite{Schutzhold2006}.
+near the critical point \cite{Zurek2005}. Here, the parameter $\mu$ is another critical exponent. This divergence of the response time of the state is referred to as the \textit{critical slowing down} and causes an inevitable breakdown of adibaticity. As the relaxation time becomes larger than the time before reaching the transition, the systems effectively enters a "freeze-out" period, in which the correlation length no longer can evolve. Thus, the system crosses the critical point without $\xi$ ever having spanned the entire system, which results in the formation of broken-symmetry phase domains, or defects, with independent values of the underlying order parameter \cite{Gillman2018}. This phenomenon is known as the Kibble-Zurek mechanism.
+In the context of the Bose-Hubbard model, the Kibble-Zurek mechanism is dependent on the direction of the phase transition, due the completely different energy spectra of the phases. While the transition from the gapped Mott-insulating state to a superfluid will produce topological defects, the opposite transition will amplify the quantum fluctuations of the initial state. Thus, the number-fluctuations of the initial superfluid state may carry over to the Mott-insulator, however, the magnitude of these fluctuations will depend on the exact form and time-scale of the parameter variation \cite{Schutzhold2006}.
 
 
 \subsection{Light-Cone Propagation of Correlations}
@@ -478,7 +480,7 @@ different times
 	\label{eq:LiebRobinsonBound}
 \end{equation}
 where $L$ is the distance between $A$ and $B$, and $| A |$, $| B |$ denote the size (number of sites) in each block \cite{Bravyi2006}. The positive constants $c,v,\lambda > 0$ are determined by the maximum norm of the local Hamiltonians $\max_{\langle i,j \rangle} \max_{t}  \lVert \hat{h}_{ij} (t) \rVert $ and are therefore system dependent. The time-dependent operator norm of the commutator can be considered a measurement of correlated information separated in space and time, and it is effectively bound by the light-cone emerging from the exponential term of eq. \eqref{eq:LiebRobinsonBound}.
-A complete understanding of time-dependent Lieb-Robinson bound \eqref{eq:LiebRobinsonBound} is outside the scope of this thesis, however, two remarkable consequences regarding the spreading of information can be inferred from the bound: (i) information propagating outside the light-cone is exponentially suppressed \cite{Bravyi2006}, and (ii) correlations within the system is mediated through entangled quasi-particles \cite{Cheneau2012}, whose ballistic propagation velocity is limited by $v$ \cite{Calabrese2006}. The propagation velocity, $v$, different than the sound velocity of the system for curved dispersion relations \cite{Lauchli2008}, whereby it is referred to as the \textit{Lieb-Robinson velocity}.
+A complete understanding of time-dependent Lieb-Robinson bound \eqref{eq:LiebRobinsonBound} is outside the scope of this thesis, however, two remarkable consequences regarding the spreading of information can be inferred from the bound: (i) information propagating outside the light-cone is exponentially suppressed \cite{Bravyi2006}, and (ii) correlations within the system is mediated through entangled quasi-particles \cite{Cheneau2012}, whose ballistic propagation velocity is limited by $v$ \cite{Calabrese2006}. Their propagation velocity is different from the sound velocity of the system for curved dispersion relations \cite{Lauchli2008}, whereby it is referred to as the \textit{Lieb-Robinson velocity}.
 
 \begin{figure}[h!]
 \centering % <-- add this
@@ -490,19 +492,19 @@ A complete understanding of time-dependent Lieb-Robinson bound \eqref{eq:LiebRob
 	 %\hspace{5mm}
   	\includegraphics[width=1.1\textwidth]{Figures/LightConeDemo.pdf}
 \end{subfigure}
-\caption{Illustration of light-cone-like propagation of information. \textbf{(a)} one dimensional ultracold gas of bosonic atoms in a Mott configuration being abruptly quenched to a shallow lattice. \textbf{(b)} Entangled quasi-particle pairs emerge at all sites and propagate ballistically following the quench. \textbf{(c)} Density plot of the evolution of $\ket{1}_{0}$ in an $L = 61$ lattice according to a simple Hubbard Hamiltonian \eqref{eq:simpleHubbardModel}. Figures \textbf{(a)} and \textbf{(b)} are adopted from \cite{Cheneau2012}.}
+\caption{Illustration of light-cone-like propagation of information. \textbf{(a)} One dimensional ultracold gas of bosonic atoms in a Mott configuration being abruptly quenched to a shallow lattice. \textbf{(b)} Entangled quasi-particle pairs emerge at all sites and propagate ballistically following the quench. \textbf{(c)} Density plot of the evolution of $\ket{1}_{0}$ in an $L = 61$ lattice according to a simple Hubbard Hamiltonian \eqref{eq:simpleHubbardModel}. Figures \textbf{(a)} and \textbf{(b)} are adopted from \cite{Cheneau2012}.}
 \label{fig:LightCone}
 \end{figure}
 
-Experimental evidence of an effective light-cone in a one-dimensional Bose-Hubbard system was shown in \cite{Cheneau2012}. In the experiment a Mott-insulating ground state was quenched to near the critical point as shown in figure \ref{fig:LightCone}(a). The initial ground state was thereby highly excited and acted as source for quasi-particles consisting of \textit{dublons} (excess particle) and \textit{holons} (hole) shown in figure \ref{fig:LightCone}(b). By measuring the two-point parity correlation function, the spreading of information through the system was shown to propagate at a constant velocity limited by the Lieb-Robinson bound.
+Experimental evidence of an effective light-cone in a one-dimensional Bose-Hubbard system was shown in \cite{Cheneau2012}. In the experiment, a Mott-insulating ground state was quenched to near the critical point as shown in figure \ref{fig:LightCone}(a). The initial ground state was thereby highly excited and acted as source for quasi-particles consisting of \textit{dublons} (excess particle) and \textit{holons} (hole) shown in figure \ref{fig:LightCone}(b). By measuring the two-point parity correlation function, the spreading of information through the system was shown to propagate at a constant velocity limited by the Lieb-Robinson bound.
 
-To illustrate the propagation of correlation-mediating quasi-particles the evolution of an impurity in a simple Hubbard model was examined. Consider a Hubbard Hamiltonian of the form
+To illustrate the propagation of correlation-mediating quasi-particles, the evolution of an impurity in a simple Hubbard model was examined. Consider a Hubbard Hamiltonian of the form
 \begin{equation}
 	\hat{H} = - J \sum_{\langle i,j \rangle} \hat{a}_{i}^{\dag} \hat{a}_{j} \; ,
 	\label{eq:simpleHubbardModel}
 \end{equation} 
 which contains no interactions. A quasi-particle excitation may not have strong interactions with the remaining system, although they may mutually interact. Here a single particle is considered, whereby a negligible  interaction is a reasonable approximation. Meanwhile, the quasi-particle will be experiencing the same lattice potential and any underlying harmonic confinement, if it remains in the lowest band. Here, a flat lattice (no underlying potential) is considered. Thus, the model described is equivalent to a quasi-particle excitation on top of a homogeneous Mott-insualator.
-Figure \ref{fig:LightCone}(c) shows the density evolution of a single impurity, $\ket{1}_{0}$, initially placed at the central cite in a lattice of size $L = 61$. The resulting density wave is very reminiscent of a light/cone, as the probability velocity is bounded by a constant. Further examining the emerging cone, one will notice an exponentially suppressed population just outside the cone (more visible near the boundary). Due to the open boundaries of the system, the quasi-particle is reflected at the edge of the lattice, causing it to interfere with itself \cite{Calabrese2006}.\\
-It should be stressed that the density wave shown in figure \ref{fig:LightCone} is not light-cone but merely the propagation of a single quasi-particle-like impurity. In a physical system quasi-particles will emerge at all sites, whereby the Lieb-Robinson velocity is different from the spreading velocity of non-interacting particles. In fact, the experimental investigation of light-cones in the Bose-Hubbard model found information velocities much higher than single-particle spreading velocities, yet lower than the Lieb-Robinson bound \cite{Cheneau2012}. While the simple Hubbard model illustrates the propagation of a single quasi-particle, the propagation of information within a many-body system is a many-body effect itself. \\
+Figure \ref{fig:LightCone}(c) shows the density evolution of a single impurity, $\ket{1}_{0}$, initially placed at the central cite in a lattice of size $L = 61$. The resulting density wave is very reminiscent of a light-cone, as the probability velocity is bounded by a constant. Further examining the emerging cone, one will notice an exponentially suppressed population just outside the cone (more visible near the boundary). Due to the open boundaries of the system, the quasi-particle is reflected at the edge of the lattice, causing it to interfere with itself \cite{Calabrese2006}.\\
+It should be stressed that the density wave shown in figure \ref{fig:LightCone}(c) is not a true light-cone but merely the density-wave of a single quasi-particle-like impurity. In a physical system quasi-particles will emerge at all sites, whereby the Lieb-Robinson velocity is different from the spreading velocity of non-interacting particles. In fact, the experimental investigation of light-cones in the Bose-Hubbard model found information velocities much higher than single-particle spreading velocities, yet lower than the Lieb-Robinson bound \cite{Cheneau2012}. While the simple Hubbard model illustrates the propagation of a single quasi-particle, the propagation of information within a many-body system is a many-body effect itself. \\
 
-Due to the breakdown of adiabaticity around the critical point, it is inevitable that quasi-particle excitations will be created when transitioning from a superfluid to a Mott-insulator. Furthermore, a study of the Mott to superfluid phase transition showed that the propagation of correlations was well described for fast ramp sequences by ballistically spreading quasi-particles following the Lieb-Robinson bounds, while slower ramps required the interaction of quasi-particles to be considered \cite{Braun2015}. Therefore, engineering a lattice ramping sequence bringing the system from a superfluid to a Mott-Insulating ground state is a highly difficult task. While classical approaches fail to capture the rich dynamics of the phase transition, simulations of the system can be performed through tensor network methods, which provide a low-entanglement effective theory \cite{Gillman2018}. Although the low-entanglement approximation inevitably fails for long durations, the finite spreading velocity of correlations within the system enables the use of tensor-network methods for simulating dynamics for short durations \cite{Eisert2015}. 
+Due to the breakdown of adiabaticity around the critical point, it is inevitable that quasi-particle excitations will be created when transitioning from a superfluid to a Mott-insulator. Furthermore, a study of the Mott to superfluid phase transition showed that the propagation of correlations was well described by ballistically spreading quasi-particles for fast ramp sequences, while slower ramps required the interaction of quasi-particles to be considered \cite{Braun2015}. Therefore, engineering a lattice ramping sequence bringing the system from a superfluid to a Mott-insulating ground state is a highly difficult task. While classical approaches fail to capture the rich dynamics of the phase transition, simulations of the system can be performed through tensor network methods, which provide a low-entanglement effective theory \cite{Gillman2018}. Although the low-entanglement approximation inevitably fails for long durations, the finite spreading velocity of correlations within the system enables the use of tensor-network methods for simulating dynamics for short durations \cite{Eisert2015}. 

@@ -1,5 +1,5 @@
 \chapter{Quantum Optimal Control Theory} \label{chap:OptimalControl}
-The fundamental problem of Quantum Optimal Control Theory is to steer the dynamics of a quantum system in a desired way through external fields \cite{Rice2000,Shapiro2003}. Often, the goal is the transfer from an initial state, $\ket{\psi_0}$, to a desired target-state, $\ket{\psi_{\mathrm{target}}}$. The fields responsible for controlling the dynamics of the system are parametrized by a set of control parameters or functions. Optimal control theory determines the parameters, which lead to the desired dynamics of the system \cite{Werschnik2007}.\\ 
+The fundamental problem of Quantum Optimal Control Theory is to steer the dynamics of a quantum system in a desired way through external fields \cite{Rice2000,Shapiro2003}. Often, the goal is the transfer from an initial state, $\ket{\psi_0}$, to a desired target-state, $\ket{\psi_{\mathrm{target}}}$. The fields responsible for controlling the dynamics of the system are parametrized by a set of control parameters or functions. Optimal control theory determines the control functions, which realize to the desired dynamics of the system \cite{Werschnik2007}.\\ 
 In control problems, the Hamiltonian of the system is given as
 \begin{equation}
 	\hat{H} =  \hat{H}_0 + \sum_{n = 1}^{m}  \hat{H}_n (u_n(t)) \; ,
@@ -7,14 +7,14 @@ In control problems, the Hamiltonian of the system is given as
 \end{equation} 
 where $\hat{H}_0$ is an uncontrollable drift, $\hat{H}_n$ are the controllable fields, and $u_n(t)$ are the control functions.
 
-The control problem presented in this thesis is steering the system from an initial state in the superfluid phase to a target-state in the Mott-Insulator phase. This is achieved by varying the lattice depth, which therefore can be considered the control parameter. The optimal control problem can be stated as follows:\\
+The control problem presented in this thesis is steering the system from an initial state in the superfluid phase to a target-state in the Mott-insulator phase. In practice, this is achieved by varying the lattice depth, which therefore may be considered the control parameter. The optimal control problem can be stated as follows:\\
 Suppose the system is initially described by the state $\ket{\psi_0} = \ket{\psi (0)}$, and the potential is varied in the time interval $[ 0 , T]$. The goal is finding the set of control parameters, $\boldsymbol{u}(t)$, which brings the initial state as close as possible to the target-state, $\ket{\psi_{\mathrm{target}}}$. This is expressed in terms of a cost function
 \begin{equation}
 	\mathcal{J}_T = \frac{1}{2} \left( 1-|\braket{\psi_{\mathrm{target}} | \psi (T)}|^2 \right) \; ,
 	\label{eq:infidelityCost}
 \end{equation}
 which is given as half the infidelity between the target and the state at $t=T$. The cost function becomes zero, when the terminal state matches the target state up to an arbitrary phase. Hence, the optimal control problem can be formulated as a minimization problem of eq. \eqref{eq:infidelityCost} , whereby one can employ methods from mathematical optimization theory \cite{Jager2014}.\\
-Large variations in the control parameter is often hard to achieve experimentally. Therefore, an extra term is added to the cost function, which penalizes strong variations in the control. The new cost function reads
+Large variations in the control parameter are often hard to achieve experimentally. Therefore, an extra term is added to the cost function, which penalizes strong variations in the control. The new cost function reads
 \begin{equation}
 	\mathcal{J} = \mathcal{J}_T + \mathcal{J}_R = \mathcal{J}_T + \frac{\gamma}{2} \sum_{n=1}^{m} \int_{0}^{T} \left( \pdv{u_n}{t} \right)^2 \mathrm{d}t \; ,
 	\label{eq:grapeCost}
@@ -33,11 +33,11 @@ Assume the transfer time, $T$, is discretized in steps of $\Delta t = T/N$. Subj
 \end{equation}
 The time-evolution of the system during the time step $j$ is given by the propagator
 \begin{equation}
-	\hat{\mathcal{U}}_j \equiv \hat{\mathcal{U}} (u(t_j)) = \exp \bigg\{ -i \left( \hat{H}_0  \sum_{n = 1}^{m}  \hat{H}_n (u_n(t_j))  \right) \Delta t \bigg\} \; . 
+	\hat{\mathcal{U}}_j \equiv \hat{\mathcal{U}} (u(t_j)) = \exp \bigg\{ -i \left( \hat{H}_0 + \sum_{n = 1}^{m}  \hat{H}_n (u_n(t_j))  \right) \Delta t \bigg\} \; . 
 \end{equation} 
 Thereby, the cost function \eqref{eq:grapeCost} becomes
 \begin{equation}
-	\mathcal{J} = \frac{1}{2} \left( 1 - |\braket{\psi_{\mathrm{target}} | \prod_{j = 1}^{N} \hat{\mathcal{U}}_j | \psi (0)}|^2 \right) + \frac{\gamma}{2} \sum_{n = 1}^{m} \sum_{j = 1}^{N-1} \left( \frac{\Delta u_n (t_j)}{\Delta t} \right)^2 \Delta t \; ,
+	\mathcal{J} = \frac{1}{2} \left( 1 - \left\lvert \Braket{\psi_{\mathrm{target}} | \prod_{j = 1}^{N} \hat{\mathcal{U}}_j | \psi (0)} \right\rvert^2 \right) + \frac{\gamma}{2} \sum_{n = 1}^{m} \sum_{j = 1}^{N-1} \left( \frac{\Delta u_n (t_j)}{\Delta t} \right)^2 \Delta t \; ,
 	\label{eq:discreteCost}
 \end{equation}
 where $\Delta u_n (t_j) =  u_n (t_{j+1}) - u_n (t_j)$. The full gradient of the cost, $\nabla \mathcal{J}(\boldsymbol{u})$, is a vector of partial derivatives ${\partial \mathcal{J}(\boldsymbol{u})}/{\partial u_n (t_j)}$, which can be derived analytically.\\
@@ -137,11 +137,14 @@ The cost is minimized under the initial and terminal condition
 \end{align}
 Although the starting guess of the control, $\boldsymbol{u}^{(1)}$, can be completely random, both faster convergence and lower convergence value is achieved by choosing a good starting seed. Clearly, there is no guarantee that the algorithm will converge to the global optimum, as it is based on a gradient ascent procedure \cite{Khaneja2005}. Nevertheless, the algorithm can be made to search a large portion of the parameter space by executing it multiple time for various seeds.  
 
-In practice, the GRAPE algorithm requires a lot of computer memory, as the gradient of the cost requires the inner product of the states $\ket{\psi}$ and $\ket{\chi}$ at all times, $t_k$. The two states cannot be time-evolved simultaneously, as $\ket{\chi}$ is derived from the final state. To efficiently evaluate the gradient, the state $\ket{\psi}$ must be stored at each time-step, while entries of the gradient \eqref{eq:costGradient} are calculated at each step of the back-propagation of $\ket{\chi}$. Thus, a total of $N$ states must be kept in each iteration of the GRAPE algorithm. For complex many-body systems this may become an issue, as tensor-network descriptions of states (described in chapter \ref{chap:MPS}) require a lot of storage. A possible workaround is proposed in \cite{Mennemann2015}, which involves calculating the final state, $\ket{\psi (T)}$, without storing the state at every step. Subsequently, the two states $\ket{\psi (T)}$ and $\ket{\chi (T)}$ are both propagated backwards simultaneously, and the elements of the gradient \eqref{eq:costGradient} are calculated at each step. This eliminates the need for storing a large amount of information, as a maximum of two states will be kept in the memory at a time. However, this memory-preserving version of the GRAPE algorithm requires an additional time-evolution of $\ket{\psi}$ in each iteration resulting in an increased runtime.
+In practice, the GRAPE algorithm requires a lot of computer memory, as the gradient of the cost requires the inner product of the states $\ket{\psi}$ and $\ket{\chi}$ at all times, $t_k$. 
+Since $\ket{\psi (T)}$ is required for calculating $\chi$, the propagation of $\psi$ for the entire duration must have finished before the derivatives can be evaluated.
+Therefore, to efficiently evaluate the gradient, the state $\ket{\psi}$ must be stored at each time-step, while entries of the gradient \eqref{eq:costGradient} are calculated at each step of the back-propagation of $\ket{\chi}$. Thus, a total of $N$ states must be kept in each iteration of the GRAPE algorithm. For complex many-body systems this may become an issue, as tensor-network descriptions of states (described in chapter \ref{chap:MPS}) require a lot of storage. A possible workaround is proposed in \cite{Mennemann2015}, which involves calculating the final state, $\ket{\psi (T)}$, without storing the state at every step. Subsequently, the two states $\ket{\psi (T)}$ and $\ket{\chi (T)}$ are both propagated backwards simultaneously, and the elements of the gradient \eqref{eq:costGradient} are calculated at each step. This eliminates the need for storing a large amount of information, as a maximum of two states will be kept in the memory at a time. However, this memory-preserving version of the GRAPE algorithm requires an additional time-evolution of $\ket{\psi}$ in each iteration resulting in an increased runtime.
 
 
 \subsection{Gradient of Suzuki-Trotter Propagator} \label{sec:TrotterGrad}
-In the previous section, the derivative of the cost function with regards to the control was derived for a general propagator \eqref{eq:costGradient}. However, simplifications to the otherwise rather complicated gradient can be achieved when utilizing features of the propagator used for the specific problem. In this instance, the state is time-evolved using a variation of the tDMRG algorithm described in section \ref{sec:modTMDRG}, where the propagator has been Suzuki-Trotter expanded. Remarkably, the combination of the expanded propagator and a diagonal control Hamiltonian causes all higher order contributions to the cost gradient to vanish. Instead, the precision of the gradient is solely determined by the order of the expansion.\\
+In the previous section, the derivatives of the cost function with regards to the control functions were derived for a general propagator \eqref{eq:costGradient}. However, simplifications to the otherwise rather complicated gradient can be achieved when utilizing the Suzuki-Trotter expanded propagator introduced in section \ref{sec:modTMDRG}.
+Remarkably, the combination of the expanded propagator and a diagonal control Hamiltonian causes all higher order contributions to the cost gradient to vanish. Instead, the precision of the gradient is solely determined by the order of the expansion.\\
 Consider the elements of the transfer cost gradient for the GRAPE algorithm \eqref{eq:gradientForBack}, where the derivative of a general propagator with respect to the control is given by
 \begin{equation}
 	\frac{\partial \hat{\mathcal{U}}_{j}}{\partial u_n (t_j)} = e^{-i \hat{H} (u_n (t_j)) \Delta t}  \sum_{k = 0}^{\infty }  \frac{i^{k-1} \Delta t^{k+1}}{(k+1)!} \left[ \hat{H} (u_n (t_j)) , \frac{\partial \hat{H} (u_n (t_j))}{\partial u_n (t_j)}  \right]_k \;.
@@ -188,7 +191,7 @@ Thus, the combination of the Suzuki-Trotter expansion and a diagonal control Ham
 \begin{figure}[!h]
     \centering
     \includegraphics[width=0.8\textwidth]{Figures/CompareGradientsGRAPE.pdf}
-    \caption{\textit{\textbf{(a)}: Numerical gradient along with gradient calculated via eq. \eqref{eq:STcostgrad}. \textbf{(b)}: Difference between the two gradients. \textbf{(c)}: Absolute relative difference between the two gradients.}}
+    \caption{\textbf{(a)} Numerical gradient along with gradient calculated via eq. \eqref{eq:STcostgrad}. \textbf{(b)} Difference between the two gradients. \textbf{(c)} Absolute relative difference between the two gradients.}
     \label{fig:CompareGradientsGRAPE}
 \end{figure}
 A comparison between a numerically calculated gradient and the analytically derived gradient of eq. \eqref{eq:STcostgrad} can be seen in figure \ref{fig:CompareGradientsGRAPE}. As evident from the figure, the derived cost gradient is very accurate, which is necessary for an efficient optimization procedure. The difference between the two gradients is largest at the beginning of the sequence, due to the accumulated error from the time evolution of $\ket{\chi (0)}$, which is derived from two time evolutions over the entire duration.
@@ -198,7 +201,7 @@ A comparison between a numerically calculated gradient and the analytically deri
 
 The GRAPE method formulates the control problem as the minimization of the cost function \eqref{eq:grapeCost} while providing the derivative of the cost with respect to the control functions \eqref{eq:costGradient}. Thus, the optimal control can be found using well established methods from mathematical optimization theory \cite{deFouquieres2011}. Generally, control problems are very hard to solve, as they are highly non-linear, have many control parameters (even when parametrized), and are often subjected to a series of constraints. An example of the latter can be seen when considering optimizations within the Bose-Hubbard model, as the model is valid only within the tight-binding limit \cite{manybodyBloch}. Thus, the control problem will be subject to the non-linear constraint
 \begin{equation}
-	 V_{0}^{\mathrm{min}} \leq c (u(t)) \leq V_{0}^{\mathrm{max}} \; ,
+	 V_{0}^{\mathrm{min}} \leq c (u(t))\; ,
 \end{equation}
 where $c (u)$ is some constraint function dependent on the parameterization of the problem.\\
 Interior point methods are currently considered some of the most powerful algorithms for large-scale non-linear programming \cite{wright}. The methods update the control parameters using the derivatives of the cost function via Newtons method, however, they differ from the standard Newton approach in many ways to accommodate constraints \cite{Karmarkar1984,Wachter2006}. Interior point methods approach the solution from within the feasible region as opposed to other methods like Nelder-Mead, hence the name \textit{interior}. In addition, they provide efficient performance while having better theoretical properties than the standard simplex method \cite{wright}.\\
@@ -227,7 +230,7 @@ The dual function is defined as
 \end{equation}
 where the infimum is required to exist and be finite. Note how the Lagrange multipliers of the primal problem are the optimization parameters of its dual. The dual function always satisfies the condition of \textit{weak duality}
 \begin{equation}
-	f(x^*) \geq q (\lambda^* , \zeta^*) \; ,
+	f(x^) \geq q (\lambda^ , \zeta^) \; ,
 	\label{eq:WeakDuality}
 \end{equation} 
 whereby it provides a lower bound on the solution of \eqref{eq:GeneralOptProblem}. In order for the direction of the inequality constraint to remain the same, it is necessary that all the inequality Lagrange multipliers fulfill $\zeta_i \geq 0$. This requirement can be considered a constraint of the dual, since the Lagrange multipliers are the variables of the dual function \cite{wright}. Thus, the dual problem is defined as
@@ -291,7 +294,7 @@ The KKT conditions of the barrier problem \eqref{eq:BarrierProblem} can be expre
   g(x)		\\
   h(x) - s 
   \end{bmatrix}
-  = 0 \; ,
+  \quad , \quad F(x^*,s^*,\lambda^*,\zeta^*) = 0 \; ,
   \label{eq:BarrierKKTmap}
 \end{equation}
 where $A_g (x)$ and $A_h (x)$ are the Jacobian matrices of the constraint functions $g(x)$ and $h(x)$. Additionally, $S$ and $Z$ are defined as diagonal matrices with entries given by the vectors $s$ and $\zeta$, while $e = (1 ,1 , \ldots , 1 )^T$. Note how the introduction of the slack variables and the barrier term has modified the original KKT conditions \eqref{eq:KKTconditions}. Transforming the constraints has removed the need for the duality feasibility \eqref{eq:KKTdual}, while barrier term "relaxes" the complementary slackness \eqref{eq:KKTslack}, whose original form is recovered as $\mu \to 0$ \cite{wright}.\\
@@ -325,7 +328,7 @@ After computing the step, the parameters are iterated according to
 + \alpha \circ p \; ,
 \label{eq:ConNewtonStep}
 \end{equation}
-where $\alpha$ is a vector of step-sizes for each of the parameters. The step-size is commonly determined via a line-search \cite{Wachter2005,Fletcher2002}, although alternative methods exists \cite{Coleman1996}.\\
+where $\alpha$ is a vector of step-sizes for each of the variables. The step-size is commonly determined via a line-search \cite{Wachter2005,Fletcher2002}, although alternative methods exists \cite{Coleman1996}.\\
 Interior point methods are capable of finding optimal solutions of non-linear constrained point using the methods described above, which can be summarized in the following algorithm \cite{wright}:
 \begin{algorithm}
 \begin{algorithmic}
@@ -346,47 +349,50 @@ Interior point methods are capable of finding optimal solutions of non-linear co
 \subsection{Implementation with GRAPE} \label{sec:IpoptGRAPE}
 The interior point method is used here for minimizing the cost function \eqref{eq:grapeCost}, which is a function of a set of control parameters $u_n = \left( u_n (t_1) , \ldots , u_n (t_N)  \right)$. Examining the set of equations solved by the interior point method \eqref{eq:ConNewtonMethod} reveals that in order to compute the search direction, $p$, one needs the gradient of the objective function, $\nabla f(x)$, the Jacobian matrices of the constraints, $A_g (x)$ and $A_h (x)$, and finally the Hessian of both the objective and constraints contained in $\nabla_{xx} \mathcal{L}$.
 The GRAPE method provides the gradient of the cost function through eq. \eqref{eq:costGradient}. 
-Meanwhile, the constraints are dependent on the specific problem. In this case, the problem is crossing the phase transition between the superfluid and Mott-Insulator of the Bose-Hubbard model. As discussed in section \ref{sec:modTMDRG}, the control is parametrized as the interaction matrix element, $U$, which is directly dependent of the lattice depth as illustrated in figure \ref{fig:UJparameters}. Thus, the control problem is constrained by 
+Meanwhile, the constraints are dependent on the specific problem. In this case, the problem is crossing the phase transition between the superfluid and Mott-insulator of the Bose-Hubbard model. As discussed in section \ref{sec:modTMDRG}, the control is parametrized as the interaction matrix element, $U$, which is directly dependent of the lattice depth as illustrated in figure \ref{fig:UJparameters}. Thus, the control problem is constrained by 
 \begin{equation}
 	U_{\mathrm{min}} \leq U(t_j) \; , \quad \mathrm{for} \; j = 1 , \ldots , N \; ,
 	\label{eq:BoseHubbardConstraint}
 \end{equation} 
 for some $U_{\mathrm{min}}$ chosen such that the lattice depth is not below the tight binding limit, whereby the Bose-Hubbard model remains valid throughout the optimization \cite{manybodyBloch}. In the GRAPE parametrization the constraint function \eqref{eq:BoseHubbardConstraint} is the control itself, whereby the constraint Jacobian is simply the identity matrix. 
-Furthermore, the second derivatives of the constraints completely vanish. Nevertheless, the Hessian of the cost function is still required in order to solve the equations \eqref{eq:ConNewtonMethod}. Although the second derivative of the cost function \eqref{eq:grapeCost} is analytically derivable (see Appendix \ref{chap:Hessian}), the numerical cost of computing the Hessian is rather high. Instead, Quasi-Newton methods can be used, where the Hessian can be approximated through various formulas \cite{wright}. The implementation of the interior point algorithm used in this thesis is from the IPOPT library \cite{Wachter2006}, which approximates the Hessian through the L-BFGS algorithm, which builds the matrix using the gradients of previous iterations \cite{Liu1989}. The combination of interior point methods and the GRAPE algorithm works really well in practice, as interior point methods attempt to solve the problem using as few steps as possible \cite{wright}, which is ideal, as the GRAPE gradient is very costly to compute.
+Furthermore, the second derivatives of the constraints completely vanish. Nevertheless, the Hessian of the cost function is still required in order to solve the equations \eqref{eq:ConNewtonMethod}. Although the second derivative of the cost function \eqref{eq:grapeCost} is analytically derivable (see Appendix \ref{chap:Hessian}), the numerical cost of computing the Hessian is rather high. Instead, Quasi-Newton methods can be used, where the Hessian can be approximated through various formulas \cite{wright}. The implementation of the interior point algorithm used in this thesis is from the IPOPT library \cite{Wachter2006}, which approximates the Hessian through the L-BFGS algorithm, which builds the matrix using the gradients of previous iterations \cite{Liu1989}. The combination of interior point methods and the GRAPE algorithm works really well in practice, as interior point methods attempt to solve the problem using as few steps as possible \cite{wright}, which is ideal, as the GRAPE gradient is very costly to evaluate.
 
 
 
 \section{Control Parametrization via Chopped Basis} \label{sec:GROUP}
-The convergence rate of gradient-based optimal control methods such as GRAPE have been shown to be much better than gradient-free methods for multiple problems \cite{Jager2014, sorensen2018}
-One of the main disadvantages of GRAPE is the dimension for the optimization. As the duration of the control pulse is discretized into $N$ time-steps, the control value at each time slice, $u_n (t_j)$, is considered an optimization parameter. For long durations or small time-steps the resulting dimension of the optimization ($N$) will be very large. Thus, this type of control parametrization can be considered having too many degrees of freedom for the optimization.\\
+The convergence rate of gradient-based optimal control methods such as GRAPE have been shown to be much better than gradient-free methods for multiple problems \cite{Jager2014, sorensen2018}.
+One of the main disadvantages of GRAPE is the dimension for the optimization. As the duration of the control pulse is discretized into $N$ time-steps, the control value at each time slice, $u_n (t_j)$, is considered an optimization variable. For long durations or small time-steps the resulting dimension of the optimization ($N$) will be very large. Thus, this type of control parametrization can be regarded as having too many degrees of freedom for the optimization.\\
 Employing a proper parametrization of the control can drastically reduce the optimization dimension \cite{Winckel2008}.
 A common choice is employing a chopped basis, which parametrizes the control as
 \begin{equation}
 	u(t) = u_0 (t) + S(t) \sum_{n=1}^{M} c_n f_n (t) \; , \label{eq:controlParametrization}
 \end{equation}   
-where $f_n$ are the basis functions, and $c_n$ are the optimization coefficients. In addition, $u_0 (t)$ is the initial control function, and $S (t)$ is a shape function enforcing the boundary conditions of the control, whereby $S(0) = S(T) = 0$ \cite{sorensen2018}. The shape function used throughout this thesis consists of two steep sigmoids oriented such that $S$ is unit for most time steps. The basis functions, $f_n$, must be chosen based on physical insight of the system \cite{Ruths2012}. For the control problem discussed in this thesis, employing a basis of sine functions has proven itself useful, as the sine functions are excellent at describing the smoothly varying control pulses desired \cite{sorensen2018,Jiang2009}. Thus, the basis functions read $f_n = \sin \left( \omega_n t / T \right)$, where $\omega_n = n \pi$ can be considered the Fourier components of the description.
+where $f_n$ are the basis functions, and $c_n$ are the optimization coefficients. In addition, $u_0 (t)$ is the initial control function, and $S (t)$ is a shape function enforcing the boundary conditions of the control, whereby $S(0) = S(T) = 0$ \cite{sorensen2018}. The shape function used throughout this thesis consists of two steep sigmoids oriented such that $S(t)$ is unit for most time steps. The basis functions, $f_n$, must be chosen based on physical insight of the system \cite{Ruths2012}. For the control problem discussed in this thesis, employing a basis of sine functions has proven itself useful, as the sine functions are excellent at describing the smoothly varying control pulses desired \cite{sorensen2018,Jiang2009}. Thus, the basis functions read $f_n = \sin \left( \omega_n t / T \right)$, where $\omega_n = n \pi$ can be considered the Fourier components of the control pulse.
 An extension of this type of chopped basis was done in \cite{Doria2011,Caneva2011crab}, introducing random shifts to the frequencies resulting in the Chopped RAndom Basis or \textsc{CRAB}. In recent years the \textsc{CRAB} parametrization has been used together with the Nelder-Mead hill climbing algorithm to solve various control problems \cite{Doria2011,Caneva2011,FrankBloch,Lloyd2014}.\\
 The great advantage of employing a reduced basis representation is the drastic reduction in the optimization space. However, artificial minima may be introduced, if the chosen basis is incapable of spanning the part of the optimization space containing the optimal solutions \cite{Rach2015}. Hence, the chopped basis dimension, $M$, must be chosen with consideration.
 
 
 \subsection{Gradient-Optimization Using Parametrization - GROUP}
-The Gradient-Optimization Using Parametrization or \textsc{GROUP} algorithm introduced in \cite{sorensen2018} combines the chopped basis representation with the \textsc{GRAPE} algorithm. A comparison between different optimization algorithms for optimal control demonstrated that \textsc{GROUP} outperformed both \textsc{GRAPE} and Nelder-Mead with \textsc{CRAB} in term of fidelity reached and number of function evaluations required for convergence. \\
+The Gradient-Optimization Using Parametrization or \textsc{GROUP} algorithm introduced in \cite{sorensen2018} combines the chopped basis representation with the \textsc{GRAPE} algorithm. A comparison between different optimization algorithms for optimal control demonstrated that \textsc{GROUP} outperformed both \textsc{GRAPE} and Nelder-Mead with \textsc{CRAB} in term of fidelity reached and number of function evaluations required for convergence.
+
 Parameterizing the control alters the gradient of the cost function \eqref{eq:costGradient}. The new gradient can be derived using the chain rule
 \begin{align}
-	\frac{\partial \mathcal{J} (c)}{\partial c_n} &= \sum_{j = 1}^{N} \frac{\partial \mathcal{J} (u)}{\partial u(t_j)} \frac{\partial u(t_j)}{\partial c_n} \nonumber \\
+	\frac{\partial \mathcal{J} (\boldsymbol{c})}{\partial c_n} &= \sum_{j = 1}^{N} \frac{\partial \mathcal{J} (\boldsymbol{u})}{\partial u(t_j)} \frac{\partial u(t_j)}{\partial c_n} \nonumber \\
 	&= \sum_{j = 1}^{N} \frac{\partial \mathcal{J} }{\partial u(t_j)} S(t_j) f_n(t_j) \; , \label{eq:GROUPgradient} 
 \end{align}
-where only a single control has been chosen for cleaner notation. The gradient in \textsc{GROUP} is more complicated than in \textsc{GRAPE}, however, the cost of computing the gradient is still dominated by the evaluation of the original derivative ${\partial \mathcal{J} }/{\partial u(t_j)}$. Therefore, the increased computational cost of evaluating the gradient can be considered negligible \cite{sorensen2018}.\\
-In addition, the chopped basis parameterization changes the derivatives of the constraints as well. Thus, the new constraint Jacobian can be derived using the chain rule as well
+where only a single control has been chosen for cleaner notation. The gradient in \textsc{GROUP} is more complicated than in \textsc{GRAPE}, however, the cost of computing the gradient is still dominated by the evaluation of the original derivative ${\partial \mathcal{J} }/{\partial u(t_j)}$. Therefore, the increased computational cost of evaluating the gradient can be considered negligible \cite{sorensen2018}.
+
+The chopped basis parameterization changes the derivatives of the constraints as well. Thus, the new constraint Jacobian can be derived using the chain rule
 \begin{align}
-	(A_h (c))_{i,n}  &= \sum_{j = 1}^{N} \frac{\partial h_i (u ) }{\partial u(t_j)} \frac{\partial u(t_j)}{\partial c_n} \nonumber \\
-	&= \sum_{j = 1}^{N} (A_h (u))_{i,j} S(t_j) f_n (t_j) \; , \label{eq:GROUPconstJacobian} 
+	(A_h (\boldsymbol{c}))_{i,n}  &= \sum_{j = 1}^{N} \frac{\partial h_i (\boldsymbol{u} ) }{\partial u(t_j)} \frac{\partial u(t_j)}{\partial c_n} \nonumber \\
+	&= \sum_{j = 1}^{N} (A_h (\boldsymbol{u}))_{i,j} S(t_j) f_n (t_j) \; , \label{eq:GROUPconstJacobian} 
 \end{align}
-where $h(u)$ are the constraint functions, and $(A_h (u))_{i,j} = {\partial h_i (u ) } / {\partial u(t_j)}$ are recognized as the elements of the GRAPE parametrized constraint Jacobian. As discussed in section \ref{sec:IpoptGRAPE}, the constraint Jacobian is simply the identity matrix for the control problem treated here, whereby 
+where $h(\boldsymbol{u})$ are the constraint functions, and $(A_h (\boldsymbol{u}))_{i,j} = {\partial h_i (\boldsymbol{u}) } / {\partial u(t_j)}$ are recognized as the elements of the GRAPE parametrized constraint Jacobian. As discussed in section \ref{sec:IpoptGRAPE}, the constraint Jacobian is simply the identity matrix for the control problem treated here, whereby 
 \begin{equation}
-	(A_h (c))_{i,n} = \sum_{j = 1}^{N} \delta_{i,j} S(t_j) f_n (t_j) = S(t_i) f_n (t_i) \; .
+	(A_h (\boldsymbol{c}))_{i,n} = \sum_{j = 1}^{N} \delta_{i,j} S(t_j) f_n (t_j) = S(t_i) f_n (t_i) \; .
 \end{equation} 
-Thus, the elements of the parametrized $N \times M$ Jacobian matrix remain constant throughout the entire optimization process for this problem.\\
+Thus, the elements of the parametrized $N \times M$ Jacobian matrix remain constant throughout the entire optimization process for this problem.
+
 Lastly, the parameterization of the control also alters the Hessians of the control problem. However, the implementation of the interior point method used here \cite{Wachter2006} is capable of approximating both the objective and constraint Hessians from previous derivatives using the L-BFGS algorithm \cite{Liu1989}. Therefore, calculating the transformed first-order derivatives is sufficient, and the general Hessians will not be derived here.
 
 
@@ -413,7 +419,7 @@ However, the derivation of \eqref{eq:Mandelstam} assumes a time-independent Hami
 \begin{equation}
 	\int_{0}^{T} \Delta E(t) \mathrm{d}t \geq \theta \; . \label{eq:HilbertPath}
 \end{equation}
-Eq. \eqref{eq:HilbertPath} states that the path length transversed in the Hilbert space is bounded by the initial angle $\theta$. The quantum speed limit is reached when the time-dependent Hamiltonian realizes the most direct path in the Hilbert space between the states $\ket{\psi}$ and $\ket{\chi}$. Note that eq. \eqref{eq:HilbertPath} does not directly provide the quantum speed limit, as the control functions corresponding to the shortest path are not known in general. The presence of a phase transition further complicated the problem, as the rate at which information is spread within the system is bounded by the effective light cone resulting from the local Hamiltonian.
+Eq. \eqref{eq:HilbertPath} states that the path length transversed in the Hilbert space is bounded by the initial angle $\theta$. The quantum speed limit is reached when the time-dependent Hamiltonian realizes the most direct path in the Hilbert space between the states $\ket{\psi}$ and $\ket{\chi}$. Note that eq. \eqref{eq:HilbertPath} does not directly provide the quantum speed limit, as the control functions corresponding to the shortest path are not known in general.
 Hence, determining the quantum speed limit is often considered an optimization problem in itself.
 
 The quantum speed limit can be extracted from an optimal solution by examining the relative motion of $\ket{\psi (t)}$ in the Hilbert space. Assuming the state is evolved according the optimal Hamiltonian realizing the equality of eq. \eqref{eq:HilbertPath}. Thus, the direct velocity in the Hilbert space is given by $Q_{\mathrm{opt}} (t) = \Delta E_{\mathrm{opt}}(t)$, and the obtained fidelity can be expressed as a function of duration \cite{beyondQSL}
