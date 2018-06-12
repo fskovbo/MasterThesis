@@ -1,0 +1,32 @@
+\chapter{Correlation Lengths in Matrix Product States} \label{sec:CorrelationLength}
+Although the matrix product formalism excels at describing one-dimensional systems, it struggles at capturing long-ranged correlations, due to how it is constructed.
+Consider a general MPS in no particular canonical form. The \textit{transfer operator} is defined as
+\begin{equation}
+	\hat{E}^{[n]} = \sum_{\alpha_{n-1}, \alpha_{n-1}'} \sum_{\alpha_{n}, \alpha_{n}'} E_{(\alpha_{n-1} \alpha_{n-1}'),(\alpha_{n}  \alpha_{n}')}^{[n]} \left( \ket{\alpha_{n-1}}\bra{\alpha_{n-1}'} \right) \left( \ket{\alpha_{n}}\bra{\alpha_{n}'} \right) \; ,
+\end{equation}   
+where $E^{[n]}$ are the matrix elements of the transfer operator
+\begin{equation}
+	E^{[n]} = \sum_{j_n} M^{[n] j_n *} \otimes M^{[n] j_n}  \; . \label{eq:transfermatrixelem1}
+\end{equation}
+The transfer operator is essentially a complete, positive map from operators defined on a block of the lattice of length $n-1$ to a block of length $n$, such that
+\begin{equation}
+	\{ \ket{\alpha_{n-1}}\bra{\alpha_{n-1}'} \} \to \{ \ket{\alpha_{n}}\bra{\alpha_{n}'} \} \; .
+\end{equation}
+The most important property of the transfer matrix is that all its eigenvalues follow $|\lambda_k| \leq 1 $ if the corresponding state is either left- or right-normalized \cite{schollwock}. \\
+Generalizing the transfer operator matrix elements \eqref{eq:transfermatrixelem1} to contraction with an operator $\hat{O}$ at site $n$ yields 
+\begin{equation}
+	E_{O}^{[n]} = \sum_{j_n , j_n '} O^{j_n , j_n '} M^{[n] j_n *} \otimes  M^{[n] j_n '} \; . \label{eq:transfermatrixelem2}
+\end{equation}
+Thereby, correlation functions can be expressed using only the transfer matrices of eq. \eqref{eq:transfermatrixelem1} and \eqref{eq:transfermatrixelem2}. Assuming a translational invariant transfer matrices for a left-normalized state, a correlation function can be expressed as  
+\begin{align}
+	\bra{\psi} \hat{O}^{[i]} \hat{O}^{[j]} \ket{\psi} &= \Tr E^{[1]} \ldots E^{[i-1]} E_{O}^{[i]} E^{[i+1]} \ldots E^{[j-1]} E_{O}^{[j]} E^{[j+1]} \ldots E^{[L]} \nonumber \\
+	&= \Tr E_{O}^{[i]} E^{j-i-1} E_{O}^{[j]} E^{L-j+i-1} \nonumber \\ 
+	&= \sum_{l , k} \bra{l} E_{O}^{[i]} \ket{k} \lambda_{k}^{j-i-1} \bra{k} E_{O}^{[j]} \ket{l} \lambda_{l}^{L-j+i-1} \nonumber \\ 
+	&= \sum_{k} \bra{1} E_{O}^{[i]} \ket{k} \lambda_{k}^{j-i-1} \bra{k} E_{O}^{[j]} \ket{1} \qquad (\mathrm{for } \; L \to \infty)
+\end{align}
+where $\ket{k}$ and $\ket{l}$ are eigenstates of the transfer operator with eigenvalues $\lambda$. Since $|\lambda_k| \leq 1 $, only the leading eigenvalue $\lambda_1 = 1$ remains as $L \to \infty$. Defining the distance between two sites as $r = |j - i -1|$ and the correlation  length as $\xi_k = -1/\ln \lambda_k$, the correlation function can be written as
+\begin{equation}
+	\frac{\bra{\psi} \hat{O}^{[i]} \hat{O}^{[j]} \ket{\psi}}{\braket{\psi | \psi}} = c_1 + \sum_{k = 2} c_k e^{-r/ \xi_k} \; , \label{eq:corrfunction}
+\end{equation}
+where $c_k = \bra{1} E_{O}^{[i]} \ket{k} \bra{k} E_{O}^{[j]} \ket{1}$ \cite{schollwock}.
+Thus, correlations of a quantum state are represented through a linear combination of exponential functions, when the state is parameterized as a tensor network. For smaller systems, eq. \eqref{eq:corrfunction} is sufficient at capturing the relevant correlations. However, for large systems and very long-ranged correlations, the only the slowest exponential decay will survive at longer distances. Hence, the correlations turn into a pure exponential decay with $\xi_k = -1/\ln \lambda_1$, where $\lambda_1$ is the largest eigenvalue of $\hat{E}$. Such long-ranged correlations can be found for superfluid states with vanishing interactions.
