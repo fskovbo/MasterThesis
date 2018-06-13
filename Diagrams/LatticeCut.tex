@@ -1,0 +1,13 @@
+\begin{tikzpicture}[inner sep=1mm]
+\begin{axis}[
+  axis lines=none,% 
+  domain=0.125:1000,
+  xmin=-10, xmax=1000,
+  ymin=0, ymax=3,
+  samples=400,
+]
+  \addplot+[mark=none]
+    {1+0.003*sin(x)+0.02*sin(x^2)+0.1*cos(5*x)+0.07236*cos(x)+0.1*sin(x*100)+0.068*cos(x*57)};
+  \addplot+[mark=none] {1};
+\end{axis}
+\end{tikzpicture}
