@@ -28,9 +28,17 @@ From the Schmidt decomposition one can determine the entanglement entropy of the
 	S = - \sum_{\alpha} \Lambda_{\alpha}^2 \log \Lambda_{\alpha}^2 \; .
 	\label{eq:vNEntropy}
 \end{equation}
-Quite often, one is not concerned with the actual entanglement entropy of the system, but rather how it scales when the region in question grows in size. It is natural to assume that the entanglement entropy scales with  the \textit{volume} of the system, since this is the case for thermal systems. However, ground states of one-dimensional quantum many-body systems often follow an \textit{area law}, meaning that the scaling of the entropy is linear in the boundary area of the region. This is especially the case for systems with a gapped and local Hamiltonian \cite{Cramer}.
+Quite often, one is not concerned with the actual entanglement entropy of the system, but rather how it scales when the region in question grows in size. It is natural to assume that the entanglement entropy scales with  the \textit{volume} of the system, since this is the case for thermal systems. However, ground states of one-dimensional quantum many-body systems often follow an \textit{area law}, meaning that the scaling of the entropy is linear in the boundary area of the region. This is especially the case for systems with a gapped and local Hamiltonian \cite{Cramer}.\\
+\begin{figure}[h!]
+	\centering
+	\input{Diagrams/LatticeCut.tex}
+	\caption{Illustration of a cut in a one-dimensional lattice marked by the red, dashed line. The system follows an area law, whereby the entropy between the two bi-partitions of the system grows weaker at longer distances, which is depicted by the grey lines. }
+	\label{fig:LatticeCut}
+\end{figure}
 
-In a one dimensional lattice the boundary size of a bipartition is constant  independently of where the cut is made. Hence, the entanglement entropy will be bounded above, if the system follows an area law. This can be understood intuitively, as only degrees of freedom within the correlation length, $\xi$, of the boundary will be entangled, no matter where in the system the boundary is present \cite{Hastings2007}. This observation is the key to the success of numerical computations for one-dimensional systems, as the limited degree of entanglement enables the truncation of unused eigenstates without loss of accuracy in the representation of the state. Thus, one-dimensional quantum states can be efficiently described by tensor networks despite existing in an exponentially large Hilbert space.
+In a one dimensional system, the size of an interface between two bipartitions is constant. Therefore, when bi-partitioning a one-dimensional system, the area of the boundary will be independent of where the cut is made. This effectively causes the entanglement entropy to be bounded above if the system follows an area law, as only degrees of freedom within the correlation length, $\xi$, of the boundary will be entangled \cite{Hastings2007}. Figure \ref{fig:LatticeCut} illustrates such a bi-partition. There, local states separated by more than $\xi$ from the boundary will not be entangled with states in the other bi-partition. Thus, the number of entangled degrees of freedom within the system is limited.
+
+Area laws are the key to the success of numerical computations for one-dimensional systems, as the limited degree of entanglement enables the truncation of unused eigenstates without loss of accuracy in the representation of the state. Thus, one-dimensional quantum states can be efficiently described by tensor networks despite existing in an exponentially large Hilbert space.
 
 
 \section{Construction of an MPS} \label{sec:construct_MPS}
