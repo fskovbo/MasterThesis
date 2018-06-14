@@ -244,7 +244,7 @@ whereby it provides a lower bound on the solution of \eqref{eq:GeneralOptProblem
 A very nice property of the dual problem is that it is always convex regardless of $f(x)$ \cite{Rockafellar1974}. Thus, the dual problem is often easier to solve than the primal. Furthermore, the solutions of the dual problem are the optimal Lagrange multipliers of the original problem, which would otherwise be very hard to find.
 Another useful feature in duality theory is the \textit{duality gap}, which is given by the difference between the primal and dual function, $f(x) - q(\lambda , \zeta )$. Considering the condition of weak duality \eqref{eq:WeakDuality}, the duality gap implies that
 \begin{equation}
-	f(x) - f(x^*) \leq f(x) - g(\lambda , \zeta) \; ,
+	f(x) - f(x^*) \leq f(x) - q(\lambda , \zeta) \; ,
 	\label{eq:DualityGapIneq}
 \end{equation}
 whereby $x$ is primal optimal and $\lambda , \zeta$ are dual optimal, if the duality gap is zero. Thus, eq. \eqref{eq:DualityGapIneq} can be used as a stopping criteria for optimization algorithms, as the duality gap will tend towards zero for $x \to x^*$ \cite{wright}.
@@ -378,9 +378,9 @@ The Gradient-Optimization Using Parametrization or \textsc{GROUP} algorithm intr
 Parameterizing the control alters the gradient of the cost function \eqref{eq:costGradient}. The new gradient can be derived using the chain rule
 \begin{align}
 	\frac{\partial \mathcal{J} (\boldsymbol{c})}{\partial c_n} &= \sum_{j = 1}^{N} \frac{\partial \mathcal{J} (\boldsymbol{u})}{\partial u(t_j)} \frac{\partial u(t_j)}{\partial c_n} \nonumber \\
-	&= \sum_{j = 1}^{N} \frac{\partial \mathcal{J} }{\partial u(t_j)} S(t_j) f_n(t_j) \; , \label{eq:GROUPgradient} 
+	&= \sum_{j = 1}^{N} \frac{\partial \mathcal{J} (\boldsymbol{u} ) }{\partial u(t_j)} S(t_j) f_n(t_j) \; , \label{eq:GROUPgradient} 
 \end{align}
-where only a single control has been chosen for cleaner notation. The gradient in \textsc{GROUP} is more complicated than in \textsc{GRAPE}, however, the cost of computing the gradient is still dominated by the evaluation of the original derivative ${\partial \mathcal{J} }/{\partial u(t_j)}$. Therefore, the increased computational cost of evaluating the gradient can be considered negligible \cite{sorensen2018}.
+where only a single control has been chosen for cleaner notation. The gradient in \textsc{GROUP} is more complicated than in \textsc{GRAPE}, however, the cost of computing the gradient is still dominated by the evaluation of the original derivative ${\partial \mathcal{J} (\boldsymbol{u} ) }/{\partial u(t_j)}$. Therefore, the increased computational cost of evaluating the gradient can be considered negligible \cite{sorensen2018}.
 
 The chopped basis parameterization changes the derivatives of the constraints as well. Thus, the new constraint Jacobian can be derived using the chain rule
 \begin{align}

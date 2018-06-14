@@ -6,7 +6,7 @@ Neutral atoms in particular offer the unique feature of tunable collisional prop
 
 By overlapping counter-propagating laser beams, one can create periodic potentials known as \textit{optical lattices}. These types of potentials are extremely versatile, as they can be created in a multitude of different configurations. Furthermore, the periodic nature of the potential causes the emergence of energy spectra in the form of bands, which is otherwise known from condensed matter physics. Together with the tunable interactions from Feshbach resonances, a wide range of Hamiltonians can be mapped unto ultracold gases in optical lattices \cite{JakschZoller, Bloch2012}.\\
 
-A weakly interacting bosonic gas trapped in an optical lattice a well described by a macroscopic wavefunction akin to a Bose-Einstein condensate. However, as the interaction strength grows, the system becomes increasingly correlated. A prominent example is the Bose-Hubbard model, describing bosons occupying the lowest Bloch band of a lattice. This model features a quantum phase transition between a weakly interacting superfluid phase and a strongly correlated Mott-insulator \cite{Fisher1989}. These two phases exhibit very different properties, as  particles are highly de-localized across the entire lattice in the superfluid phase, while the Mott is defined by zero compressibility, as the atoms are evenly distributed in the lattice. Several methods exist for deriving phase diagrams of the Bose-Hubbard model. Here, a mean-field approach is taken, as it provides a very intuitive description of the model,
+A weakly interacting bosonic gas trapped in an optical lattice a well described by a macroscopic wavefunction akin to a Bose-Einstein condensate. However, as the interaction strength grows, the system becomes increasingly correlated. A prominent example is the Bose-Hubbard model, describing bosons occupying the lowest Bloch band of a lattice. This model features a quantum phase transition between a weakly interacting superfluid phase and a strongly correlated Mott-insulator \cite{Fisher1989}. These two phases exhibit very different properties, as  particles are highly de-localized across the entire lattice in the superfluid phase, while the Mott is defined by zero compressibility, as the atoms are evenly distributed in the lattice. Several methods exist for deriving phase diagrams of the Bose-Hubbard model. Here, a mean-field approach is taken, as it provides a very intuitive description of the model.
 
 
 \section{Optical Lattice Potentials}
@@ -89,8 +89,8 @@ which is a plane wave modulated by a function with the same periodicity as the p
 This leads to an energy spectrum in the shape of bands with the periodicity of the first \textit{Brillouin Zone}. Bands are denoted by the band index $n$, and their shape is determined by both the shape and the depth of the potential. The potential depth is often denoted in units of the recoil energy $E_{\mathrm{rec}} = \frac{\hbar ^2 k^2}{2 m}$, where $m$ is the mass of the atom, and $k$ is the photon wave number of the light forming the optical lattice. For $V_0 = 0$, the particles are free, hence the bands will be parabolic. Meanwhile, for $V_0 \rightarrow \infty$, no interaction between different wells of the lattice can take place, as the wavefunctions of the trapped atoms will be confined to their respective well. Thus, the lattice is reduced to an array of independent harmonic oscillators, whereby the bands will appear flat with equal spacing \cite{greiner}. 
 
 \subsection{Localized States}
-The interaction strength between different lattice sites is determined by the overlap of the wavefunctions of the trapped atoms.
-If the wavefunctions of one site only overlap with neighbouring wells, the lattice is said to be in the \textit{tight binding limit}. Thus, interactions between wells are almost purely of nearest neighbour nature. Due to how well localized the wavefunctions are, a basis of Wannier functions is ideal for describing the system. Wannier functions are related to Bloch functions through the Fourier transform \cite{kittel1963}
+The interaction strength between different lattice sites is determined by overlaps of the wavefunctions of the trapped atoms.
+If the wavefunctions of one site only overlap with neighbouring wells, the lattice is considered being in the \textit{tight binding limit}. Thus, interactions between wells are almost purely of nearest neighbour nature. Due to how well localized the wavefunctions are, a basis of Wannier functions is ideal for describing the system. Wannier functions are related to Bloch functions through the Fourier transform \cite{kittel1963}
 \begin{equation}
 	w^{(n)}(\boldsymbol{r}) = \frac{1}{\sqrt{N_L}} \sum_{q} e^{ -i \boldsymbol{q} \boldsymbol{R} } \phi_{\boldsymbol{q}}^{(n)}(\boldsymbol{r}) \; ,
 \end{equation} 
@@ -337,12 +337,13 @@ While the Mott-insulator phase has complete localization, the phases on the indi
 
 
 \subsection{Mean-Field Approximation of Phase Diagram} \label{sec:MeanFieldDiagram}
-Consider once again the full Bose-Hubbard Hamiltonian \eqref{BHhamil}. The superfluid and the Mott-insulator account for the two limits of the ratio $J/U$. However, in order to understand the full phase diagram of the Bose-Hubbard model, one has to derive the critical fraction $(J/U)_{crit}$ for which the phase transition occurs. There are several ways of doing this - one of them is looking at a mean-field solution of the Bose-Hubbard model. For simplicity the zero temperature case is treated here. Even without a change of temperature the phase transition still happens, hence it is referred to as a \textit{quantum phase transition}, since the phase transition can happen without change of external parameters \cite{Sachdev2007QPT}.\\
+Consider once again the full Bose-Hubbard Hamiltonian \eqref{BHhamil}. The superfluid and the Mott-insulator account for the two limits of the ratio $J/U$. However, in order to understand the full phase diagram of the Bose-Hubbard model, one has to derive the critical fraction $(J/U)_{crit}$ for which the phase transition occurs. There are several ways of doing this - one of them is looking at a mean-field solution of the Bose-Hubbard model. For simplicity the zero temperature case is treated here. Even without a change of temperature the phase transition still happens, hence it is referred to as a \textit{quantum phase transition}, since the phase transition can happen without change of external parameters \cite{Sachdev2007QPT}.
+
 Applying the mean field approximation to the annihilation operator yields
 \begin{equation}
 	\hat{a}_j = \psi + \delta \hat{a}_j \; ,
 \end{equation}
-where $\psi$ is the locally constant mean field, and $\delta \hat{a}_j$ is the fluctuation term. Inserting this into the Hamiltonian yields
+where $\psi$ is the locally constant mean field, and $\delta \hat{a}_j$ is the fluctuation term. Inserting this into the Bose-Hubbard Hamiltonian yields
 \begin{equation}
 	\hat{H}_{MF} = -J \sum_{\langle i,j \rangle} \left( \psi^* + \delta \hat{a}_{i}^{\dag} \right) \left( \psi + \delta \hat{a}_{j} \right) + \hat{H}_U
 \end{equation}
@@ -350,14 +351,14 @@ Instead of considering the Hamiltonian as a whole, it can be considered as a sum
 \begin{equation}
 	\hat{H}_{MF} = \sum_{i} \hat{h}_i \; .
 \end{equation}
-For a homogeneous system one can express the kinetic part of the Hamiltonian locally if only small fluctuations from the mean field are assumed
+For a homogeneous system, one can express the kinetic part of the Hamiltonian locally if only small fluctuations from the mean field are assumed
 \begin{align}
   \hat{a}_{i}^{\dag} \hat{a}_{j} &= \left( \psi^* + \delta \hat{a}_{i}^{\dag} \right) \left( \psi + \delta \hat{a}_{j} \right) \nonumber \\
   &= \psi^* \psi + \psi^* \delta \hat{a}_j + \psi \delta \hat{a}_{i}^{\dag} + \delta \hat{a}_{i}^{\dag} \delta \hat{a}_{j} \nonumber \\
   & \approx \psi^* \psi + \psi^* \left( \hat{a}_j - \psi \right) + \psi \left( \hat{a}_{i}^{\dag} - \psi^* \right) \nonumber \\
 &= \psi^* \hat{a}_j + \psi \hat{a}_{i}^{\dag} - \psi^* \psi \; .
 \end{align}
-Since every term only contains a single index, one can let $j \rightarrow i$ whereby
+Since every term contains only a single index, one can let $j \rightarrow i$ whereby
 \begin{equation}
 	\hat{h}_i = J z \psi^* \psi - J z \left( \psi^* \hat{a}_i + \psi \hat{a}_{i}^{\dag} \right) + \frac{U}{2} \hat{n}_i \left( \hat{n}_i -1 \right) + \mu_i \hat{n}_i \; ,
 	\label{localhamil}
@@ -375,7 +376,7 @@ One method is using second order perturbation theory, where the $\hat{\psi} = 0$
 \begin{equation}
 	\hat{h}_{i}^{(0)} =  \frac{U}{2} \hat{n}_i \left( \hat{n}_i -1 \right) - \mu \hat{n}_i \; .
 \end{equation} 
-Since the zero-order solution only contains number operators, the ground state of the solution can be expressed in the Fock basis:
+Since the zero-order solution contains only number operators, the ground state of the solution can be expressed in the Fock basis:
 \begin{equation*}
 \ket{\mathrm{gs}}_i = 
 \begin{dcases}
@@ -385,16 +386,15 @@ Since the zero-order solution only contains number operators, the ground state o
    & \vdots
 \end{dcases}
 \end{equation*}
-
 Meanwhile, the perturbation Hamiltonian contains factors of the mean field 
 \begin{equation}
 	\delta \hat{h}_i = J z \left( \psi^* \psi \right) -   J z \left( \hat{a}_i \psi^* + \psi \hat{a}_{i}^{\dag} \right) \; .
 \end{equation}
-The goal is to find an expression for the parameter $a$, which determines the critical point. Thus, one must utilize up to second-order perturbation theory, as $a$ is the pre-factor of the contributions proportional to $|\psi|^2$. Since Fock states are orthogonal, all first order contributions of the type $\braket{n | \hat{a}_i | n}$ vanish. Thus, the only first order contributions are 
+The goal is to find an expression for the parameter $a$, which determines the critical point. Thus, one must utilize up to second-order perturbation theory, as $a$ is the pre-factor of the contributions proportional to $|\psi|^2$. Since Fock states are orthogonal, all first order perturbations of the type $\braket{n | \hat{a}_i | n}$ vanish. Thus, the only first order contributions are 
 \begin{equation}
 	E_{i}^{(1)} = \bra{n} \delta \hat{h}_i \ket{n} = J z \left( \psi^* \psi \right)  \; .
 \end{equation}
-The second order perturbations terms read
+Next, the second order perturbations read
 \begin{equation}
 	E_{i}^{(2)} = \sum_{n \neq m} \frac{|\bra{n} \delta \hat{h}_i \ket{m}|^2}{E_{m}^{(0)} - E_{n}^{(0)}} \; .
 \end{equation}
@@ -421,7 +421,7 @@ As stated earlier $(J/U)_{crit}$ can be found at the point where $a = 0$, hence
 \begin{equation}
 	0 \overset{!}{=} 1 + \frac{n}{\bar{U} (n-1) - \bar{\mu}} + \frac{n+1}{\bar{\mu} - \bar{U} n} \; ,
 \end{equation}
-with $\bar{\mu} = \frac{\mu}{J z}$ and $\bar{U} = \frac{U}{J z}$. Finally, the solution for the chemical potential is \cite{vanoosten}
+with $\bar{\mu} = {\mu}/{J z}$ and $\bar{U} = {U}/{J z}$. Finally, the solution for the chemical potential of eq. \eqref{localhamil} is \cite{vanoosten}
 \begin{equation}
 	\bar{\mu}_{\pm} = \frac{1}{2} \left( \bar{U}(2n -1) \pm \frac{1}{2} \sqrt{\bar{U}^2 - 2 \bar{U} (2 n +1)} \right) \; .
 \end{equation}
@@ -430,7 +430,7 @@ A better understanding of the results can be obtained by examining figure \ref{f
 	\centering
 	\includegraphics[width = 0.5\textwidth]{Figures/SFMottPhase.pdf}
 	\label{fig:SFMOTT}
-	\caption{Phase diagram of Bose-Hubbard model for $T = 0$. Grey areas mark the Mott-insulator phase for different number of particles per site, while white regions mark the superfluid phase. \cite{greiner}}
+	\caption{Phase diagram of Bose-Hubbard model for $T = 0$. Grey areas mark the Mott-insulator phase for different number of particles per site. The Mott-insulator is incompressible, whereby $\partial n / \ partial \mu = 0$. Meanwhile white regions mark the superfluid phase. \cite{greiner}}
 \end{figure}
 The $\mu_{\pm}$ curves enclose the region where the system is in the Mott-insulating phase. $(1/\bar{U})_{crit} = (J/U)_{crit}$ can be read off the graph from the point where the two curves $\mu_{\pm}$ meet. No number fluctuations take place in the Mott-insulator, whereby the particle number per site is well defined. As the chemical potential increases, each site can accommodate more particles as long as the increase in chemical potential compensates the increased energy due to interactions between the particles.
 
