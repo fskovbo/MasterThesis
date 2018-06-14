@@ -50,7 +50,7 @@ Since the basis of local states $\{ \ket{\boldsymbol{j}} \}$ shares a state with
 	\left( \sum_{j_{L} , j_{L} '} B_{\alpha_{L-1} , 1}^{j_{L} *} W_{\beta_{L-1}, 1}^{j_{L} , j_{L} '} B_{\alpha_{L-1}' , 1 }^{j_{L} '} \right)  \; .
 \end{align}  
 While this expression may seem terrible complicated due to all the indices, it is actually rather easy to understand. First, the matrix element is written excluding the local basis states $\ket{j_n}$. Next, the Hamilton MPO is projected into the block states of A, $\ket{\alpha_{n-1}}_A$, and B, $\ket{\alpha_{n}}_B$. Finally, the matrices are grouped according to their expansion in the local basis. Working with the above expression appears cumbersome, but it is merely a decoupling of the system into three distinct parts, which can be seen in figure \ref{fig:singleElemHamil}.
-\begin{figure}[h!]
+\begin{figure}[b!]
 	\centering
 	\input{Diagrams/singleElementHamiltonian.tex}
 	\caption{Representation of the matrix element $\bra{\alpha_{n-1} j_n \alpha_{n}} \hat{H} \ket{\alpha_{n-1} ' j_n ' \alpha_{n} '}$ as an tensor network. The network can be factorize into three distinct parts: The left (L) and right (R) environments consisting of the contracted network to the left and right of the operator tensor, $W^{[n]}$, respectively.}
@@ -84,7 +84,7 @@ The iterative update of $L^{[i]}$ can be seen illustrated in figure \ref{fig:bui
 	\label{fig:buildLTensor}
 \end{figure}
 It is important to store every iteration of $L^{[i]}$, since $L$ will grow and shrink constantly throughout the variational search of the ground state, whereby every iteration of $L^{[i]}$ will be used multiple times.
-The same applies when building the right environment, $R$. Here one starts from the right and moves left when iteratively contracting the tensor. By applying optimal bracketing, the computational cost of updating the environments scales as $\mathcal{O}(d D^3 D_W)$.
+The same applies when building the right environment, $R$. Here one starts from the right and moves left when iteratively contracting the tensor. Applying optimal bracketing, the cost of updating the environments scales as $\mathcal{O}(d D^3 D_W)$.
   
 
 \subsection{Iterative Ground State Search and the DMRG Algorithm} \label{sec:DMRG}
@@ -205,9 +205,8 @@ This concludes the two-site update sequence, which is illustrated in figure \ref
 	\label{fig:twoSiteUpdate}
 \end{figure}
 
-Some comments regarding the sequence are in order: The matrices of the eigenvalue problem have dimensions $( d^2 D^2 \times d^2 D^2)$, which is generally too much for exact diagonalization, however, since only the lowest eigenvalue is of interest, one can use an iterative eigensolver \cite{Lanczos}. Furthermore, if the MPS is not in the proper mixed-canonical form, the eigenvalue problem turns into a generalized eigenvalue problem, which can be numerically quite demanding. Thus, updating the left and right environments in step (4) is necessary, since it leads to great simplifications in step (2). Lastly, one could also consider just a single site when updating, however, this method is very prone to getting stuck \cite{White2005}. By updating two sites at once, one actually optimizes the bond between them. Hence, after updating the two sites, one must only iterate a single site. Optimization is done with regards to the current configuration, whereby it depends on previous updates. To compensate for this, one must sweep through the entire system multiple times, which leads to the basic DMRG algorithm \ref{alg:DMRG}.
-
-\begin{algorithm}
+Some comments regarding the sequence are in order: The matrices of the eigenvalue problem have dimensions $( d^2 D^2 \times d^2 D^2)$, which is generally too much for exact diagonalization, however, since only the lowest eigenvalue is of interest, one can use an iterative eigensolver \cite{Lanczos}. Furthermore, if the MPS is not in the proper mixed-canonical form, the eigenvalue problem turns into a generalized eigenvalue problem, which can be numerically quite demanding. Thus, updating the left and right environments in step (4) is necessary, since it leads to great simplifications in step (2). Lastly, one could also consider just a single site when updating, however, this method is very prone to getting stuck \cite{White2005}. By updating two sites at once, one actually optimizes the bond between them. Hence, after updating the two sites, one must only iterate a single site. Optimization is done with regards to the current configuration, whereby it depends on previous updates. To compensate for this, one must sweep through the entire system multiple times, which leads to the basic DMRG algorithm shown below.
+\begin{algorithm}[!h]
 \begin{algorithmic}
 \caption{Iterative ground state search (DMRG)}
 \State Choose $\ket{\psi}$ right-normalized.
@@ -223,7 +222,6 @@ Some comments regarding the sequence are in order: The matrices of the eigenvalu
 	\EndFor
 \EndWhile
 \end{algorithmic}
-\label{alg:DMRG}
 \end{algorithm}
 
 
@@ -280,6 +278,12 @@ Due to the finite system-sizes examined here, no such sharp indication of a phas
 
 \subsubsection{Single-particle correlations of the superfluid and Mott-insulator phases}
 
+Correlation functions can be used to characterize quantum systems. Single-particle correlations decay exponentially in a Mott-insulator, while they for superfluids decay following a power-law 
+\begin{equation}
+	\braket{\hat{a}_{i}^{\dag} \hat{a}_{j}} \sim |i - j|^{-K_b /2} \; ,
+	\label{eq:superfluidCorrelation}
+\end{equation}
+where $K_b$ is the Tomonaga-Luttinger parameter \cite{characPhases}. To illustrate the very different properties of the two Bose-Hubbard phases, the density matrices \eqref{eq:DensityMatrixEntry} for $L = 50$ and $U/J = 0, \; 0.5, \; 12$ were calculated using ground states obtained through the DMRG algorithm. 
 \begin{figure}[h!]
     \centering
     \includegraphics[width=0.9\textwidth]{Figures/DensityMatrices.pdf}
@@ -287,16 +291,9 @@ Due to the finite system-sizes examined here, no such sharp indication of a phas
     \label{fig:DensityMatrices}
 \end{figure}
 
-Correlation functions can be used to characterize quantum systems. Single-particle correlations decay exponentially in a Mott-insulator, while they for superfluids decay following a power-law 
-\begin{equation}
-	\braket{\hat{a}_{i}^{\dag} \hat{a}_{j}} \sim |i - j|^{-K_b /2} \; ,
-	\label{eq:superfluidCorrelation}
-\end{equation}
-where $K_b$ is the Tomonaga-Luttinger parameter \cite{characPhases}. To illustrate the very different properties of the two Bose-Hubbard phases, the density matrices \eqref{eq:DensityMatrixEntry} for $L = 50$ and $U/J = 0, \; 0.5, \; 12$ were calculated using ground states obtained through the DMRG algorithm. 
-
 Figure \ref{fig:DensityMatrices}(a) shows the density matrix in the superfluid limit $U/J = 0$. In the superfluid phase, the energy of the system is minimized by de-localizing the particles across the entire lattice, whereby the atoms are essentially described by Bloch waves. Therefore, the single-particle correlations, $\bra{\psi} \hat{a}_{i}^{\dag} \hat{a}_{j} \ket{\psi}$, are very long-ranged. However, due to the open boundary conditions, particles can only tunnel in one direction at the outer sites, which effectively causes a depletion of their population. This can be seen from the diagonal of the density matrix, which describes the population at each site as
 \begin{equation}
-	\bra{\psi} \hat{a}_{i}^{\dag} \hat{a}_{i} \ket{\psi} = \braket{\psi | \hat{n}_i | psi} \; .
+	\bra{\psi} \hat{a}_{i}^{\dag} \hat{a}_{i} \ket{\psi} = \braket{\psi | \hat{n}_i | \psi} \; .
 \end{equation}
 The depletion of population at the outer sites causes the single-particle correlations to exhibit a sharp decrease near the edges of the system.
 
@@ -343,7 +340,7 @@ where
 	\hat{\mathcal{U}}^{[n,n+1]} (\Delta t) = \e^{- \im \hat{h}^{[n , n+1]} \; \Delta t } \; .
 \end{equation}
 The result is an MPO performing an infinitesimal time step on the odd bonds, and another MPO evolving the even bonds. An illustration of eq. \eqref{eq:SuzukiTrotter1stOrder} is shown in Figure \ref{fig:oddevenops}.
-\begin{figure}[h!]
+\begin{figure}[b]
 	\centering
 	\input{Diagrams/TEBD.tex}
 	\caption{Approximation of each time step $\Delta t$ using a Trotter-Suzuki expansion, such that the time evolution operator is expressed as a product of unitary two-site operators.}
@@ -399,8 +396,11 @@ where the site-specific propagators, or gates, are given by
 	\caption{Tensor diagram depicting a single time step of the modified tDMRG algorithm. The tensors of the upper part of the network are contracted with the MPS while sweeping from left to right, whereas the lower part is applied with a right-to-left sweep.}
 	\label{fig:ModifiedTEBD}
 \end{figure}
-A single time step, $\Delta t$, using the expanded operator is represented diagrammatically in figure \ref{fig:ModifiedTEBD}. At first glance, the tensor network resulting from the Suzuki-Trotter expansion may seem rather extensive, however, it can be contracted in a very efficient manner. The upper part of the network is contracted in a left-to-right sweeping manner, where the position of the center cite, and thereby the normalization of the MPS, is pushed to the right following each step. Likewise, the lower part of the network is contracted though a right-to-left sweep such that the MPS returns to its original form centered on the first site after applying the final operator. Thereby, the MPS is immediately ready for the subsequent time-propagation.\\
-\begin{figure}[h!]
+A single time step, $\Delta t$, using the expanded operator is represented diagrammatically in figure \ref{fig:ModifiedTEBD}. At first glance, the tensor network resulting from the Suzuki-Trotter expansion may seem rather extensive, however, it can be contracted in a very efficient manner. The upper part of the network is contracted in a left-to-right sweeping manner, where the position of the center cite, and thereby the normalization of the MPS, is pushed to the right following each step. Likewise, the lower part of the network is contracted though a right-to-left sweep such that the MPS returns to its original form centered on the first site after applying the final operator. Thereby, the MPS is immediately ready for the subsequent time-propagation.
+
+The sequence of contractions of the left-to-right sweep is shown in figure \ref{fig:TEBDContraction}. The MPS is initially centered on the first tensor, while its remaining tensors are right-normalised. By contracting the bonds marked with a bold line shown in step 1 and 2, the operators are efficiently applied to the MPS. In the third step, the two-site tensor, $\Theta$, is split using an SVD, where the bond dimension of the tensors is truncated. This is crucial in order to maintain a reduced dimensionality, which would otherwise result in a significant increase in contraction time. In the final and fourth step, the central cite of the MPS is moved to the start of the next two-site operator through another site merge and subsequent SVD. This step is exactly as in the original tDMRG algorithm. Thereby the normalization of the MPS is "pushed" to the right and contained in a single site, which makes it easy to deal with in the end of the time evolution step.
+
+\begin{figure}[t!]
 \centering % <-- add this
 \begin{subfigure}[b]{0.4\textwidth}
 	\caption{}  
@@ -425,8 +425,8 @@ A single time step, $\Delta t$, using the expanded operator is represented diagr
 \caption{\textit{Sequence of contractions for modified tDMRG algorithm during left to right sweep. Step \textbf{(1)}: MPS is centered on site 1. Tensors $M^{[1]}$ and $M^{[2]}$ are contracted. Step \textbf{(2)}: Two-site tensor, $\Theta$, is contracted with operators in numbered sequence. The propagated two-site tensor is split using an SVD in step \textbf{(3)}, followed by a contraction to the right. Lastly, in step \textbf{(4)}, the two-site tensor of $M^{[2]}$ and $M^{[3]}$ is split using another SVD, whereby the center (and thereby the normalisation) is pushed to site 3.}}
 \label{fig:TEBDContraction}
 \end{figure}
-The sequence of contractions of the left-to-right sweep is shown in figure \ref{fig:TEBDContraction}. The MPS is initially centered on the first tensor, while its remaining tensors are right-normalised. By contracting the bonds marked with a bold line shown in step 1 and 2, the operators are efficiently applied to the MPS. In the third step, the two-site tensor, $\Theta$, is split using an SVD, where the bond dimension of the tensors is truncated. This is crucial in order to maintain a reduced dimensionality, which would otherwise result in a significant increase in contraction time. In the final and fourth step, the central cite of the MPS is moved to the start of the next two-site operator through another site merge and subsequent SVD. This step is exactly as in the original tDMRG algorithm. Thereby the normalization of the MPS is "pushed" to the right and contained in a single site, which makes it easy to deal with in the end of the time evolution step.\\
-As the center reaches the end of the MPS, the direction of the sweep is reversed. The right-to-left sweep is very similar to the sequence described above. The main difference is in the order of contractions, as the $\hat{\mathcal{U}}_{J}^{[i,i+1]}$-propagator is applied before $\hat{\mathcal{U}}_{U}^{[i]}$. As the sweep, and thereby the central cite, reaches the first site of the MPS, the central site is divided by its norm. Thereby the MPS is normalized and in the same configuration as before the time step. Thus, further propagations can be performed readily.\\ 
+As the center reaches the end of the MPS, the direction of the sweep is reversed. The right-to-left sweep is very similar to the sequence described above. The main difference is in the order of contractions, as the $\hat{\mathcal{U}}_{J}^{[i,i+1]}$-propagator is applied before $\hat{\mathcal{U}}_{U}^{[i]}$. As the sweep, and thereby the central cite, reaches the first site of the MPS, the central site is divided by its norm. Thereby the MPS is normalized and in the same configuration as before the time step. Thus, further propagations can be performed readily.
+
 Additional precision is achieved when evaluating the control at the beginning and end points of the time interval \cite{Steck2007}. Thus, the left-to-right sweep applies the operator $\hat{\mathcal{U}}_{U(t)}^{[i]} $, while the right-to-left sweep applies $\hat{\mathcal{U}}_{U(t + \Delta t)}^{[i]}$.
 
 The time-evolution algorithm described here shares many traits with one proposed in \cite{Daley2004}, which was tested on the Bose-Hubbard model. The algorithm displayed weak convergence with the maximum bond dimension, $D$, whereby precise results can be obtained using only small bond dimensions. Further improvements to the method were suggested in \cite{Daley2004}, which included utilizing even higher-order expansions of the propagator. By evaluating the parameters of the propagator at specific points in the time interval, $\Delta t$, many algorithmic sweeps can be combined, greatly reducing the computational cost \cite{Yoshida1990,Krech1998}.

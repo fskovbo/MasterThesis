@@ -39,13 +39,21 @@ where $\varepsilon_i$ is the unperturbed energy of the $i$'th state. For a two-l
 	E_{g/e}^{(2)}= \pm  \frac{ |\bra{e}\hat{d}\ket{g}|^2}{\hbar \Delta} |E_0|^2,
 	\label{2ndpert}
 \end{equation}
-where the plus and minus signs are associated with the ground and excited state respectively. Eq. \eqref{2ndpert} can be rewritten in order to reflect properties of the atom and the field, by considering the intensity of the light, $I = \frac{1}{2} \epsilon_0 c |\boldsymbol{E}|^2 $, and the decay rate of the atom, $\Gamma = \frac{\omega_{0}^3}{3 \pi \epsilon_0 \hbar c^3} |\braket{e | \hat{d} | g}|^2$ \cite{grimm}. Thus, the energy shift experienced by the atom can be written as  
+where the plus and minus signs are associated with the ground and excited state respectively. Eq. \eqref{2ndpert} can be rewritten in order to reflect properties of the atom and the field, by considering the intensity of the light
+\begin{equation}
+	I = \frac{1}{2} \epsilon_0 c |\boldsymbol{E}|^2 \; ,
+\end{equation}
+and the decay rate of the atom \cite{grimm}
+\begin{equation}
+	\Gamma = \frac{\omega_{0}^3}{3 \pi \epsilon_0 \hbar c^3} |\braket{e | \hat{d} | g}|^2 \; .
+\end{equation}
+Thus, the energy shift experienced by the atom can be written as  
 \begin{equation}
 	E_{e/g}^{(2)}=\pm \frac{3 \pi c^2}{2 \omega_{0}^3} \frac{\Gamma}{\Delta}I \; .
 	\label{eq:dipolepot}
 \end{equation}
 This is the AC-Stark shift, which constitutes the dipole potential. For red detuning ($\Delta < 0$) the ground state will experience a negative shift leading to an attractive potential with depth depending on the intensity of the laser. Oppositely, a blue-detuned laser ($\Delta > 0$) will repel the atom. An illustration of this can be seen in figure \ref{fig:ac_stark}.
-\begin{figure}[!h]
+\begin{figure}[!t]
 	\centering
 	\includegraphics[width=0.5\columnwidth]{Figures/acstark.JPG} 
 	\caption{\textit{Light shifts of a two-level atom. Left-hand side,
@@ -70,7 +78,7 @@ The dipole potential in equation \eqref{eq:dipolepot} scales with the intensity 
 	\label{eq:standwave}
 \end{equation}
 where $V_0 = | \frac{3 \pi c^2}{2 \omega_{0}^3} \frac{\Gamma}{\Delta} 4 I_0 |$ is derived from eq. \eqref{eq:dipolepot}. In practice, the one-dimensional lattice structure of eq. \eqref{eq:standwave} is created by shining a single laser beam at a mirror, whereby it interferes with itself.
-\begin{figure}[!h]
+\begin{figure}[!t]
 	\centering
 	\includegraphics[width=0.7\columnwidth]{Figures/OpticalLattice.pdf} 
 	\caption{\textit{\textbf{(a)} Two dimensional optical lattice formed by two mutually orthogonal laser beams. These tubes have a characteristic cigar shape, due to the Gaussian profile of the lasers. \textbf{(b)} Upon using three orthogonal laser beams, the result is a three dimensional lattice reminiscent of a cubic crystal. Figure is adopted from \cite{WideraThesis}.}}
@@ -428,13 +436,14 @@ with $\bar{\mu} = {\mu}/{J z}$ and $\bar{U} = {U}/{J z}$. Finally, the solution 
 \begin{equation}
 	\bar{\mu}_{\pm} = \frac{1}{2} \left( \bar{U}(2n -1) \pm \frac{1}{2} \sqrt{\bar{U}^2 - 2 \bar{U} (2 n +1)} \right) \; .
 \end{equation}
-A better understanding of the results can be obtained by examining figure \ref{fig:SFMOTT}, which displays the mean-field phase diagram of the Bose-Hubbard model.  
+ 
 \begin{figure}[h]
 	\centering
 	\includegraphics[width = 0.5\textwidth]{Figures/SFMottPhase.pdf}
-	\label{fig:SFMOTT}
 	\caption{Phase diagram of Bose-Hubbard model for $T = 0$. Grey areas mark the Mott-insulator phase for different number of particles per site. The Mott-insulator is incompressible, whereby $\partial n / \ partial \mu = 0$. Meanwhile white regions mark the superfluid phase. \cite{greiner}}
+	\label{fig:MeanFieldPhaseDiagram}
 \end{figure}
+A better understanding of the results can be obtained by examining figure \ref{fig:MeanFieldPhaseDiagram}, which displays the mean-field phase diagram of the Bose-Hubbard model. 
 The $\mu_{\pm}$ curves enclose the region where the system is in the Mott-insulating phase. $(1/\bar{U})_{crit} = (J/U)_{crit}$ can be read off the graph from the point where the two curves $\mu_{\pm}$ meet. No number fluctuations take place in the Mott-insulator, whereby the particle number per site is well defined. As the chemical potential increases, each site can accommodate more particles as long as the increase in chemical potential compensates the increased energy due to interactions between the particles.
 
 The mean-field solution of the Bose-Hubbard model is only an approximation, which proves quite inaccurate for one dimension. This is obvious when comparing the critical ratio for the mean-field approach, $\left( U/J \right)_{crit}^{MF,1D} = 11.66$, with numerical results computed using the DMRG method, $\left( U/J \right)_{crit}^{DMRG,1D} = 3.37$, \cite{Kuhner2000}. Nevertheless, the mean-field gives a good intuitive feeling of the physics taking place and how one can describe them without resorting to diagonalizing the full Hamiltonian.
